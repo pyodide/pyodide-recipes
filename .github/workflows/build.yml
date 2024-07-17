@@ -264,13 +264,12 @@ jobs:
       - name: Run tests
         shell: bash -l {0}
         run: |
-          # FIXME: don't skip webworker tests
           # FIXKE: don't skip cpp_exception tests
           pytest -v \
             --dist-dir=./dist/ \
             --runner=${{ matrix.test-config.runner }} \
             --rt ${{ matrix.test-config.runtime }} \
-            -k "not webworker and not cpp_exception and not triangulation and not cartopy" \
+            -k "not cpp_exception and not triangulation and not cartopy" \
             packages
   release:
     runs-on: ubuntu-latest
