@@ -259,7 +259,7 @@ jobs:
 
       - name: Install test dependencies
         run: |
-          pip install pytest pytest-pyodide pytest-httpserver auditwheel-emscripten pytest-asyncio
+          pip install pytest pytest-pyodide pytest-httpserver auditwheel-emscripten pytest-asyncio pyodide-build
 
       - name: Run tests
         shell: bash -l {0}
