@@ -1,6 +1,8 @@
+import pytest
 from pytest_pyodide import run_in_pyodide
 
 
+@pytest.mark.requires_dynamic_linking
 @run_in_pyodide(packages=["fpcast-test"])
 def test_fpcasts(selenium):
     import fpcast_test
@@ -41,6 +43,6 @@ def test_fpcasts(selenium):
     t.kwargs2()
     t.kwargs3()
 
-    t.getset0
-    t.getset1
+    t.getset0  # noqa: B018
+    t.getset1  # noqa: B018
     t.getset1 = 5
