@@ -234,6 +234,24 @@ jobs:
           activate-environment: pyodide-env
           use-mamba: true
 
+      - name: Get Date
+        id: get-date
+        run: echo "today=$(/bin/date -u '+%Y%m%d')" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Cache Conda env
+        id: conda-cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.CONDA }}/envs
+          key:
+            conda-${{ runner.os }}-${{ steps.get-date.outputs.today }}-${{ hashFiles('environment.yml') }}-${{ env.CONDA_CACHE_NUMBER }}
+
+      - name: Update environment if cache miss
+        run:
+          mamba env update -n pyodide-env -f environment.yml
+        if: steps.conda-cache.outputs.cache-hit != 'true'
+
       - name: Download latest Pyodide
         shell: bash -l {0}
         run: |
@@ -259,7 +277,7 @@ jobs:
 
       - name: Install test dependencies
         run: |
-          pip install pytest pytest-pyodide pytest-httpserver auditwheel-emscripten pytest-asyncio pyodide-build
+          pip install pytest pytest-pyodide pytest-httpserver auditwheel-emscripten pytest-asyncio pyodide-build --upgrade
 
       - name: Run tests
         shell: bash -l {0}
