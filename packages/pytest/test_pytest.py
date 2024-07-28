@@ -19,7 +19,7 @@ def do_test(selenium, contents):
 
         out.seek(0)
         output = out.read()
-        assert "1 passed" in output, output
+        assert "2 passed" in output, output
         assert "1 failed" in output, output
         assert "1 warning" in output, output
         assert "This is a warning" in output, output
