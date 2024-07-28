@@ -257,6 +257,10 @@ jobs:
         run: |
           cp ./repodata/* ./dist/
 
+      - name: Install test dependencies
+        run: |
+          pip install -r requirements.txt
+
       - name: Run tests
         shell: bash -l {0}
         run: |
