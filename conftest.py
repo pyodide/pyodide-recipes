@@ -103,7 +103,8 @@ def set_configs():
     # There are a bunch of global objects that occasionally enter the hiwire cache
     # but never leave. The refcount checks get angry about them if they aren't preloaded.
     # We need to go through and touch them all once to keep everything okay.
-    pytest_pyodide_config.set_initialize_script("""
+    pytest_pyodide_config.set_initialize_script(
+        """
         pyodide.globals.get;
         pyodide.runPython("import pyodide_js._api.config; del pyodide_js");
         pyodide._api.importlib.invalidate_caches;
@@ -119,7 +120,8 @@ def set_configs():
         pyodide.pyimport("pyodide.ffi.wrappers").destroy();
         pyodide.pyimport("pyodide.http").destroy();
         pyodide.pyimport("pyodide_js._api");
-    """)
+    """
+    )
 
     pytest_pyodide_config.set_load_pyodide_script(
         "chrome",
