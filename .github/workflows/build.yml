@@ -306,4 +306,4 @@ jobs:
 
       - name: Upload wheels
         run: |
-          anaconda -t ${{ secrets.ANACONDA_API_TOKEN }} upload --force ./repodata/*.whl
+          anaconda -t ${{ secrets.ANACONDA_API_TOKEN }} upload --force ./repodata/*.whl --summary ""
