@@ -3,3 +3,4 @@ pytest-pyodide==0.58.3
 pytest-httpserver
 auditwheel-emscripten
 pytest-asyncio
+pyodide-build
