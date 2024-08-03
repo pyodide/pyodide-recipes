@@ -193,7 +193,7 @@ jobs:
 
       - name: Compress build artifacts
         run: |
-          tar -czvf packages.tar.gz repodata
+          tar -czvf packages.tar.gz -C repodata .
 
       - name: Release
         uses: softprops/action-gh-release@v1
