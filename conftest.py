@@ -1,9 +1,11 @@
 """
 Various common utilities for testing.
 """
+
 import re
 
 import pytest
+from pytest_pyodide import get_global_config
 from pytest_pyodide.utils import package_is_built as _package_is_built
 
 
@@ -79,6 +81,61 @@ def pytest_collection_modifyitems(config, items):
 def package_is_built(package_name):
     return _package_is_built(package_name, pytest.pyodide_dist_dir)
 
+
+def set_configs():
+    pytest_pyodide_config = get_global_config()
+
+    pytest_pyodide_config.set_flags(
+        "chrome",
+        pytest_pyodide_config.get_flags("chrome")
+        + [
+            "--enable-features=WebAssemblyExperimentalJSPI",
+            "--enable-experimental-webassembly-features",
+        ],
+    )
+
+    pytest_pyodide_config.set_flags(
+        "node",
+        pytest_pyodide_config.get_flags("node")
+        + ["--experimental-wasm-stack-switching"],
+    )
+
+    pytest_pyodide_config.set_load_pyodide_script(
+        "chrome",
+        """
+        let pyodide = await loadPyodide({
+            fullStdLib: false,
+            jsglobals : self,
+            enableRunUntilComplete: true,
+        });
+        """,
+    )
+
+    pytest_pyodide_config.set_load_pyodide_script(
+        "node",
+        """
+        const {readFileSync} = require("fs");
+        let snap = readFileSync("snapshot.bin");
+        snap = new Uint8Array(snap.buffer);
+        let pyodide = await loadPyodide({
+            fullStdLib: false,
+            jsglobals: self,
+            _loadSnapshot: snap,
+            enableRunUntilComplete: true,
+        });
+        """,
+    )
+
+
+set_configs()
+
+
+only_node = pytest.mark.xfail_browsers(
+    chrome="node only", firefox="node only", safari="node only"
+)
+only_chrome = pytest.mark.xfail_browsers(
+    node="chrome only", firefox="chrome only", safari="chrome only"
+)
 
 requires_jspi = pytest.mark.xfail_browsers(
     firefox="requires jspi", safari="requires jspi"

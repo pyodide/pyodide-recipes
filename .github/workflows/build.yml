@@ -193,7 +193,7 @@ jobs:
 
       - name: Compress build artifacts
         run: |
-          tar -czvf packages.tar.gz repodata
+          tar -czvf packages.tar.gz -C repodata .
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -259,18 +259,17 @@ jobs:
 
       - name: Install test dependencies
         run: |
-          pip install pytest pytest-pyodide pytest-httpserver auditwheel-emscripten pytest-asyncio
+          pip install -r requirements.txt
 
       - name: Run tests
         shell: bash -l {0}
         run: |
-          # FIXME: don't skip webworker tests
           # FIXKE: don't skip cpp_exception tests
           pytest -v \
             --dist-dir=./dist/ \
             --runner=${{ matrix.test-config.runner }} \
             --rt ${{ matrix.test-config.runtime }} \
-            -k "not webworker and not cpp_exception and not triangulation and not cartopy" \
+            -k "not cpp_exception and not triangulation and not cartopy" \
             packages
   release:
     runs-on: ubuntu-latest
@@ -306,4 +305,5 @@ jobs:
 
       - name: Upload wheels
         run: |
-          anaconda -t ${{ secrets.ANACONDA_API_TOKEN }} upload --force ./repodata/*.whl
+          # Anaconda denies packages with long descriptions, so set summary to null
+          anaconda -t ${{ secrets.ANACONDA_API_TOKEN }} upload --force ./repodata/*.whl --summary ""

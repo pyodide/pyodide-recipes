@@ -16,7 +16,3 @@ dependencies:
   - wget
   - setuptools
   - gfortran
-  - pip:
-    - pytest
-    - pytest-pyodide==0.58.1
-    - pytest-httpserver
