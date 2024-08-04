@@ -5,3 +5,4 @@ auditwheel-emscripten
 pytest-asyncio
 pyodide-build
 zstandard
+brotli
