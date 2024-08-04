@@ -280,6 +280,8 @@ jobs:
         run: |
           which python
           python -m pip install -r requirements.txt
+          # urllib3 has an issue with zstandard
+          pip uninstall zstandard
 
       - name: Run tests
         shell: bash -l {0}
