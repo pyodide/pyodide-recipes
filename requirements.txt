@@ -1,5 +1,9 @@
 pytest
 pytest-pyodide==0.58.3
 pytest-httpserver
+pytest-benchmark
 auditwheel-emscripten
 pytest-asyncio
+pyodide-build
+zstandard
+brotli
