@@ -23,4 +23,4 @@ for more information on creating package recipes.
 
 ## Maintainer information
 
-See [MAINTAINERS.md](dics/MAINTAINERS.md) for information on how to maintain this repository.
+See [MAINTAINERS.md](docs/MAINTAINERS.md) for information on how to maintain this repository.
