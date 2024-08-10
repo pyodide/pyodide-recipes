@@ -28,7 +28,6 @@ def test_imports(selenium):
 
 @matplotlib_test_decorator
 def test_matplotlib(selenium):
-
     if not package_is_built("pyodide-http"):
         pytest.skip("pyodide-http is not built")
 
@@ -51,5 +50,5 @@ def test_matplotlib(selenium):
         content = fd.getvalue().decode("utf8")
         assert len(content) > 100000
         assert content.startswith("<?xml")
-    
+
     run(selenium)
