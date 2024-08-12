@@ -288,7 +288,6 @@ jobs:
             --dist-dir=./dist/ \
             --runner=${{ matrix.test-config.runner }} \
             --rt ${{ matrix.test-config.runtime }} \
-            -k "not triangulation and not cartopy" \
             packages
   release:
     runs-on: ubuntu-latest
