@@ -198,6 +198,7 @@ jobs:
         with:
           files: |
             ./packages.tar.gz
+            ./repodata/pyodide-lock.json
 
   test:
     runs-on: ubuntu-latest
