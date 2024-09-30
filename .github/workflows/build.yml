@@ -50,7 +50,7 @@ jobs:
           which ccache
 
       - name: Cache conda
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/conda_pkgs_dir
           key:
@@ -71,7 +71,7 @@ jobs:
 
       - name: Cache Conda env
         id: conda-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ env.CONDA }}/envs
           key:
@@ -115,7 +115,7 @@ jobs:
           echo EMSCRIPTEN_VERSION=$(pyodide config get emscripten_version) >> $GITHUB_ENV
 
       - name: Cache emsdk
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{env.EMSDK_CACHE_FOLDER}}
           key: ${{env.EMSDK_CACHE_NUMBER}}-${{env.EMSCRIPTEN_VERSION}}-${{ runner.os }}
@@ -135,7 +135,7 @@ jobs:
           fi
 
       - name: Cache ccache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ env.CCACHE_DIR }}-${{ env.CCACHE_CACHE_NUMBER }}-${{ env.EMSCRIPTEN_VERSION }}-${{ runner.os }}${{ env.CCACHE_SUFFIX }}
@@ -180,7 +180,7 @@ jobs:
           ccache -s
 
       - name: Store artifacts build
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: repodata
           path: ./repodata/
@@ -211,14 +211,14 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         test-config: [
-          {runner: selenium, runtime: chrome, runtime-version: latest },
+          {runner: selenium, runtime: chrome, runtime-version: 126 },
         ]
 
     steps:
       - uses: actions/checkout@v3
 
       - name: Cache conda
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/conda_pkgs_dir
           key:
@@ -239,7 +239,7 @@ jobs:
 
       - name: Cache Conda env
         id: conda-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ${{ env.CONDA }}/envs
           key:
@@ -256,14 +256,14 @@ jobs:
           tar -xvf pyodide-core.tar.bz2
           mv pyodide dist
 
-      - uses: pyodide/pyodide-actions/install-browser@v1
+      - uses: pyodide/pyodide-actions/install-browser@v2
         with:
           runner: ${{ matrix.test-config.runner }}
           browser: ${{ matrix.test-config.runtime }}
           browser-version: ${{ matrix.test-config.runtime-version }}
 
       - name: Download build artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: repodata
           path: ./repodata/
@@ -307,7 +307,7 @@ jobs:
           use-mamba: true
 
       - name: Download build artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: repodata
           path: ./repodata/
