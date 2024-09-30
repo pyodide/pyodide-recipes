@@ -120,7 +120,7 @@ jobs:
           path: ${{env.EMSDK_CACHE_FOLDER}}
           key: ${{env.EMSDK_CACHE_NUMBER}}-${{env.EMSCRIPTEN_VERSION}}-${{ runner.os }}
 
-      - uses: mymindstorm/setup-emsdk@v11
+      - uses: mymindstorm/setup-emsdk@v14
         with:
           version: ${{ env.EMSCRIPTEN_VERSION }}
           actions-cache-folder: ${{env.EMSDK_CACHE_FOLDER}}
