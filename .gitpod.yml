@@ -7,7 +7,7 @@ tasks:
       conda env create -f environment.yml
       conda activate pyodide-env
 
-      pip install git+https://github.com/pyodide/pyodide.git@main#subdirectory=pyodide-build
+      pip install git+https://github.com/pyodide/pyodide-build.git
       pyodide xbuildenv install --download --url http://pyodide-cache.s3-website-us-east-1.amazonaws.com/xbuildenv/dev/xbuildenv.tar.bz2
 
       EMSCRIPTEN_VERSION=$(pyodide config get emscripten_version)
