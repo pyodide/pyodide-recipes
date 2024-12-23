@@ -78,3 +78,6 @@ testpaths = [
     "packages",
 ]
 asyncio_mode = "strict"
+
+[tool.pyodide.build]
+rust_toolchain = "nightly-2024-12-01"
