@@ -60,10 +60,10 @@ jobs:
       - name: Setup Mambaforge
         uses: conda-incubator/setup-miniconda@v3
         with:
-          miniforge-variant: Mambaforge
+          miniforge-variant: Miniforge3
           miniforge-version: latest
           activate-environment: pyodide-env
-          use-mamba: true
+          channels: conda-forge
 
       - name: Get Date
         id: get-date
@@ -228,10 +228,10 @@ jobs:
       - name: Setup Mambaforge
         uses: conda-incubator/setup-miniconda@v3
         with:
-          miniforge-variant: Mambaforge
+          miniforge-variant: Miniforge3
           miniforge-version: latest
           activate-environment: pyodide-env
-          use-mamba: true
+          channels: conda-forge
 
       - name: Get Date
         id: get-date
@@ -300,11 +300,10 @@ jobs:
       - name: Setup Mambaforge
         uses: conda-incubator/setup-miniconda@v3
         with:
-          miniforge-variant: Mambaforge
+          miniforge-variant: Miniforge3
           miniforge-version: latest
           activate-environment: pyodide-env
           channels: conda-forge
-          use-mamba: true
 
       - name: Download build artifact
         uses: actions/download-artifact@v4
