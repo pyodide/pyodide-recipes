@@ -6,9 +6,6 @@ package:
 source:
   url: https://files.pythonhosted.org/packages/db/f6/9921162053f195eaa7e22cae9172e0d3bdda62282d76480163d1de872f35/cbor_diag-1.1.0.tar.gz
   sha256: 78a85ab1165c43d224dc6b93e1ee791aec2f392c55d219d11937f78974f4e6c3
-build:
-  script: |
-    cargo update -p proc-macro2 --precise 1.0.60
 requirements:
   executable:
     - rustup
