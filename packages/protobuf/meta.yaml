@@ -1,6 +1,6 @@
 package:
   name: protobuf
-  version: 6.30.0  #rc1
+  version: 6.30.0rc1
   top-level:
     - google
 
