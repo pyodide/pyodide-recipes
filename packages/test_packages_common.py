@@ -9,7 +9,7 @@ from pytest_pyodide.utils import package_is_built as _package_is_built
 import pytest
 
 from conftest import package_is_built
-from pyodide_build.io import MetaConfig
+from pyodide_build.recipe.spec import MetaConfig
 
 PKG_DIR = Path(__file__).parent
 
