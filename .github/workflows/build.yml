@@ -108,7 +108,7 @@ jobs:
         run : |
           which python
           python -m pip install pyodide-build
-          pyodide xbuildenv install --url http://pyodide-cache.s3-website-us-east-1.amazonaws.com/xbuildenv/dev/xbuildenv.tar.bz2
+          pyodide xbuildenv install
 
       - name: Check emscripten version
         run: |
