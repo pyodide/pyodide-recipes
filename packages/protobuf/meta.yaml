@@ -1,12 +1,12 @@
 package:
   name: protobuf
-  version: 6.30.0rc2
+  version: 6.30.0
   top-level:
     - google
 
 source:
-  url: https://files.pythonhosted.org/packages/46/e5/65440deead751030b6544da3d33c8f000228f75d32c5e54a27c33c9a9ec7/protobuf-6.30.0rc2.tar.gz
-  sha256: 0bccfbc07dd856653cc3f7740a12d1daed30c347b1c386ed1219194671dc43ab
+  url: https://files.pythonhosted.org/packages/53/6a/2629bb3529e5bdfbd6c4608ff5c7d942cd4beae85793f84ba543aab2548a/protobuf-6.30.0.tar.gz
+  sha256: 852b675d276a7d028f660da075af1841c768618f76b90af771a8e2c29e6f5965
 
 about:
   home: https://github.com/protocolbuffers/protobuf
