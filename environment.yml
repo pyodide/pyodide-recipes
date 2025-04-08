@@ -8,7 +8,7 @@ dependencies:
   - f2c
   - swig
   - make
-  - cmake
+  - cmake<4
   - texinfo
   - autoconf
   - automake
