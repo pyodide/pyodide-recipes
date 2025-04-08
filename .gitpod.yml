@@ -8,7 +8,7 @@ tasks:
       conda activate pyodide-env
 
       pip install git+https://github.com/pyodide/pyodide-build.git
-      pyodide xbuildenv install --download --url http://pyodide-cache.s3-website-us-east-1.amazonaws.com/xbuildenv/dev/xbuildenv.tar.bz2
+      pyodide xbuildenv install
 
       EMSCRIPTEN_VERSION=$(pyodide config get emscripten_version)
       ../emsdk/emsdk install ${EMSCRIPTEN_VERSION}

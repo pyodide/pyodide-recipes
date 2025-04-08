@@ -110,20 +110,9 @@ jobs:
           python -m pip install "git+https://github.com/pyodide/pyodide-build"
           pyodide xbuildenv install
 
-      - name: Check emscripten version
+      - name: Install emscripten
         run: |
-          echo EMSCRIPTEN_VERSION=$(pyodide config get emscripten_version) >> $GITHUB_ENV
-
-      - name: Cache emsdk
-        uses: actions/cache@v4
-        with:
-          path: ${{env.EMSDK_CACHE_FOLDER}}
-          key: ${{env.EMSDK_CACHE_NUMBER}}-${{env.EMSCRIPTEN_VERSION}}-${{ runner.os }}
-
-      - uses: mymindstorm/setup-emsdk@v14
-        with:
-          version: ${{ env.EMSCRIPTEN_VERSION }}
-          actions-cache-folder: ${{env.EMSDK_CACHE_FOLDER}}
+          python tools/install_and_patch_emscripten.py
 
       - name: Set ccache suffix
         run: |
@@ -166,6 +155,7 @@ jobs:
           export _EMCC_CACHE=1
 
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
+          source emsdk/emsdk_env.sh
           pyodide build-recipes "*" --install --install-dir=./repodata
           ccache -s
 
@@ -176,6 +166,7 @@ jobs:
           export _EMCC_CACHE=1
 
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
+          source emsdk/emsdk_env.sh
           pyodide build-recipes ${{ steps.calculate_recipes_pr.outputs.recipes }} --install --install-dir=./repodata
           ccache -s
 

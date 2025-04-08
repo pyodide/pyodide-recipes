@@ -2,13 +2,13 @@ name: pyodide-env
 channels:
   - conda-forge
 dependencies:
-  - python=3.12.1
+  - python=3.13.0
   - nodejs=20
   - ccache
   - f2c
   - swig
   - make
-  - cmake
+  - cmake<4
   - texinfo
   - autoconf
   - automake
