@@ -107,8 +107,7 @@ jobs:
       - name: Install latest pyodide-build and build dependencies
         run : |
           which python
-          python -m pip install "git+https://github.com/pyodide/pyodide-build"
-          pyodide xbuildenv install
+          ./tools/prepare_pyodide_build.sh
 
       - name: Install emscripten
         run: |
@@ -149,7 +148,7 @@ jobs:
           fi
 
       - name: Build recipes (full)
-        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || contains(github.event.head_commit.message, '[full build]') }}
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || contains(github.event.pull_request.title, '[full build]')
         run: |
           ccache -z
           export _EMCC_CACHE=1
@@ -160,7 +159,7 @@ jobs:
           ccache -s
 
       - name: Build recipes (changed only)
-        if: github.event_name == 'pull_request' && !contains(github.event.head_commit.message, '[full build]')
+        if: github.event_name == 'pull_request' && !contains(github.event.pull_request.title, '[full build]')
         run: |
           ccache -z
           export _EMCC_CACHE=1

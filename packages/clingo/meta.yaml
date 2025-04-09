@@ -16,6 +16,9 @@ requirements:
     - cffi
   run:
     - cffi
+build:
+  script: |
+    embuilder build libdlmalloc libcompiler_rt-legacysjlj libc++-legacyexcept libc++abi-legacyexcept libunwind-legacyexcept --pic
 extra:
   recipe-maintainers:
     - peter-gy

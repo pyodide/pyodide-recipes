@@ -34,6 +34,7 @@ def install_emsdk(version: str, patch_dir: Path):
     sp.run([
         "./emsdk",
         "install",
+        "--build=Release",
         version,
     ], cwd=emsdk_dir, check=True)
 
@@ -42,6 +43,8 @@ def install_emsdk(version: str, patch_dir: Path):
     sp.run([
         "./emsdk",
         "activate",
+        "--embedded",
+        "--build=Release",
         version,
     ], cwd=emsdk_dir, check=True)
 
