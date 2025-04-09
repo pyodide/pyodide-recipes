@@ -107,8 +107,7 @@ jobs:
       - name: Install latest pyodide-build and build dependencies
         run : |
           which python
-          python -m pip install "git+https://github.com/pyodide/pyodide-build"
-          pyodide xbuildenv install
+          ./tools/prepare_pyodide_build.sh
 
       - name: Install emscripten
         run: |
