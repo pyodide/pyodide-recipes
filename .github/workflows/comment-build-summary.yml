@@ -1,0 +1,87 @@
+name: Comment Build Summary
+
+on:
+  workflow_run:
+    workflows: ["Build Recipes"]
+    types:
+      - completed
+
+permissions:
+  pull-requests: write
+  contents: read
+
+# copied from: https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#workflow_run
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request' }}
+    steps:
+      - name: 'Download artifact'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: context.payload.workflow_run.id,
+            });
+            let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "build-result"
+            })[0];
+            let download = await github.rest.actions.downloadArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: matchArtifact.id,
+               archive_format: 'zip',
+            });
+            const fs = require('fs');
+            const path = require('path');
+            const temp = '${{ runner.temp }}/artifacts';
+            if (!fs.existsSync(temp)){
+              fs.mkdirSync(temp);
+            }
+            fs.writeFileSync(path.join(temp, 'build-result.zip'), Buffer.from(download.data));
+
+      - name: 'Unzip artifact'
+        run: unzip "${{ runner.temp }}/artifacts/build-result.zip" -d "${{ runner.temp }}/artifacts"
+
+      - name: 'Comment on PR'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const temp = '${{ runner.temp }}/artifacts';
+            const issue_number = Number(fs.readFileSync(path.join(temp, 'pr_number')));
+            const summaryContent = fs.readFileSync(path.join(temp, 'build_summary.md'), 'utf8');
+
+            // Search for existing build summary comments
+            const comments = await github.rest.issues.listComments({
+              issue_number: issue_number,
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+
+            // Look for a comment that was created by the GitHub Actions bot
+            const buildSummaryComment = comments.data.find(comment => comment.user.login === 'github-actions[bot]');
+            
+            if (buildSummaryComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                comment_id: buildSummaryComment.id,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: summaryContent
+              });
+              console.log(`Updated existing build summary comment ID: ${buildSummaryComment.id}`);
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                issue_number: issue_number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: summaryContent
+              });
+              console.log('Created new build summary comment');
+            }

@@ -14,6 +14,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 env:
   # Increase this value to reset cache if environment.yml has not changed
@@ -155,7 +156,8 @@ jobs:
 
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
           source emsdk/emsdk_env.sh
-          pyodide build-recipes "*" --install --install-dir=./repodata
+          mkdir -p result
+          pyodide build-recipes "*" --install --install-dir=./repodata | tee result/build_output.log
           ccache -s
 
       - name: Build recipes (changed only)
@@ -166,8 +168,32 @@ jobs:
 
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
           source emsdk/emsdk_env.sh
-          pyodide build-recipes ${{ steps.calculate_recipes_pr.outputs.recipes }} --install --install-dir=./repodata
+          mkdir -p result
+          pyodide build-recipes ${{ steps.calculate_recipes_pr.outputs.recipes }} --install --install-dir=./repodata | tee result/build_output.log
           ccache -s
+
+      - name: Parse build results
+        id: parse_results
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          if [ -f result/build_output.log ]; then
+            python tools/parse_build_result.py result/build_output.log > result/build_summary.md
+            echo "SUMMARY_CREATED=true" >> $GITHUB_ENV
+          else
+            echo "No build log found"
+            echo "SUMMARY_CREATED=false" >> $GITHUB_ENV
+          fi
+
+          echo ${PR_NUMBER} > result/pr_number
+      
+      - name: Store the build summary
+        uses: actions/upload-artifact@v4
+        if: github.event_name == 'pull_request' && env.SUMMARY_CREATED == 'true'
+        with:
+          name: build-result
+          path: result/
+          retention-days: 15
 
       - name: Store artifacts build
         uses: actions/upload-artifact@v4
