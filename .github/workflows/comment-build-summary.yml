@@ -43,7 +43,7 @@ jobs:
             fs.writeFileSync(path.join(temp, 'build-result.zip'), Buffer.from(download.data));
 
       - name: 'Unzip artifact'
-        run: unzip build-result.zip -d "${{ runner.temp }}/artifacts"
+        run: unzip "${{ runner.temp }}/artifacts/build-result.zip" -d "${{ runner.temp }}/artifacts"
 
       - name: 'Comment on PR'
         uses: actions/github-script@v7
