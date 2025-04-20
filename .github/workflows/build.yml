@@ -177,7 +177,7 @@ jobs:
         env:
           PR_NUMBER: ${{ github.event.number }}
         run: |
-          if [ -f build_output.log ]; then
+          if [ -f result/build_output.log ]; then
             python tools/parse_build_result.py result/build_output.log > result/build_summary.md
             echo "SUMMARY_CREATED=true" >> $GITHUB_ENV
           else
@@ -186,9 +186,6 @@ jobs:
           fi
 
           echo ${PR_NUMBER} > result/pr_number
-
-
-          
       
       - name: Store the build summary
         uses: actions/upload-artifact@v4
