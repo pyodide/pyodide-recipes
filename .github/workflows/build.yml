@@ -15,7 +15,6 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  issues: write
 
 env:
   # Increase this value to reset cache if environment.yml has not changed
