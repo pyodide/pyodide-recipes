@@ -10,13 +10,15 @@ source:
   sha256: 70a84aa1417c633a0fd6754ffa5dc92ee1b9aeb70baaa52c8c8c94a7c6db9cf0
   patches:
     - patches/0001-Replace-OpenAudioDevice-with-OpenAudio.patch
-    - patches/0001-freetype-init.patch
-    - patches/0001-wasm_unify_pygame_web_pyodide_static_Freetype_init.patch
+    - patches/0002-freetype-init.patch
 requirements:
   constraint:
     - setuptools < 75
 build:
   script: |
+    # pygame adopted meson but it doesn't yet support emscripten platform
+    # removed pyproject.toml to force the build system to use setuptools
+    rm -rf pyproject.toml
     embuilder build sdl2 sdl2_ttf sdl2_image sdl2_mixer sdl2_gfx libjpeg libpng giflib harfbuzz vorbis mpg123 libmodplug freetype libhtml5 --pic
     export SDL_CONFIG=$(em-config CACHE)/sysroot/bin/sdl2-config
   cflags: |
