@@ -156,7 +156,8 @@ jobs:
 
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
           source emsdk/emsdk_env.sh
-          pyodide build-recipes "*" --install --install-dir=./repodata | tee build_output.log
+          mkdir -p result
+          pyodide build-recipes "*" --install --install-dir=./repodata | tee result/build_output.log
           ccache -s
 
       - name: Build recipes (changed only)
@@ -167,58 +168,35 @@ jobs:
 
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
           source emsdk/emsdk_env.sh
-          pyodide build-recipes ${{ steps.calculate_recipes_pr.outputs.recipes }} --install --install-dir=./repodata | tee build_output.log
+          mkdir -p result
+          pyodide build-recipes ${{ steps.calculate_recipes_pr.outputs.recipes }} --install --install-dir=./repodata | tee result/build_output.log
           ccache -s
 
       - name: Parse build results
         id: parse_results
+        env:
+          PR_NUMBER: ${{ github.event.number }}
         run: |
           if [ -f build_output.log ]; then
-            python tools/parse_build_result.py build_output.log > build_summary.md
+            python tools/parse_build_result.py result/build_output.log > result/build_summary.md
             echo "SUMMARY_CREATED=true" >> $GITHUB_ENV
           else
             echo "No build log found"
             echo "SUMMARY_CREATED=false" >> $GITHUB_ENV
           fi
 
-      - name: Create or update build summary comment
+          echo ${PR_NUMBER} > result/pr_number
+
+
+          
+      
+      - name: Store the build summary
+        uses: actions/upload-artifact@v4
         if: github.event_name == 'pull_request' && env.SUMMARY_CREATED == 'true'
-        uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const summaryContent = fs.readFileSync('build_summary.md', 'utf8');
-            
-            // Search for existing build summary comments
-            const comments = await github.rest.issues.listComments({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            });
-            
-            // Look for a comment that was created by the GitHub Actions bot
-            const buildSummaryComment = comments.data.find(comment => comment.user.login === 'github-actions[bot]');
-            
-            if (buildSummaryComment) {
-              // Update existing comment
-              await github.rest.issues.updateComment({
-                comment_id: buildSummaryComment.id,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: summaryContent
-              });
-              console.log(`Updated existing build summary comment ID: ${buildSummaryComment.id}`);
-            } else {
-              // Create new comment
-              await github.rest.issues.createComment({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: summaryContent
-              });
-              console.log('Created new build summary comment');
-            }
+          name: build-result
+          path: result/
+          retention-days: 15
 
       - name: Store artifacts build
         uses: actions/upload-artifact@v4
