@@ -1,6 +1,8 @@
 package:
   name: casadi
   version: 3.6.7
+  # undefined exported symbol: "_AddIdentity"
+  _disabled: true
   top-level:
     - casadi
 source:
@@ -11,9 +13,6 @@ requirements:
     - numpy
 build:
   exports: requested
-  script: |
-    # These libs are built when building Pyodide main module, but might not be available when building out-of-tree
-    embuilder build libdlmalloc libcompiler_rt-legacysjlj libc++-legacyexcept libc++abi-legacyexcept libunwind-legacyexcept --pic
   cflags: |
     -fwasm-exceptions -frtti
   cxxflags: |
