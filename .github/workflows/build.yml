@@ -2,7 +2,8 @@ name: Build Recipes
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - '*'
     tags:
       - '*'
   pull_request:
