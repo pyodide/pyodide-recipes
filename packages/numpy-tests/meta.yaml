@@ -6,7 +6,7 @@ package:
   top-level:
     - numpy
 source:
-  path: ../numpy/numpy-2.2.5/build
+  path: ../numpy/build/numpy-2.2.5/
 
 build:
   unvendor-tests: false # we do this on our own using Meson's install tags
