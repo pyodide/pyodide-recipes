@@ -3,7 +3,7 @@ from pytest_pyodide import run_in_pyodide
 
 
 def test_numpy(selenium):
-    selenium.load_package("numpy")
+    selenium.load_package("numpy", "numpy-tests")
     selenium.run(
         """
         import numpy
@@ -25,7 +25,7 @@ def test_numpy(selenium):
 
 
 def test_typed_arrays(selenium):
-    selenium.load_package("numpy")
+    selenium.load_package("numpy", "numpy-tests")
     selenium.run("import numpy")
     for jstype, npytype in (
         ("Int8Array", "int8"),
@@ -65,7 +65,7 @@ def test_typed_arrays(selenium):
     ),
 )
 def test_python2js_numpy_dtype(selenium, order, dtype):
-    selenium.load_package("numpy")
+    selenium.load_package("numpy", "numpy-tests")
     selenium.run("import numpy as np")
 
     expected_result = [[[0, 1], [2, 3]], [[4, 5], [6, 7]]]
@@ -115,7 +115,7 @@ def test_python2js_numpy_dtype(selenium, order, dtype):
 
 @pytest.mark.skip_pyproxy_check
 def test_py2js_buffer_clear_error_flag(selenium):
-    selenium.load_package("numpy")
+    selenium.load_package("numpy", "numpy-tests")
     selenium.run("import numpy as np")
     selenium.run("x = np.array([['string1', 'string2'], ['string3', 'string4']])")
     selenium.run_js(
@@ -144,7 +144,7 @@ def test_py2js_buffer_clear_error_flag(selenium):
     ),
 )
 def test_python2js_numpy_scalar(selenium, dtype):
-    selenium.load_package("numpy")
+    selenium.load_package("numpy", "numpy-tests")
     selenium.run("import numpy as np")
     selenium.run(
         f"""
@@ -359,7 +359,7 @@ def test_fft(selenium):
     )
 
 
-@run_in_pyodide(packages=["numpy"])
+@run_in_pyodide(packages=["numpy", "numpy-tests"])
 def test_np_unique(selenium):
     """Numpy comparator functions formerly had a fatal error, see PR #2110"""
     import numpy as np
