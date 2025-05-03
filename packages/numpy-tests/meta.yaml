@@ -23,8 +23,6 @@ build:
   # It breaks our test because there is a .pyc in the directory.
   post: |
     rm -rf numpy/distutils/__pycache__
-  post: |
-    rm -rf numpy/distutils/__pycache__
   cflags: |
     -Wno-return-type
 # We need NumPy to be built before we can reuse the persistent build dir
