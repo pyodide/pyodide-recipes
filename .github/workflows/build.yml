@@ -285,7 +285,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: repodata
-          path: ./repodata/
+          path: ./dist/
 
       - name: Install test dependencies
         run: |
