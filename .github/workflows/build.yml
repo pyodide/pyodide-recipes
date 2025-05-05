@@ -188,7 +188,7 @@ jobs:
           echo ${PR_NUMBER} > result/pr_number
       - name: Compress build artifacts
         run: |
-          tar -czvf packages.tar.gz -C repodata .  
+          tar -czvf packages.tar.gz -C repodata .
 
       - name: Copy Pyodide runtime to repodata for testing
         run: |
