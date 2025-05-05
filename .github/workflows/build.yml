@@ -186,32 +186,34 @@ jobs:
           fi
 
           echo ${PR_NUMBER} > result/pr_number
-      
+      - name: Compress build artifacts
+        run: |
+          tar -czvf packages.tar.gz -C repodata .  
+
+      - name: Copy Pyodide runtime to repodata for testing
+        run: |
+          ./tools/copy_pyodide_runtime.sh ./repodata
       - name: Store the build summary
         uses: actions/upload-artifact@v4
         if: github.event_name == 'pull_request' && env.SUMMARY_CREATED == 'true'
         with:
           name: build-result
           path: result/
-          retention-days: 15
+          retention-days: 7
 
       - name: Store artifacts build
         uses: actions/upload-artifact@v4
         with:
           name: repodata
           path: ./repodata/
-          retention-days: 15
+          retention-days: 7
       
       - name: Store build logs
         uses: actions/upload-artifact@v4
         with:
           name: build-log
           path: ./build-logs/
-          retention-days: 15
-
-      - name: Compress build artifacts
-        run: |
-          tar -czvf packages.tar.gz -C repodata .
+          retention-days: 7
 
       - name: Release
         uses: softprops/action-gh-release@v2
@@ -273,12 +275,6 @@ jobs:
           mamba env update -n pyodide-env -f environment.yml
         if: steps.conda-cache.outputs.cache-hit != 'true'
 
-      - name: Download latest Pyodide
-        run: |
-          wget http://pyodide-cache.s3-website-us-east-1.amazonaws.com/xbuildenv/dev/pyodide-core.tar.bz2
-          tar -xvf pyodide-core.tar.bz2
-          mv pyodide dist
-
       - uses: pyodide/pyodide-actions/install-browser@v2
         with:
           runner: ${{ matrix.test-config.runner }}
@@ -290,10 +286,6 @@ jobs:
         with:
           name: repodata
           path: ./repodata/
-
-      - name: Copy repodata
-        run: |
-          cp ./repodata/* ./dist/
 
       - name: Install test dependencies
         run: |
