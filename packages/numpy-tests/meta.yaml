@@ -1,13 +1,12 @@
 package:
-  name: numpy
+  name: numpy-tests
   version: 2.2.5
   tag:
     - min-scipy-stack
   top-level:
     - numpy
 source:
-  url: https://files.pythonhosted.org/packages/source/n/numpy/numpy-2.2.5.tar.gz
-  sha256: a9c0d994680cd991b1cb772e8b297340085466a6fe964bc9d4e80f5e2f43c291
+  path: ../numpy/build/numpy-2.2.5/
 
 build:
   unvendor-tests: false # we do this on our own using Meson's install tags
@@ -15,20 +14,21 @@ build:
   backend-flags: |
     setup-args=-Dallow-noblas=true
     setup-args=--cross-file=${MESON_CROSS_FILE}
-    install-args=--tags=runtime,python-runtime,devel
+    install-args=--tags=tests
     build-dir=build
+  # Replace 'name = "numpy"' with 'name = "numpy-tests"' in pyproject.toml
+  script: |
+    sed -i 's/name = "numpy"/name = "numpy-tests"/' pyproject.toml
   # numpy creates numpy/distutils/__pycache__ directory during the build.
   # It breaks our test because there is a .pyc in the directory.
   post: |
     rm -rf numpy/distutils/__pycache__
   cflags: |
     -Wno-return-type
-  cross-build-env: true
-  cross-build-files:
-    - numpy/_core/include/numpy/numpyconfig.h
-    - numpy/_core/include/numpy/_numpyconfig.h
-    - numpy/_core/lib/libnpymath.a
-    - numpy/random/lib/libnpyrandom.a
+# We need NumPy to be built before we can reuse the persistent build dir
+requirements:
+  host:
+    - numpy
 about:
   home: https://www.numpy.org
   PyPI: https://pypi.org/project/numpy
