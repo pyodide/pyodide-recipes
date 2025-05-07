@@ -12,4 +12,7 @@ rm -rf pyodide
 git clone https://github.com/pyodide/pyodide --depth 1
 find pyodide/packages -mindepth 1 -maxdepth 1 -type d -exec cp -r {} packages/ \;
 rm -rf packages/_tests
+rm -rf packages/*-test
+rm -rf packages/*-test2
+rm -rf packages/*-test-py
 rm -rf pyodide
