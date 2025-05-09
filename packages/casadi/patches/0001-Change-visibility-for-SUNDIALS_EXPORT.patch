@@ -1,0 +1,24 @@
+From 87ae952ae6dc190c451ce967c825851ba02e61c1 Mon Sep 17 00:00:00 2001
+From: Agriya Khetarpal <74401230+agriyakhetarpal@users.noreply.github.com>
+Date: Fri, 9 May 2025 19:32:59 +0530
+Subject: [PATCH] Change visibility for SUNDIALS_EXPORT
+
+---
+ external_packages/casadi-sundials/CMakeLists.txt | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/external_packages/casadi-sundials/CMakeLists.txt b/external_packages/casadi-sundials/CMakeLists.txt
+index cc9ce923e..9c3c55a00 100644
+--- a/external_packages/casadi-sundials/CMakeLists.txt
++++ b/external_packages/casadi-sundials/CMakeLists.txt
+@@ -130,3 +130,7 @@ set(SUNDIALS_SOURCES
+ )
+ 
+ add_library(casadi_sundials STATIC ${SUNDIALS_INCLUDES} ${SUNDIALS_SOURCES})
++
++if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
++  target_compile_definitions(casadi_sundials PRIVATE SUNDIALS_EXPORT=__attribute__\(\(visibility\(\"default\"\)\)\))
++endif()
+-- 
+2.39.5 (Apple Git-154)
+
