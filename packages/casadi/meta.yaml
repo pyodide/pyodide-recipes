@@ -6,11 +6,13 @@ package:
 source:
   url: https://files.pythonhosted.org/packages/source/c/casadi/casadi-3.7.0.tar.gz
   sha256: 21254f17eb5551c4a938641cc1b815ff3da27271ab2c36e44a3e90ec50ba471f
+  patches:
+    - patches/0001-Keep-AddIdentity-alive.patch
 requirements:
   run:
     - numpy
 build:
-  exports: whole_archive
+  exports: requested
   # These libs are built when building Pyodide main module, but might not be available when building out-of-tree
   script: |
     embuilder build libdlmalloc libcompiler_rt-legacysjlj libc++-legacyexcept libc++abi-legacyexcept libunwind-legacyexcept --pic
