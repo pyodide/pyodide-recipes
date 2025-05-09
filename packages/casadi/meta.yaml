@@ -12,9 +12,9 @@ requirements:
 build:
   exports: requested
   cflags: |
-    -fwasm-exceptions -frtti
+    -fwasm-exceptions
   cxxflags: |
-    -fwasm-exceptions -frtti
+    -fwasm-exceptions
   ldflags: |
     -fwasm-exceptions
 about:
