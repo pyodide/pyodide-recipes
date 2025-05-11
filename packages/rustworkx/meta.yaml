@@ -13,6 +13,9 @@ build:
 requirements:
   executable:
     - rustup
+test:
+  imports:
+    - rustworkx
 about:
   home: https://github.com/Qiskit/rustworkx
   PyPI: https://pypi.org/project/rustworkx
