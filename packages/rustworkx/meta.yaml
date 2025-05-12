@@ -9,7 +9,7 @@ source:
   url: https://github.com/IvanIsCoding/rustworkx/releases/download/v0.17.0a3/rustworkx-0.17.0a3.tar.gz
   sha256: 8bd0c295134e2b0c03808d4e69428b41153849db6488839084a78793c337f191
 build:
-  script: export RUSTFLAGS="-C target-feature=+atomics,+bulk-memory,+mutable-globals -C link-arg=-sSIDE_MODULE=2 -C link-arg=-sWASM_BIGINT"
+  script: export RUSTFLAGS="-C target-feature=+atomics,+bulk-memory,+mutable-globals -C link-arg=-sSIDE_MODULE=2 -C link-arg=-sWASM_BIGINT -Z emscripten-wasm-eh"
 requirements:
   executable:
     - rustup
