@@ -20,7 +20,7 @@ about:
   home: https://github.com/Qiskit/rustworkx
   PyPI: https://pypi.org/project/rustworkx
   summary: A python graph library implemented in Rust
-  license: Apache 2.0
+  license: Apache-2.0
 extra:
   recipe-maintainers:
     - IvanIsCoding
