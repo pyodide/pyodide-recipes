@@ -7,8 +7,6 @@ package:
 source:
   url: https://github.com/flintlib/flint/releases/download/v3.2.2/flint-3.2.2.tar.gz
   sha256: 577d7729e4c2e79ca1e894ad2ce34bc73516a92f623d42562694817f888a17eb
-  patches:
-    - patches/0001-Makefile.in-fix-handling-of-DESTDIR.patch
 requirements:
   host:
     - libgmp
