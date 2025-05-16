@@ -1,4 +1,5 @@
 pytest
+pytest-xdist
 pytest-pyodide==0.58.3
 pytest-httpserver
 pytest-benchmark
