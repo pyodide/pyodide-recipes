@@ -21,7 +21,8 @@ build:
         --disable-shared \
         --prefix=${WASM_LIBRARY_DIR} \
         --with-gmp=${WASM_LIBRARY_DIR} \
-        --with-mpfr=${WASM_LIBRARY_DIR}
+        --with-mpfr=${WASM_LIBRARY_DIR} \
+        --host=wasm32-unknown-emscripten \
     emmake make -j ${PYODIDE_JOBS:-3}
     emmake make install
 about:
