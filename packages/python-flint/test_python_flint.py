@@ -14,7 +14,7 @@ def test_python_flint(selenium):
     assert a.gcd(a * b) == a
 
 
-@pytest.mark.xfail_browsers(firefox="times out")
+@pytest.mark.xfail_browsers(firefox="times out", chrome="times out")
 @run_in_pyodide(packages=["python-flint"])
 def test_python_flint_tests(selenium):
     from flint.test.__main__ import main
