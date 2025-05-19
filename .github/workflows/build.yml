@@ -297,7 +297,7 @@ jobs:
         run: |
           pytest -v \
             --dist-dir=./dist/ \
-            -n auto \
+            -n $(nproc) \
             --runner=${{ matrix.test-config.runner }} \
             --rt ${{ matrix.test-config.runtime }} \
             packages
