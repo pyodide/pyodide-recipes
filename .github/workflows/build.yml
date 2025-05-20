@@ -65,6 +65,7 @@ jobs:
           miniforge-variant: Miniforge3
           miniforge-version: latest
           activate-environment: pyodide-env
+          conda-remove-defaults: true
           channels: conda-forge
 
       - name: Get Date
@@ -257,6 +258,7 @@ jobs:
           miniforge-variant: Miniforge3
           miniforge-version: latest
           activate-environment: pyodide-env
+          conda-remove-defaults: true
           channels: conda-forge
 
       - name: Get Date
@@ -320,6 +322,7 @@ jobs:
           miniforge-variant: Miniforge3
           miniforge-version: latest
           activate-environment: pyodide-env
+          conda-remove-defaults: true
           channels: conda-forge
 
       - name: Download build artifact
