@@ -7,6 +7,8 @@ package:
     - numpy
 source:
   path: ../numpy/build/numpy-2.2.5/
+  patches:
+    - patches/0001-TST-Prevent-import-error-when-tests-are-not-included.patch
 
 build:
   unvendor-tests: false # we do this on our own using Meson's install tags
