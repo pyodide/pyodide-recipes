@@ -24,6 +24,7 @@ env:
   EMSDK_CACHE_NUMBER: 0
   CCACHE_DIR: /tmp/.ccache
   CCACHE_CACHE_NUMBER: 0
+  FORCE_COLOR: 3
 
 jobs:
   build:
@@ -298,6 +299,7 @@ jobs:
         run: |
           pytest -v \
             --dist-dir=./dist/ \
+            -n $(nproc) \
             --runner=${{ matrix.test-config.runner }} \
             --rt ${{ matrix.test-config.runtime }} \
             packages
