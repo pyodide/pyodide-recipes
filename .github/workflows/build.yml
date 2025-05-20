@@ -162,7 +162,7 @@ jobs:
 
           # Round one: build most of the recipes
           echo "::group::Building recipes, round two"
-          pyodide build-recipes "numpy-tests" --install --install-dir=./repodata --log-dir=build-logs | tee result/build_output.log
+          pyodide build-recipes "!'numpy-tests'" --install --install-dir=./repodata --log-dir=build-logs | tee result/build_output.log
           echo "::endgroup::"
 
           # Round two: build the rest of the recipes we didn't build in the first round
