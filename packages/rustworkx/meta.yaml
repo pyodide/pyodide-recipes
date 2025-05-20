@@ -1,0 +1,26 @@
+package:
+  name: rustworkx
+  version: 0.17.0a3
+  top-level:
+    - rustworkx
+  tag:
+    - rust
+source:
+  url: https://github.com/IvanIsCoding/rustworkx/releases/download/v0.17.0a3/rustworkx-0.17.0a3.tar.gz
+  sha256: 8bd0c295134e2b0c03808d4e69428b41153849db6488839084a78793c337f191
+build:
+  script: export RUSTFLAGS="$RUSTFLAGS -C target-feature=+atomics,+bulk-memory,+mutable-globals"
+requirements:
+  executable:
+    - rustup
+test:
+  imports:
+    - rustworkx
+about:
+  home: https://github.com/Qiskit/rustworkx
+  PyPI: https://pypi.org/project/rustworkx
+  summary: A python graph library implemented in Rust
+  license: Apache-2.0
+extra:
+  recipe-maintainers:
+    - IvanIsCoding
