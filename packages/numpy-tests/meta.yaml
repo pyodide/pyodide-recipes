@@ -5,6 +5,7 @@ package:
     - min-scipy-stack
   top-level:
     - numpy
+# NOTE: keep in sync with numpy/meta.yaml
 source:
   path: ../numpy/build/numpy-2.2.5/
 
