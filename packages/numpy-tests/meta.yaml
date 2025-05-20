@@ -26,10 +26,6 @@ build:
     rm -rf numpy/distutils/__pycache__
   cflags: |
     -Wno-return-type
-# We need NumPy to be built before we can reuse the persistent build dir
-requirements:
-  host:
-    - numpy
 about:
   home: https://www.numpy.org
   PyPI: https://pypi.org/project/numpy
