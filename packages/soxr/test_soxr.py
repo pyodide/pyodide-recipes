@@ -3,7 +3,7 @@ from pytest_pyodide import run_in_pyodide
 
 
 @pytest.mark.parametrize("input_sr, output_sr", [(44100, 22050), (22050, 44100)])
-@run_in_pyodide(packages=["soxr", "numpy"])
+@run_in_pyodide(packages=["soxr", "numpy", "numpy-tests"])
 def test_resample(selenium, input_sr, output_sr):
     import numpy as np
     import soxr

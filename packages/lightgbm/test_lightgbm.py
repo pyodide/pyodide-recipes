@@ -4,7 +4,7 @@ from pytest_pyodide import run_in_pyodide
 
 @pytest.mark.skip_pyproxy_check
 @pytest.mark.driver_timeout(60)
-@run_in_pyodide(packages=["lightgbm", "numpy"])
+@run_in_pyodide(packages=["lightgbm", "numpy", "numpy-tests"])
 def test_train_predict(selenium):
     import lightgbm as lgb
     import numpy as np

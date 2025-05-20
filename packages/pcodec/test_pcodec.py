@@ -3,7 +3,7 @@ from pytest_pyodide import run_in_pyodide
 
 
 @pytest.mark.parametrize("dtype", ["f4", "f8", "i4", "i8", "u4", "u8"])
-@run_in_pyodide(packages=["pcodec", "numpy"])
+@run_in_pyodide(packages=["pcodec", "numpy", "numpy-tests"])
 def test_simple_round_trip(selenium, dtype):
     """Test basic compression and decompression with different dtypes."""
     import numpy as np
@@ -18,7 +18,7 @@ def test_simple_round_trip(selenium, dtype):
     np.testing.assert_array_equal(data, decompressed)
 
 
-@run_in_pyodide(packages=["pcodec", "numpy"])
+@run_in_pyodide(packages=["pcodec", "numpy", "numpy-tests"])
 def test_partial_decompression(selenium):
     """Test decompressing a part of the data into a smaller array."""
     import numpy as np
@@ -38,7 +38,7 @@ def test_partial_decompression(selenium):
 
 
 @pytest.mark.parametrize("length", [0, 100, 1000])
-@run_in_pyodide(packages=["pcodec", "numpy"])
+@run_in_pyodide(packages=["pcodec", "numpy", "numpy-tests"])
 def test_different_lengths(selenium, length):
     """Test compression/decompression with different array lengths."""
     import numpy as np

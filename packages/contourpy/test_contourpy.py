@@ -19,7 +19,7 @@ from pytest_pyodide import run_in_pyodide
         ("threaded", "ChunkCombinedNan"),
     ],
 )
-@run_in_pyodide(packages=["contourpy", "numpy"])
+@run_in_pyodide(packages=["contourpy", "numpy-tests"])
 def test_line(selenium, name, line_type):
     import numpy as np
     from contourpy import LineType, contour_generator
@@ -109,7 +109,7 @@ def test_line(selenium, name, line_type):
         ("threaded", "ChunkCombinedOffsetOffset"),
     ],
 )
-@run_in_pyodide(packages=["contourpy", "numpy"])
+@run_in_pyodide(packages=["contourpy", "numpy-tests"])
 def test_fill(selenium, name, fill_type):
     import numpy as np
     from contourpy import FillType, contour_generator

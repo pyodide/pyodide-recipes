@@ -3,7 +3,7 @@ from pytest_pyodide import run_in_pyodide
 
 
 @pytest.mark.driver_timeout(40)
-@run_in_pyodide(packages=["scipy"])
+@run_in_pyodide(packages=["scipy", "numpy", "numpy-tests"])
 def test_scipy_linalg(selenium):
     import numpy as np
     import scipy.linalg

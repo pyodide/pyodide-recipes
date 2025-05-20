@@ -60,7 +60,7 @@ def test_large_typesize(selenium, shape, typesize, asarray):
     assert np.array_equal(b[0], a[0])
 
 
-@run_in_pyodide(packages=["blosc2", "numpy"])
+@run_in_pyodide(packages=["blosc2", "numpy", "numpy-tests"])
 @pytest.mark.parametrize(
     ("sss", "shape", "dtype", "chunks", "blocks"),
     [
