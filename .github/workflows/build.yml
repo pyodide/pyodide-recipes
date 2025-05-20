@@ -161,7 +161,7 @@ jobs:
           mkdir -p result
 
           # Round one: build most of the recipes
-          echo "::group::Building recipes, round two"
+          echo "::group::Building recipes, round one"
           pyodide build-recipes "!'numpy-tests'" --install --install-dir=./repodata --log-dir=build-logs | tee result/build_output.log
           echo "::endgroup::"
 
