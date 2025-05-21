@@ -115,12 +115,9 @@ def set_configs():
         "node",
         """
         const {readFileSync} = require("fs");
-        let snap = readFileSync("snapshot.bin");
-        snap = new Uint8Array(snap.buffer);
         let pyodide = await loadPyodide({
             fullStdLib: false,
             jsglobals: self,
-            _loadSnapshot: snap,
             enableRunUntilComplete: true,
         });
         """,
