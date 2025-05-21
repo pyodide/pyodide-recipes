@@ -6,7 +6,7 @@ from pytest_pyodide import run_in_pyodide
     chrome="test_numcodecs triggers a recursion error in chrome"
 )
 @run_in_pyodide(
-    packages=["numcodecs", "numpy", "numpy-tests"],
+    packages=["numcodecs", "numpy"],
 )
 def test_blosc(selenium_standalone):
     import array

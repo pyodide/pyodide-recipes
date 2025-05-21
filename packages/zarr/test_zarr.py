@@ -1,7 +1,7 @@
 from pytest_pyodide import run_in_pyodide
 
 
-@run_in_pyodide(packages=["numpy", "numpy-tests", "numcodecs", "zarr"])
+@run_in_pyodide(packages=["numpy", "numcodecs", "zarr"])
 def test_zarr(selenium):
     import numpy as np
     import zarr

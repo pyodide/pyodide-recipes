@@ -1,5 +1,5 @@
 def test_joblib_numpy_pickle(selenium, request):
-    selenium.load_package(["numpy", "numpy-tests", "joblib"])
+    selenium.load_package(["numpy", "joblib"])
     selenium.run(
         """
        import joblib

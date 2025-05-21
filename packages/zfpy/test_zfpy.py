@@ -3,7 +3,7 @@
 from pytest_pyodide import run_in_pyodide
 
 
-@run_in_pyodide(packages=["zfpy", "numpy", "numpy-tests"])
+@run_in_pyodide(packages=["zfpy", "numpy"])
 def test_compression(selenium):
     import numpy as np
     import zfpy
@@ -14,7 +14,7 @@ def test_compression(selenium):
     np.testing.assert_array_equal(my_array, decompressed_array)
 
 
-@run_in_pyodide(packages=["zfpy", "numpy", "numpy-tests"])
+@run_in_pyodide(packages=["zfpy", "numpy"])
 def test_compression_with_tolerance(selenium):
     import numpy as np
     import zfpy
@@ -25,7 +25,7 @@ def test_compression_with_tolerance(selenium):
     np.testing.assert_allclose(my_array, decompressed_array, atol=1e-3)
 
 
-@run_in_pyodide(packages=["zfpy", "numpy", "numpy-tests"])
+@run_in_pyodide(packages=["zfpy", "numpy"])
 def test_different_dimensions(selenium) -> None:
     import numpy as np
     import zfpy
@@ -49,7 +49,7 @@ def test_different_dimensions(selenium) -> None:
         np.testing.assert_array_equal(decompressed2, array)
 
 
-@run_in_pyodide(packages=["zfpy", "numpy", "numpy-tests"])
+@run_in_pyodide(packages=["zfpy", "numpy"])
 def test_different_dtypes(selenium) -> None:
     """Test ZFP compression/decompression with different numeric dtypes."""
     import numpy as np
