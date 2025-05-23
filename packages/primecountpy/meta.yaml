@@ -4,8 +4,9 @@ package:
   top-level:
     - primecountpy
 source:
-  url: https://files.pythonhosted.org/packages/ec/99/a705fe480cfdccd697682d126972f401ec43922da0ee7a06aafd29a12d98/primecountpy-0.1.1.tar.gz
-  sha256: c8561817c0be86eeffc41b97b6ef617d795f72cf3de59d9234d1c83d7e424030
+  # Cannot use tar.gz from PyPI becuase of https://github.com/dimpase/primecountpy/issues/20
+  url: https://github.com/dimpase/primecountpy/releases/download/v0.1.1/primecountpy-0.1.1.tar.gz
+  sha256: bed77c4d519092ae4489a3a8dfc2ab68e18aeec6c88dea5bb5fac6cffc0f5b20
 about:
   home: https://github.com/dimpase/primecountpy
   PyPI: https://pypi.org/project/primecountpy
