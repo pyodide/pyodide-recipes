@@ -24,6 +24,7 @@ env:
   EMSDK_CACHE_NUMBER: 0
   CCACHE_DIR: /tmp/.ccache
   CCACHE_CACHE_NUMBER: 0
+  FORCE_COLOR: 3
 
 jobs:
   build:
@@ -64,6 +65,7 @@ jobs:
           miniforge-variant: Miniforge3
           miniforge-version: latest
           activate-environment: pyodide-env
+          conda-remove-defaults: true
           channels: conda-forge
 
       - name: Get Date
@@ -256,6 +258,7 @@ jobs:
           miniforge-variant: Miniforge3
           miniforge-version: latest
           activate-environment: pyodide-env
+          conda-remove-defaults: true
           channels: conda-forge
 
       - name: Get Date
@@ -296,6 +299,7 @@ jobs:
         run: |
           pytest -v \
             --dist-dir=./dist/ \
+            -n $(nproc) \
             --runner=${{ matrix.test-config.runner }} \
             --rt ${{ matrix.test-config.runtime }} \
             packages
@@ -318,6 +322,7 @@ jobs:
           miniforge-variant: Miniforge3
           miniforge-version: latest
           activate-environment: pyodide-env
+          conda-remove-defaults: true
           channels: conda-forge
 
       - name: Download build artifact
