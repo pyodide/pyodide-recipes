@@ -3,6 +3,9 @@ From: Pepijn de Vos <pepijndevos@gmail.com>
 Date: Tue, 6 May 2025 19:51:44 +0200
 Subject: [PATCH] no hicum2
 
+These models are implemented in C++ and result in linking errors.
+Possibly due to incorrect name mangling/exports.
+
 ---
  src/Makefile.am                  | 1 -
  src/spicelib/devices/Makefile.am | 2 --

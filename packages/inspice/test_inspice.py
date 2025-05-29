@@ -2,7 +2,7 @@ from pytest_pyodide import run_in_pyodide
 
 
 @run_in_pyodide(packages=["inspice"])
-def test_mytestname(selenium):
+def test_inspice(selenium):
     from InSpice.Spice.NgSpice.Shared import NgSpiceShared
 
     ngspice = NgSpiceShared()

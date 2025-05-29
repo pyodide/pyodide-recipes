@@ -3,6 +3,9 @@ From: Pepijn de Vos <pepijndevos@gmail.com>
 Date: Tue, 6 May 2025 12:53:35 +0200
 Subject: [PATCH] keep alive API functions
 
+Libtool only includes explicitly exported functions.
+So we use existing DLL infrastructure to export the API.
+
 ---
  src/include/ngspice/sharedspice.h | 3 +++
  1 file changed, 3 insertions(+)
