@@ -11,6 +11,3 @@ about:
   PyPI: https://pypi.org/project/ply
   summary: Python Lex & Yacc
   license: BSD
-extra:
-  recipe-maintainers:
-    - PUT_YOUR_GITHUB_USERNAME_HERE
