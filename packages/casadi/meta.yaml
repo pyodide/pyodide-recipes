@@ -20,6 +20,7 @@ build:
     -fwasm-exceptions
   ldflags: |
     -fwasm-exceptions
+    -Wl,-rpath,$ORIGIN
 about:
   home: http://casadi.org
   PyPI: https://pypi.org/project/casadi
