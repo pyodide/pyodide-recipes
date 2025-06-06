@@ -1,4 +1,6 @@
 pytest
+numpy  # pytest >= 8.4.0 seems to use numpy in approx
+pytest-xdist
 pytest-pyodide==0.58.3
 pytest-httpserver
 pytest-benchmark

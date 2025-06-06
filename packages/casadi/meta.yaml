@@ -1,29 +1,31 @@
 package:
   name: casadi
-  version: 3.6.7
-  # undefined exported symbol: "_AddIdentity"
-  _disabled: true
+  version: 3.7.0
   top-level:
     - casadi
 source:
-  url: https://files.pythonhosted.org/packages/cf/e0/8d2c6a350101b6f73548a1ceba4b93b60e436060ed647e5fb5d5e0b17fed/casadi-3.6.7.tar.gz
-  sha256: 21cde87288afebb32a2a035bf6b6a91a025e24ee14aba7a0ae5515707b9887c1
+  url: https://files.pythonhosted.org/packages/source/c/casadi/casadi-3.7.0.tar.gz
+  sha256: 21254f17eb5551c4a938641cc1b815ff3da27271ab2c36e44a3e90ec50ba471f
 requirements:
   run:
     - numpy
 build:
-  exports: requested
+  exports: whole_archive
+  # These libs are built when building Pyodide main module, but might not be available when building out-of-tree
+  script: |
+    embuilder build libdlmalloc libcompiler_rt-legacysjlj libc++-legacyexcept libc++abi-legacyexcept libunwind-legacyexcept --pic
   cflags: |
-    -fwasm-exceptions -frtti
+    -fwasm-exceptions
   cxxflags: |
-    -fwasm-exceptions -frtti
+    -fwasm-exceptions
   ldflags: |
     -fwasm-exceptions
+    -Wl,-rpath,$ORIGIN
 about:
   home: http://casadi.org
   PyPI: https://pypi.org/project/casadi
   summary: CasADi -- framework for algorithmic differentiation and numeric optimization
-  license: LGPL-3.0+
+  license: LGPL-3.0-or-later
 extra:
   recipe-maintainers:
     - agriyakhetarpal
