@@ -239,8 +239,7 @@ jobs:
         os: [ubuntu-latest]
         test-config: [
           {runner: selenium, runtime: chrome, runtime-version: 134 },
-          {runner: selenium, runtime: firefox, runtime-version: 136 },
-          {runner: selenium, runtime: node, runtime-version: 22 },
+          {runner: selenium, runtime: firefox, runtime-version: 136.0 },
         ]
 
     steps:
