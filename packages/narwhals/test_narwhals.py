@@ -6,15 +6,15 @@ def test_narwhals_from_native(selenium):
     import narwhals as nw
 
     class MyDictDataFrame:
-        def __init__(self, data):
-            self._data = data
+        def __init__(self, native_frame):
+            self._native_frame = native_frame
 
         def __narwhals_dataframe__(self):
             return self
 
         @property
         def columns(self):
-            return list(self._data)
+            return list(self._native_frame)
 
     assert nw.from_native(
         MyDictDataFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
