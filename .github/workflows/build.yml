@@ -238,7 +238,8 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         test-config: [
-          {runner: selenium, runtime: chrome, runtime-version: 126 },
+          {runner: selenium, runtime: chrome, runtime-version: 134 },
+          {runner: selenium, runtime: firefox, runtime-version: "136.0" },
         ]
 
     steps:
