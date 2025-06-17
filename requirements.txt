@@ -9,3 +9,4 @@ pytest-asyncio
 pyodide-build
 zstandard
 brotli
+pyodide-py
