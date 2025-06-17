@@ -87,6 +87,7 @@ async def test_get_async(selenium, urls_fixture):
             resp.raise_for_status()
 
 
+@requires_jspi
 @run_in_pyodide(packages=["httpx"])
 def test_get_sync_timeout(selenium, urls_fixture):
     import httpx
@@ -144,7 +145,7 @@ def post_json_url(httpserver):
     return httpserver.url_for("/status_200")
 
 
-@pytest.mark.xfail(reason="Passes locally, fails in CI")
+@requires_jspi
 @run_in_pyodide(packages=["httpx"])
 def test_sync_post_json(selenium, post_json_url) -> None:
     import httpx
@@ -153,7 +154,6 @@ def test_sync_post_json(selenium, post_json_url) -> None:
     assert response.status_code == 200
 
 
-@pytest.mark.xfail(reason="Passes locally, fails in CI")
 @run_in_pyodide(packages=["httpx"])
 async def test_async_post_json(selenium, post_json_url) -> None:
     import httpx
