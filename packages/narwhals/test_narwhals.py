@@ -1,11 +1,11 @@
 from pytest_pyodide import run_in_pyodide
 
-import narwhals as nw
-from narwhals.utils import Version
-
 
 @run_in_pyodide(packages=["narwhals"])
 def test_narwhals_from_native(selenium):
+    import narwhals as nw
+    from narwhals.utils import Version
+
     class MyDictDataFrame:
         def __init__(self, data, version):
             self._data = data
