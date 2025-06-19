@@ -1,21 +1,26 @@
 from pytest_pyodide import run_in_pyodide
 
+import narwhals as nw
+from narwhals.utils import Version
+
 
 @run_in_pyodide(packages=["narwhals"])
-def test_narwhals_from_native(selenium):
-    import narwhals as nw
+class MyDictDataFrame:
+    def __init__(self, data, version):
+        self._data = data
+        self._version = Version.MAIN
 
-    class MyDictDataFrame:
-        def __init__(self, native_frame):
-            self._native_frame = native_frame
+    def __narwhals_dataframe__(self):
+        return self
 
-        def __narwhals_dataframe__(self):
-            return self
+    def _with_version(self, version):
+        return self.__class__(self._data, version)
 
-        @property
-        def columns(self):
-            return list(self._native_frame)
+    @property
+    def columns(self):
+        return list(self._data)
 
-    assert nw.from_native(
-        MyDictDataFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
-    ).columns == ["a", "b"]
+
+assert nw.from_native(
+    MyDictDataFrame({"a": [1, 2, 3], "b": [4, 5, 6]}, Version.MAIN)
+).columns == ["a", "b"]
