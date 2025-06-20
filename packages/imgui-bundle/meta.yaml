@@ -1,0 +1,33 @@
+# Important note: Build configuration for Pyodide
+# ==========================================================
+# In order to run correctly, the compilation flags of the Pyodide main module 
+# need to be changed (in pyodide/Makefile.envs):
+# MAIN_MODULE_LDFLAGS must contain the flag -sMAX_WEBGL_VERSION=2
+# in the section "export MAIN_MODULE_LDFLAGS=", add a line:
+#      -sMAX_WEBGL_VERSION=2 \
+package:
+  name: imgui-bundle
+  version: 1.6.3
+  top-level:
+    - imgui_bundle
+
+source:
+  url: https://github.com/pthom/imgui_bundle/releases/download/v1.6.3/v1.6.3-pyodide-2.tgz
+  sha256: 038dcd3a2196e47c296b9bb3df2aefb73e6470b3a634268b5b370f9fc755dece
+
+build:
+  # Trigger the build of SDL2 and libhtml5 libraries with -fPIC (aka -sRELOCATABLE=1, within emscripten)
+  #   - This module needs to link with SDL2 and html5 in two ways: javascript and native library.
+  #     For SDL2, this corresponds to library_sdl.js and $EMSCRIPTEN_SYSROOT/lib/wasm32-emscripten/pic/libSDL2.a (fPIC version)
+  #   - The fPIC version is not produced by default by emscripten, so we need to trigger its build below
+  #   - Also, at link time, we need to specify the path to the fPIC version of libSDL2.a
+  #
+  # See https://github.com/pyodide/pyodide/issues/5248 for more explanations.
+  script: |
+    embuilder build sdl2 libhtml5 --pic
+
+requirements:
+  run:
+    - pydantic
+    - munch
+    - numpy
