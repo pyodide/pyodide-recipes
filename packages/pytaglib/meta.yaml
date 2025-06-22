@@ -1,0 +1,28 @@
+package:
+  name: pytaglib
+  version: 3.0.1
+  top-level:
+    - taglib
+
+requirements:
+  host:
+    - taglib
+  run:
+    - taglib
+
+build:
+  cflags: |
+    -I$(WASM_LIBRARY_DIR)/include
+  ldflags: |
+    -L$(WASM_LIBRARY_DIR)/lib
+
+source:
+  url: https://files.pythonhosted.org/packages/source/p/pytaglib/pytaglib-3.0.1.tar.gz
+  sha256: b9255765d72e237e8b2843f2df3763f7ad3fdc6b6b3ffdd027c3f373c9bdd787
+
+about:
+  license: GPL-3.0
+
+extra:
+  recipe-maintainers:
+    - swnf
