@@ -4,7 +4,7 @@ package:
   top-level:
   - skein
 source:
-  url: https://files.pythonhosted.org/packages/source/p/pyskein/pyskein-1.0.tar.gz
+  url: https://files.pythonhosted.org/packages/0e/43/6a3ad76f2ee622348bdef997eab334a3fb45437b7709f618f9622408d384/pyskein-1.0.tar.gz
   sha256: 691d61880e535fad874478cad776c759667c55c0fd6fc614264be78aa021b1ea
 about:
   home: http://pythonhosted.org/pyskein/
