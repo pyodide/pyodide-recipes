@@ -1,0 +1,16 @@
+package:
+  name: pyskein
+  version: '1.0'
+  top-level:
+  - skein
+source:
+  url: https://files.pythonhosted.org/packages/source/p/pyskein/pyskein-1.0.tar.gz
+  sha256: 691d61880e535fad874478cad776c759667c55c0fd6fc614264be78aa021b1ea
+about:
+  home: http://pythonhosted.org/pyskein/
+  PyPI: https://pypi.org/project/pyskein
+  summary: Implementation of the Skein hash function
+  license: GPL
+extra:
+  recipe-maintainers:
+  - greateggsgreg
