@@ -1,0 +1,16 @@
+package:
+  name: lz4
+  version: 4.4.4
+  top-level:
+    - lz4
+source:
+  url: https://files.pythonhosted.org/packages/c6/5a/945f5086326d569f14c84ac6f7fcc3229f0b9b1e8cc536b951fd53dfb9e1/lz4-4.4.4.tar.gz
+  sha256: 070fd0627ec4393011251a094e08ed9fdcc78cb4e7ab28f507638eee4e39abda
+about:
+  home: https://github.com/python-lz4/python-lz4
+  PyPI: https://pypi.org/project/lz4
+  summary: LZ4 Bindings for Python
+  license: BSD
+extra:
+  recipe-maintainers:
+    - greateggsgreg
