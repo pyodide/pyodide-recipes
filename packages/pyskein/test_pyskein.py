@@ -1,7 +1,7 @@
 from pytest_pyodide import run_in_pyodide
 
 
-@run_in_pyodide(packages=["skein"])
+@run_in_pyodide(packages=["pyskein"])
 def test_pyskein(selenium):
     from skein import skein256, skein512, skein1024
     h = skein512()
