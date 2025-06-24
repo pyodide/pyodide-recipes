@@ -5,7 +5,7 @@ package:
     - iniconfig
 source:
   url: https://files.pythonhosted.org/packages/2c/e1/e6716421ea10d38022b952c159d5161ca1193197fb744506875fbb87ea7b/iniconfig-2.1.0-py3-none-any.whl
-  sha256: 3abbd2e30b36733fee78f9c7f7308f2d0050e88f0087fd25c2645f63c773e1c7
+  sha256: 9deba5723312380e77435581c6bf4935c94cbfab9b1ed33ef8d238ea168eb760
 about:
   home: http://github.com/RonnyPfannschmidt/iniconfig
   PyPI: https://pypi.org/project/iniconfig
