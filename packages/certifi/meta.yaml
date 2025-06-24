@@ -1,11 +1,11 @@
 package:
   name: certifi
-  version: 2025.1.31
+  version: 2025.6.15
   top-level:
     - certifi
 source:
-  url: https://files.pythonhosted.org/packages/38/fc/bce832fd4fd99766c04d1ee0eead6b0ec6486fb100ae5e74c1d91292b982/certifi-2025.1.31-py3-none-any.whl
-  sha256: ca78db4565a652026a4db2bcdf68f2fb589ea80d0be70e03929ed730746b84fe
+  url: https://files.pythonhosted.org/packages/84/ae/320161bd181fc06471eed047ecce67b693fd7515b16d495d8932db763426/certifi-2025.6.15-py3-none-any.whl
+  sha256: 2e0c7ce7cb5d8f8634ca55d2ba7e6ec2689a2fd6537d8dec1296a477a4910057
 about:
   home: https://github.com/certifi/python-certifi
   PyPI: https://pypi.org/project/certifi
