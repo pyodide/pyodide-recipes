@@ -26,6 +26,12 @@ build:
     rm -rf numpy/distutils/__pycache__
   cflags: |
     -Wno-return-type
+
+# NumPy is not really a dependency for numpy-tests, we only do it to ensure that
+# the numpy package is built before numpy-tests.
+requirements:
+  host:
+    - numpy
 about:
   home: https://www.numpy.org
   PyPI: https://pypi.org/project/numpy
