@@ -159,18 +159,7 @@ jobs:
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
           source emsdk/emsdk_env.sh
           mkdir -p result
-
-          # Round one: build most of the recipes
-          echo "::group::Building recipes, round one"
-          pyodide build-recipes '*,!numpy-tests' --install --install-dir=./repodata --log-dir=build-logs | tee result/build_output.log
-          echo "::endgroup::"
-
-          # Round two: build the rest of the recipes we didn't build in the first round
-          # TODO: also add scipy-tests here later
-          echo "::group::Building recipes, round two"
-          pyodide build-recipes "numpy-tests" --install --install-dir=./repodata --log-dir=build-logs | tee -a result/build_output.log
-          echo "::endgroup::"
-
+          pyodide build-recipes "*" --install --install-dir=./repodata --log-dir=build-logs | tee result/build_output.log
           ccache -s
 
       - name: Build recipes (changed only)
