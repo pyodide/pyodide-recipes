@@ -3,7 +3,7 @@ from pytest_pyodide import run_in_pyodide
 
 
 @run_in_pyodide(packages=["numpy", "numpy-tests", "pytest", "micropip"])
-def test_numpy_test_suite(selenium):
+async def test_numpy_test_suite(selenium):
     import micropip
     await micropip.install("hypothesis")
 
