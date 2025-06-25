@@ -2,6 +2,7 @@ import pytest
 from pytest_pyodide import run_in_pyodide
 
 
+@pytest.mark.driver_timeout(60000)
 @run_in_pyodide(packages=["numpy", "numpy-tests", "pytest", "micropip"])
 async def test_numpy_test_suite(selenium):
     import micropip
