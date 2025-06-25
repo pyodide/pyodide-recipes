@@ -1,6 +1,6 @@
 package:
   name: sourmash
-  version: 4.8.14
+  version: 4.9.2
   tag:
     - rust
   top-level:
@@ -19,10 +19,10 @@ requirements:
   executable:
     - rustup
 source:
-  url: https://files.pythonhosted.org/packages/b8/5b/2a55c462e4adc79d56166ac298e11b10c216d9d0fd01645ea205047af556/sourmash-4.8.14.tar.gz
-  sha256: 9e8f7d5633b529513efc950e25c974c4ecf7c99b4cafbd00f2f135ad0563307f
+  url: https://files.pythonhosted.org/packages/3e/1e/8cb657ac1cffa6a374a413877ef3e3ecef105035fe8a7cbe583000ecdcb8/sourmash-4.9.2.tar.gz
+  sha256: 3f7d2dcecfea5dec109ee04c11d3b8b558fead6c95bd5d20ed49c810f5898dcb
 about:
   home: https://github.com/sourmash-bio/sourmash
   PyPI: https://pypi.org/project/sourmash
-  summary: Compute and compare MinHash signatures for DNA data sets.
+  summary: tools for comparing biological sequences with k-mer sketches
   license: BSD-3-Clause
