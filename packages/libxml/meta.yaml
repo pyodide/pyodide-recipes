@@ -10,7 +10,7 @@ source:
 
 requirements:
   host:
-    - zlib
+    - libzlib
     - libiconv
 
 build:
