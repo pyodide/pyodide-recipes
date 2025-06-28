@@ -26,3 +26,8 @@ about:
   PyPI: https://pypi.org/project/sourmash
   summary: Compute and compare MinHash signatures for DNA data sets.
   license: BSD-3-Clause
+extra:
+  recipe-maintainers:
+      - luizirber
+      - bluegenes
+      - ctb
