@@ -81,4 +81,4 @@ asyncio_mode = "strict"
 
 [tool.pyodide.build]
 rust_toolchain = "nightly-2025-02-01"
-default_cross_build_env_url = "https://github.com/pyodide/pyodide-build-environment-nightly/releases/download/20250604/xbuildenv.tar.bz2"
+default_cross_build_env_url = "https://github.com/pyodide/pyodide-build-environment-nightly/releases/download/20250626/xbuildenv.tar.bz2"
