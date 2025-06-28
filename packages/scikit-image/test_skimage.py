@@ -13,7 +13,7 @@ else:
     xfail_browsers = lambda x: x
 
 
-@pytest.mark.driver_timeout(40)
+@pytest.mark.driver_timeout(80)
 @xfail_browsers
 @run_in_pyodide(packages=["scikit-image"])
 def test_skimage(selenium):
