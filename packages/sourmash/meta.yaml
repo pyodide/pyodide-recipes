@@ -24,5 +24,5 @@ source:
 about:
   home: https://github.com/sourmash-bio/sourmash
   PyPI: https://pypi.org/project/sourmash
-  summary: tools for comparing biological sequences with k-mer sketches
+  summary: Quickly search, compare, and analyze genomic and metagenomic data sets.
   license: BSD-3-Clause
