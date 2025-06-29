@@ -19,7 +19,7 @@ requirements:
   executable:
     - rustup
 source:
-  url: https://pypi.org/packages/source/s/sourmash/sourmash-${{ version }}.tar.gz
+  url: https://pypi.org/packages/source/s/sourmash/sourmash-4.9.3.tar.gz
   sha256: bd23e4ae4caefe3a425f2bb1feefb87757674a432eff8e77a3c0932a693a9576
 about:
   home: https://github.com/sourmash-bio/sourmash
