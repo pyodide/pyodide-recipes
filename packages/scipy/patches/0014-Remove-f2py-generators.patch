@@ -168,7 +168,7 @@ index e61524cc39..85e480b5ef 100644
      if args.infile.endswith(('.pyf.src', '.pyf')):
          p = subprocess.Popen(
 -            ['f2py', fname_pyf, '--build-dir', outdir_abs] + nogil_arg,
-+            [sys.executable, '-m', 'f2py', fname_pyf, '--build-dir', outdir_abs] + nogil_arg,
++            [sys.executable, '-m', 'numpy.f2py', fname_pyf, '--build-dir', outdir_abs] + nogil_arg,
              stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=os.getcwd()
          )
          out, err = p.communicate()
