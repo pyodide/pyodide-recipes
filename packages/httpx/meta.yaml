@@ -8,8 +8,8 @@ package:
 
 source:
   # Until the PR for emscripten support gets merged, build it from the PR source
-  url: https://github.com/joemarshall/httpx/archive/refs/tags/pyodide_release_2.zip
-  sha256: 345b2d01e1bbd7d1f2239163eae37dff441b02c98cce5b80cdd462587259e41b
+  url: https://github.com/hoodmane/httpx/archive/refs/tags/pyodide_release_5.zip
+  sha256: 9dcde42335d322312040f3e8c38c09976d991345b12be5ede71b65764f91a99b
 
 test:
   imports:
