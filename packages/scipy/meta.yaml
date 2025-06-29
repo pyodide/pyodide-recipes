@@ -32,10 +32,9 @@ source:
     - patches/0009-Remove-chla_transtype.patch
     - patches/0010-Set-wrapper-return-type-to-int.patch
     - patches/0011-Remove-test-modules-that-fail-to-build.patch
-    - patches/0012-Make-sf_error_state_lib-a-static-library.patch
-    - patches/0013-Fix-lapack-larfg-function-signature.patch
-    - patches/0014-Drop-unsupported-array-constructors-in-ARPACK.patch # TODO: remove when ARPACK has been written in C (likely 1.16 or 1.17?)
-    - patches/0015-Remove-f2py-generators.patch
+    - patches/0012-Fix-lapack-larfg-function-signature.patch
+    - patches/0013-Drop-unsupported-array-constructors-in-ARPACK.patch # TODO: remove when ARPACK has been written in C (likely 1.16 or 1.17?)
+    - patches/0014-Remove-f2py-generators.patch
 
 build:
   # NumPy 2.1 disabled visibility for symbols outside of extension modules
