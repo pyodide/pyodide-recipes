@@ -12,7 +12,7 @@ source:
     - patches/0001-remove-darwin-check.patch
 requirements:
   host:
-    - zlib
+    - libzlib
   constraint:
     - cython < 3.1.0
 build:
