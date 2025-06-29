@@ -107,6 +107,12 @@ build:
     sed -i 's/void \(.\)print/int \1/g' scipy/sparse/linalg/_dsolve/SuperLU/SRC/*.{c,h}
     sed -i 's/TYPE_GENERIC_FUNC(\(.*\), void)/TYPE_GENERIC_FUNC(\1, int)/g' scipy/sparse/linalg/_dsolve/_superluobject.h
 
+    sed -i 's/^void/int/g' scipy/optimize/__nnls.h
+    sed -i 's/^void/int/g' scipy/optimize/__nnls.c
+    sed -i 's/^void/int/g' scipy/optimize/__slsqp.h
+    sed -i 's/^void/int/g' scipy/optimize/__slsqp.c
+    sed -i 's/^static void/static int/g' scipy/optimize/__slsqp.c
+
     sed -i 's/^void/int/g' scipy/optimize/_trlib/trlib_private.h
     sed -i 's/^void/int/g' scipy/optimize/_trlib/trlib/trlib_private.h
     sed -i 's/^void/int/g' scipy/_build_utils/src/wrap_dummy_g77_abi.c
