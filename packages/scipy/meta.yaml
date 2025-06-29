@@ -33,7 +33,7 @@ source:
     - patches/0010-Set-wrapper-return-type-to-int.patch
     - patches/0011-Remove-test-modules-that-fail-to-build.patch
     - patches/0012-Fix-lapack-larfg-function-signature.patch
-    - patches/0013-Drop-unsupported-array-constructors-in-ARPACK.patch # TODO: remove when ARPACK has been written in C (likely 1.16 or 1.17?)
+    - patches/0013-ENH-MAINT-sparse.linalg-rewrite-ARPACK-in-C-22748.patch
     - patches/0014-Remove-f2py-generators.patch
 
 build:
