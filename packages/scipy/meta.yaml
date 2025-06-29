@@ -119,6 +119,13 @@ build:
     sed -i 's/, int)/)/g' scipy/optimize/_trlib/trlib_private.h
     sed -i 's/, 1)/)/g' scipy/optimize/_trlib/trlib_private.h
 
+    sed -i 's/^void/int/g' scipy/sparse/linalg/_eigen/arpack/ARPACK/_arpack_n_double_complex.h
+    sed -i 's/^void/int/g' scipy/sparse/linalg/_eigen/arpack/ARPACK/_arpack_n_double.h
+    sed -i 's/^void/int/g' scipy/sparse/linalg/_eigen/arpack/ARPACK/_arpack_n_single_complex.h
+    sed -i 's/^void/int/g' scipy/sparse/linalg/_eigen/arpack/ARPACK/_arpack_n_single.h
+    sed -i 's/^void/int/g' scipy/sparse/linalg/_eigen/arpack/ARPACK/_arpack_s_double.h
+    sed -i 's/^void/int/g' scipy/sparse/linalg/_eigen/arpack/ARPACK/_arpack_s_single.h
+
     sed -i 's/^void/int/g' scipy/spatial/qhull_misc.h
     sed -i 's/, size_t)/)/g' scipy/spatial/qhull_misc.h
     sed -i 's/,1)/)/g' scipy/spatial/qhull_misc.h
