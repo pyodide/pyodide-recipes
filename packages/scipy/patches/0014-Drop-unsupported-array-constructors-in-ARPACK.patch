@@ -1,7 +1,7 @@
 From b1f2a063c21cfd0951082af2c702a5094126484f Mon Sep 17 00:00:00 2001
 From: Agriya Khetarpal <74401230+agriyakhetarpal@users.noreply.github.com>
 Date: Mon, 6 Jan 2025 17:38:59 +0530
-Subject: [PATCH 15/15] Drop unsupported array constructors in ARPACK
+Subject: [PATCH 14/15] Drop unsupported array constructors in ARPACK
 
 Fortran array constructors were introduced in the
 ARPACK-NG update from 3.3.0 to 3.9.1 via
