@@ -6,6 +6,6 @@ pytest-httpserver
 pytest-benchmark
 auditwheel-emscripten
 pytest-asyncio
-pyodide-build
+./pyodide-build/
 zstandard
 brotli
