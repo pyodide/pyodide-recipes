@@ -135,6 +135,8 @@ build:
     sed -i 's/, size_t)/)/g' scipy/spatial/qhull_misc.h
     sed -i 's/,1)/)/g' scipy/spatial/qhull_misc.h
 
+    sed -i 's/^void/int/g' scipy/optimize/__lbfgsb.h
+
     # Input error causes "duplicate symbol" linker errors. Empty out the file.
     echo "" > scipy/sparse/linalg/_dsolve/SuperLU/SRC/input_error.c
 
