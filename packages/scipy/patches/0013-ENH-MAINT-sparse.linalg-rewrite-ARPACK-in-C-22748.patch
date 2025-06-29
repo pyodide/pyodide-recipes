@@ -6362,26 +6362,26 @@ index 02f75e0b26..0000000000
 -      end
 diff --git a/scipy/sparse/linalg/_eigen/arpack/ARPACK/SRC/debug.h b/scipy/sparse/linalg/_eigen/arpack/ARPACK/SRC/debug.h
 deleted file mode 100644
-index 5eb0bb1b3d..0000000000
+index 81a6efafb9..0000000000
 --- a/scipy/sparse/linalg/_eigen/arpack/ARPACK/SRC/debug.h
 +++ /dev/null
 @@ -1,16 +0,0 @@
--c
+-
 -c\SCCS Information: @(#) 
 -c FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 
 -c
 -c     %---------------------------------%
 -c     | See debug.doc for documentation |
 -c     %---------------------------------%
--      integer  logfil, ndigit, mgetv0,
--     &         msaupd, msaup2, msaitr, mseigt, msapps, msgets, mseupd,
--     &         mnaupd, mnaup2, mnaitr, mneigh, mnapps, mngets, mneupd,
--     &         mcaupd, mcaup2, mcaitr, mceigh, mcapps, mcgets, mceupd
--      common /debug/ 
--     &         logfil, ndigit, mgetv0,
--     &         msaupd, msaup2, msaitr, mseigt, msapps, msgets, mseupd,
--     &         mnaupd, mnaup2, mnaitr, mneigh, mnapps, mngets, mneupd,
--     &         mcaupd, mcaup2, mcaitr, mceigh, mcapps, mcgets, mceupd
+-c      integer  logfil, ndigit, mgetv0,
+-c     &         msaupd, msaup2, msaitr, mseigt, msapps, msgets, mseupd,
+-c     &         mnaupd, mnaup2, mnaitr, mneigh, mnapps, mngets, mneupd,
+-c     &         mcaupd, mcaup2, mcaitr, mceigh, mcapps, mcgets, mceupd
+-c      common /debug/
+-c     &         logfil, ndigit, mgetv0,
+-c     &         msaupd, msaup2, msaitr, mseigt, msapps, msgets, mseupd,
+-c     &         mnaupd, mnaup2, mnaitr, mneigh, mnapps, mngets, mneupd,
+-c     &         mcaupd, mcaup2, mcaitr, mceigh, mcapps, mcgets, mceupd
 diff --git a/scipy/sparse/linalg/_eigen/arpack/ARPACK/SRC/dgetv0.f b/scipy/sparse/linalg/_eigen/arpack/ARPACK/SRC/dgetv0.f
 deleted file mode 100644
 index 1d6dc01bdb..0000000000
@@ -28681,7 +28681,7 @@ index 9697c36602..0000000000
 -      end
 diff --git a/scipy/sparse/linalg/_eigen/arpack/ARPACK/SRC/stat.h b/scipy/sparse/linalg/_eigen/arpack/ARPACK/SRC/stat.h
 deleted file mode 100644
-index 66a8e9f87f..0000000000
+index 81d49c3bd2..0000000000
 --- a/scipy/sparse/linalg/_eigen/arpack/ARPACK/SRC/stat.h
 +++ /dev/null
 @@ -1,21 +0,0 @@
@@ -28692,20 +28692,20 @@ index 66a8e9f87f..0000000000
 -c\SCCS Information: @(#) 
 -c FILE: stat.h   SID: 2.2   DATE OF SID: 11/16/95   RELEASE: 2 
 -c
--      real       t0, t1, t2, t3, t4, t5
--      save       t0, t1, t2, t3, t4, t5
+-c      real       t0, t1, t2, t3, t4, t5
+-c      save       t0, t1, t2, t3, t4, t5
 -c
--      integer    nopx, nbx, nrorth, nitref, nrstrt
--      real       tsaupd, tsaup2, tsaitr, tseigt, tsgets, tsapps, tsconv,
--     &           tnaupd, tnaup2, tnaitr, tneigh, tngets, tnapps, tnconv,
--     &           tcaupd, tcaup2, tcaitr, tceigh, tcgets, tcapps, tcconv,
--     &           tmvopx, tmvbx, tgetv0, titref, trvec
--      common /timing/ 
--     &           nopx, nbx, nrorth, nitref, nrstrt,
--     &           tsaupd, tsaup2, tsaitr, tseigt, tsgets, tsapps, tsconv,
--     &           tnaupd, tnaup2, tnaitr, tneigh, tngets, tnapps, tnconv,
--     &           tcaupd, tcaup2, tcaitr, tceigh, tcgets, tcapps, tcconv,
--     &           tmvopx, tmvbx, tgetv0, titref, trvec
+-c      integer    nopx, nbx, nrorth, nitref, nrstrt
+-c      real       tsaupd, tsaup2, tsaitr, tseigt, tsgets, tsapps, tsconv,
+-c     &           tnaupd, tnaup2, tnaitr, tneigh, tngets, tnapps, tnconv,
+-c     &           tcaupd, tcaup2, tcaitr, tceigh, tcgets, tcapps, tcconv,
+-c     &           tmvopx, tmvbx, tgetv0, titref, trvec
+-c      common /timing/
+-c     &           nopx, nbx, nrorth, nitref, nrstrt,
+-c     &           tsaupd, tsaup2, tsaitr, tseigt, tsgets, tsapps, tsconv,
+-c     &           tnaupd, tnaup2, tnaitr, tneigh, tngets, tnapps, tnconv,
+-c     &           tcaupd, tcaup2, tcaitr, tceigh, tcgets, tcapps, tcconv,
+-c     &           tmvopx, tmvbx, tgetv0, titref, trvec
 diff --git a/scipy/sparse/linalg/_eigen/arpack/ARPACK/SRC/version.h b/scipy/sparse/linalg/_eigen/arpack/ARPACK/SRC/version.h
 deleted file mode 100644
 index ecdd9b3405..0000000000
