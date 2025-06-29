@@ -27,16 +27,15 @@ source:
     - patches/0004-make-int-return-values.patch
     - patches/0005-Fix-fitpack.patch
     - patches/0006-Fix-gees-calls.patch
-    - patches/0007-Mark-mvndst-functions-recursive.patch
-    - patches/0008-Make-sreorth-recursive.patch
-    - patches/0009-Link-openblas-with-modules-that-require-f2c.patch
-    - patches/0010-Remove-chla_transtype.patch
-    - patches/0011-Set-wrapper-return-type-to-int.patch
-    - patches/0012-Remove-f2py-generators.patch
-    - patches/0013-Make-sf_error_state_lib-a-static-library.patch
-    - patches/0014-Remove-test-modules-that-fail-to-build.patch
-    - patches/0015-Fix-lapack-larfg-function-signature.patch
-    - patches/0016-Drop-unsupported-array-constructors-in-ARPACK.patch # TODO: remove when ARPACK has been written in C (likely 1.16 or 1.17?)
+    - patches/0007-Make-sreorth-recursive.patch
+    - patches/0008-Link-openblas-with-modules-that-require-f2c.patch
+    - patches/0009-Remove-chla_transtype.patch
+    - patches/0010-Set-wrapper-return-type-to-int.patch
+    - patches/0011-Remove-f2py-generators.patch
+    - patches/0012-Make-sf_error_state_lib-a-static-library.patch
+    - patches/0013-Remove-test-modules-that-fail-to-build.patch
+    - patches/0014-Fix-lapack-larfg-function-signature.patch
+    - patches/0015-Drop-unsupported-array-constructors-in-ARPACK.patch # TODO: remove when ARPACK has been written in C (likely 1.16 or 1.17?)
 
 build:
   # NumPy 2.1 disabled visibility for symbols outside of extension modules
