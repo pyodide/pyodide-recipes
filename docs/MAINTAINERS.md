@@ -30,7 +30,7 @@ by updating the `Makefile.envs` file in the pyodide/pyodide repository.
 To build and test packages locally, you need to prepare the necessary tools and dependencies.
 
 - compatible Python version
-- pyodide-build
+- pyodide-build, which is provided by the `pyodide-build` Git submodule in the repository root
 - emscripten
 - selenium (for testing)
 
@@ -71,9 +71,9 @@ The `pyodide-recipes` repository is used to build packages for both stable and n
 We use different branches for those versions:
 
 - `main`: the default branch, used for nightly versions of Pyodide
-  - It uses nightly xbuildenv and nightly pyodide-build to build packages.
+  - It uses nightly xbuildenv and the pyodide-build submodule to build packages.
 - `<version>`: a branch for stable versions of Pyodide
-  - It uses stable xbuildenv and nightly (or stable if there is any breaking change) pyodide-build to build packages.
+  - It uses stable xbuildenv and pyodide-build submodule (or a stable version, if there are any breaking changes) to build packages.
 
 Let's say we have a stable Pyodide version `0.27.0`, and we are developing a new version `0.28.0`.
 

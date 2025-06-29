@@ -1,13 +1,18 @@
 additionalRepositories:
   - url: https://github.com/emscripten-core/emsdk
+  - url: https://github.com/pyodide/pyodide-build
+    checkoutLocation: pyodide-build
 tasks:
+  - name: Sync submodule(s)
+    init: git submodule update --init --recursive
+    command: echo "Submodules initialized"
   - name: Setup
     init: |
       pyenv global system
       conda env create -f environment.yml
       conda activate pyodide-env
 
-      pip install git+https://github.com/pyodide/pyodide-build.git
+      pip install ./pyodide-build/
       pyodide xbuildenv install
 
       EMSCRIPTEN_VERSION=$(pyodide config get emscripten_version)
