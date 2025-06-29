@@ -96,6 +96,9 @@ build:
     sed -i 's/^void/int/g' scipy/linalg/_common_array_utils.h
 
     sed -i 's/^void/int/g' scipy/interpolate/src/_fitpackmodule.c
+    sed -i 's/^void/int/g' scipy/interpolate/src/__fitpack.h
+    sed -i 's/^void/int/g' scipy/interpolate/src/__fitpack.cc
+    sed -i 's/void BLAS_FUNC/int BLAS_FUNC/g' scipy/interpolate/src/__fitpack.h
 
     sed -i 's/extern void/extern int/g' scipy/sparse/linalg/_dsolve/SuperLU/SRC/*.{c,h}
     sed -i 's/PUBLIC void/PUBLIC int/g' scipy/sparse/linalg/_dsolve/SuperLU/SRC/*.{c,h}
