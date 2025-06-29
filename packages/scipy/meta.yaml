@@ -1,7 +1,6 @@
 package:
   name: scipy
-  version: 1.14.1
-  pinned: true
+  version: 1.16.0
   tag:
     - min-scipy-stack
   top-level:
@@ -18,8 +17,8 @@ package:
 # subroutine. Try deleting it.
 
 source:
-  url: https://files.pythonhosted.org/packages/62/11/4d44a1f274e002784e4dbdb81e0ea96d2de2d1045b2132d5af62cc31fd28/scipy-1.14.1.tar.gz
-  sha256: 5a275584e726026a5699459aa72f828a610821006228e841b94275c4a7c08417
+  url: https://files.pythonhosted.org/packages/source/s/scipy/scipy-1.16.0.tar.gz
+  sha256: b5ef54021e832869c8cfb03bc3bf20366cbcd426e02a58e8a58d7584dfbb8f62
 
   patches:
     - patches/0001-Fix-dstevr-in-special-lapack_defs.h.patch
