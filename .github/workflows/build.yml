@@ -459,7 +459,7 @@ jobs:
           rm -rf conftest.py
 
       - name: Run SciPy test suite
-        run: node scipy-pyjest.js --pyargs scipy -m "not slow" -vra -c scipy-conftest.py
+        run: node scipy-pytest.js --pyargs scipy -m "not slow" -vra -c scipy-conftest.py
         working-directory: packages/scipy/
 
   release:
