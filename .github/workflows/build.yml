@@ -337,6 +337,89 @@ jobs:
             echo "test-scipy=false" >> $GITHUB_OUTPUT
           fi
 
+  # This job is exactly the same as the test job, but it
+  # only runs the SciPy tests with Node.js. It needs either
+  # "[scipy]" in the PR title, or in the last pushed commit
+  # message, or the "scipy" label on the PR.
+  test-scipy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    needs: [build, check-scipy-test-trigger]
+    if: needs.check-scipy-test-trigger.outputs.test-scipy == 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Cache conda
+        uses: actions/cache@v4
+        with:
+          path: ~/conda_pkgs_dir
+          key:
+            ${{ runner.os }}-conda-${{ env.CONDA_CACHE_NUMBER }}-${{ hashFiles('environment.yml') }}
+
+      - name: Setup Mambaforge
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-variant: Miniforge3
+          miniforge-version: latest
+          activate-environment: pyodide-env
+          conda-remove-defaults: true
+          channels: conda-forge
+
+      - name: Get Date
+        id: get-date
+        run: echo "today=$(/bin/date -u '+%Y%m%d')" >> $GITHUB_OUTPUT
+
+      - name: Cache Conda env
+        id: conda-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.CONDA }}/envs
+          key:
+            conda-${{ runner.os }}-${{ steps.get-date.outputs.today }}-${{ hashFiles('environment.yml') }}-${{ env.CONDA_CACHE_NUMBER }}
+
+      - name: Update environment if cache miss
+        run:
+          mamba env update -n pyodide-env -f environment.yml
+        if: steps.conda-cache.outputs.cache-hit != 'true'
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: repodata
+          path: ./dist/
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Prepare SciPy test environment
+        run: |
+          # First, install any version of pyodide from npm
+          # to get the file structure
+          npm install pyodide
+
+          # Copy the Pyodide runtime to the dist folder
+          ./tools/copy_pyodide_runtime.sh ./dist
+
+          # Copy the Pyodide files from the dist folder to the
+          # node_modules/pyodide folder, so that the SciPy tests
+          # can find them
+          cp -f dist/* node_modules/pyodide
+
+          # Delete conftest.py from repo root to avoid conflicts
+          rm -rf conftest.py
+
+      - name: Run SciPy test suite
+        run: node scipy-pyjest.js --pyargs scipy -m "not slow" -vra -c scipy-conftest.py
+        working-directory: packages/scipy/
+
   release:
     runs-on: ubuntu-latest
     defaults:
