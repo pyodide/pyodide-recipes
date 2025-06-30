@@ -13,7 +13,7 @@ source:
 requirements:
   host:
     - libhdf5
-    - zlib
+    - libzlib
     - libxml
 
 build:

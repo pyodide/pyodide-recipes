@@ -13,7 +13,7 @@ source:
 
 requirements:
   host:
-    - zlib
+    - libzlib
 
 build:
   type: shared_library
