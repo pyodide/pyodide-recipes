@@ -320,7 +320,7 @@ jobs:
   check-scipy-test-trigger:
     runs-on: ubuntu-latest
     outputs:
-      test-scipy: ${{ steps.check-build-trigger.outputs.trigger }}
+      test-scipy: ${{ steps.check-build-trigger.outputs.scipy-will-be-tested }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -350,10 +350,10 @@ jobs:
              { [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$SCIPY_INPUT" == "true" ]]; }
           then
             echo "SciPy tests will run"
-            echo "test-scipy=true" >> $GITHUB_OUTPUT
+            echo "scipy-will-be-tested=true" >> $GITHUB_OUTPUT
           else
             echo "SciPy tests will not run"
-            echo "test-scipy=false" >> $GITHUB_OUTPUT
+            echo "scipy-will-be-tested=false" >> $GITHUB_OUTPUT
           fi
 
   # This job is exactly the same as the test job, but it
@@ -365,7 +365,7 @@ jobs:
       run:
         shell: bash -l {0}
     needs: [build, check-scipy-test-trigger]
-    if: needs.check-scipy-test-trigger.outputs.test-scipy == 'true'
+    if: needs.check-scipy-test-trigger.outputs.scipy-will-be-tested == 'true'
     steps:
       - uses: actions/checkout@v4
         with:
