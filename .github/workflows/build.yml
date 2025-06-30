@@ -458,8 +458,12 @@ jobs:
           # Delete conftest.py from repo root to avoid conflicts
           rm -rf conftest.py
 
+          # Change scipy-conftest.py to conftest.py as pytest
+          # doesn't seem to recognise it otherwise
+          mv packages/scipy/scipy-conftest.py packages/scipy/conftest.py
+
       - name: Run SciPy test suite
-        run: node scipy-pytest.js --pyargs scipy -m "not slow" -vra -c scipy-conftest.py
+        run: node scipy-pytest.js --pyargs scipy -m "not slow" -vra
         working-directory: packages/scipy/
 
   release:
