@@ -6,8 +6,15 @@ on:
     tags:
       - '*'
   pull_request:
+    types: [opened, synchronize, reopened, labeled]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      scipy:
+        description: 'Run SciPy test suite'
+        required: false
+        default: false
+        type: boolean
   schedule:
   # Twice per week, on Monday and Thursday
   - cron: "0 0 * * 1,4"
@@ -27,8 +34,48 @@ env:
   FORCE_COLOR: 3
 
 jobs:
+  check-scipy-test-trigger:
+    runs-on: ubuntu-latest
+    outputs:
+      test-scipy: ${{ steps.check-build-trigger.outputs.trigger }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Check if SciPy tests should run
+        id: check-build-trigger
+        shell: bash -l {0}
+        # Run if commit_msg contains "[scipy]" or
+        # if the PR has the "scipy" label or
+        # if the PR title contains "[scipy]" or if
+        # the workflow is triggered manually with the `scipy` input set to true
+        run: |
+          set -ex
+
+          COMMIT_MSG=$(git log --no-merges -1 --oneline)
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          SCIPY_LABEL=${{ contains(github.event.pull_request.labels.*.name, 'scipy') }}
+          SCIPY_INPUT="${{ github.event.inputs.scipy }}"
+          GITHUB_EVENT_NAME="${{ github.event_name }}"
+
+          if [[ "$COMMIT_MSG" =~ \[scipy\] ]] || \
+             [[ "$PR_TITLE" =~ \[scipy\] ]] || \
+             [[ "$SCIPY_LABEL" == "true" ]] || \
+             { [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$SCIPY_INPUT" == "true" ]]; }
+          then
+            echo "SciPy tests will run"
+            echo "trigger=true" >> $GITHUB_OUTPUT
+          else
+            echo "SciPy tests will not run"
+            echo "trigger=false" >> $GITHUB_OUTPUT
+          fi
+
   build:
     runs-on: ubuntu-latest
+    needs: [check-scipy-test-trigger]
     defaults:
       run:
         shell: bash -l {0}
@@ -145,11 +192,34 @@ jobs:
 
           echo "Changed recipes: $CHANGED_RECIPES"
 
+          # Check if scipy should be included
+          SCIPY_WILL_BE_TESTED="${{ needs.check-scipy-test-trigger.outputs.test-scipy }}"
+
           # If there are no changed recipes, we build only core packages sets
           if [ -z "$CHANGED_RECIPES" ]; then
-            echo "recipes=tag:core" >> "$GITHUB_OUTPUT"
+            # No changed recipes
+            if [ "$SCIPY_WILL_BE_TESTED" == "true" ]; then
+              echo "recipes=tag:core,scipy" >> "$GITHUB_OUTPUT"
+              echo "Building: tag:core,scipy (no changes + scipy trigger)"
+            else
+              echo "recipes=tag:core" >> "$GITHUB_OUTPUT"
+              echo "Building: tag:core (no changes)"
+            fi
           else
-            echo "recipes=$CHANGED_RECIPES,tag:core" >> "$GITHUB_OUTPUT"
+            # There are changed recipes
+            if [ "$SCIPY_WILL_BE_TESTED" == "true" ]; then
+              # Check if scipy is already in changed recipes to avoid duplication
+              if [[ "$CHANGED_RECIPES" == *"scipy"* ]]; then
+                echo "recipes=$CHANGED_RECIPES,tag:core" >> "$GITHUB_OUTPUT"
+                echo "Building: $CHANGED_RECIPES,tag:core (scipy already included in changes)"
+              else
+                echo "recipes=$CHANGED_RECIPES,tag:core,scipy" >> "$GITHUB_OUTPUT"
+                echo "Building: $CHANGED_RECIPES,tag:core,scipy (changes + scipy trigger)"
+              fi
+            else
+              echo "recipes=$CHANGED_RECIPES,tag:core" >> "$GITHUB_OUTPUT"
+              echo "Building: $CHANGED_RECIPES,tag:core (changes only)"
+            fi
           fi
 
       - name: Build recipes (full)
@@ -310,6 +380,92 @@ jobs:
             --runner=${{ matrix.test-config.runner }} \
             --rt ${{ matrix.test-config.runtime }} \
             packages
+
+  # This job runs the SciPy tests with Node.js based on the
+  # above checks; separate from the main test job.
+  test-scipy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    needs: [build, check-scipy-test-trigger]
+    if: needs.check-scipy-test-trigger.outputs.test-scipy == 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Cache conda
+        uses: actions/cache@v4
+        with:
+          path: ~/conda_pkgs_dir
+          key:
+            ${{ runner.os }}-conda-${{ env.CONDA_CACHE_NUMBER }}-${{ hashFiles('environment.yml') }}
+
+      - name: Setup Mambaforge
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-variant: Miniforge3
+          miniforge-version: latest
+          activate-environment: pyodide-env
+          conda-remove-defaults: true
+          channels: conda-forge
+
+      - name: Get Date
+        id: get-date
+        run: echo "today=$(/bin/date -u '+%Y%m%d')" >> $GITHUB_OUTPUT
+
+      - name: Cache Conda env
+        id: conda-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.CONDA }}/envs
+          key:
+            conda-${{ runner.os }}-${{ steps.get-date.outputs.today }}-${{ hashFiles('environment.yml') }}-${{ env.CONDA_CACHE_NUMBER }}
+
+      - name: Update environment if cache miss
+        run:
+          mamba env update -n pyodide-env -f environment.yml
+        if: steps.conda-cache.outputs.cache-hit != 'true'
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: repodata
+          path: ./dist/
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Prepare SciPy test environment
+        run: |
+          # First, install any version of pyodide from npm
+          # to get the file structure
+          npm install pyodide
+
+          # Copy the Pyodide runtime to the dist folder
+          ./tools/copy_pyodide_runtime.sh ./dist
+
+          # Copy the Pyodide files from the dist folder to the
+          # node_modules/pyodide folder, so that the SciPy tests
+          # can find them
+          cp -f dist/* node_modules/pyodide
+
+          # Delete conftest.py from repo root to avoid conflicts
+          rm -rf conftest.py
+
+          # Change scipy-conftest.py to conftest.py as pytest
+          # doesn't seem to recognise it otherwise
+          mv packages/scipy/scipy-conftest.py packages/scipy/conftest.py
+
+      - name: Run SciPy test suite
+        run: node scipy-pytest.js --pyargs scipy -m "not slow" -vra
+        working-directory: packages/scipy/
+
   release:
     runs-on: ubuntu-latest
     defaults:
