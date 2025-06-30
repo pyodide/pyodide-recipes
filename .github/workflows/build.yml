@@ -310,6 +310,33 @@ jobs:
             --runner=${{ matrix.test-config.runner }} \
             --rt ${{ matrix.test-config.runtime }} \
             packages
+
+  check-scipy-test-trigger:
+    runs-on: ubuntu-latest
+    outputs:
+      test-scipy: ${{ steps.check-build-trigger.outputs.trigger }}
+    steps:
+      - name: Check if SciPy tests should run
+        id: check-build-trigger
+        shell: bash -l {0}
+        # Run if commit_msg contains "[scipy]" or if the PR has the "scipy" label or if the PR title contains "[scipy]"
+        run: |
+          set -ex
+
+          COMMIT_MSG=$(git log --no-merges -1 --oneline)
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          SCIPY_LABEL=${{ contains(github.event.pull_request.labels.*.name, 'scipy') }}
+
+          if [[ $COMMIT_MSG" =~ \[scipy\] ||
+                $PR_TITLE" =~ \[scipy\] ||
+                $SCIPY_LABEL ]]; then
+            echo "SciPy tests will run"
+            echo "test-scipy=true" >> $GITHUB_OUTPUT
+          else
+            echo "SciPy tests will not run"
+            echo "test-scipy=false" >> $GITHUB_OUTPUT
+          fi
+
   release:
     runs-on: ubuntu-latest
     defaults:
