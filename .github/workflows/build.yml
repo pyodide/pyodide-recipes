@@ -8,6 +8,12 @@ on:
   pull_request:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      scipy:
+        description: 'Run SciPy test suite'
+        required: false
+        default: false
+        type: boolean
   schedule:
   # Twice per week, on Monday and Thursday
   - cron: "0 0 * * 1,4"
