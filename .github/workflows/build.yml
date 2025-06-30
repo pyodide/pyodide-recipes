@@ -6,6 +6,7 @@ on:
     tags:
       - '*'
   pull_request:
+    types: [opened, synchronize, reopened, labeled]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
@@ -33,8 +34,48 @@ env:
   FORCE_COLOR: 3
 
 jobs:
+  check-scipy-test-trigger:
+    runs-on: ubuntu-latest
+    outputs:
+      test-scipy: ${{ steps.check-build-trigger.outputs.trigger }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Check if SciPy tests should run
+        id: check-build-trigger
+        shell: bash -l {0}
+        # Run if commit_msg contains "[scipy]" or
+        # if the PR has the "scipy" label or
+        # if the PR title contains "[scipy]" or if
+        # the workflow is triggered manually with the `scipy` input set to true
+        run: |
+          set -ex
+
+          COMMIT_MSG=$(git log --no-merges -1 --oneline)
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          SCIPY_LABEL=${{ contains(github.event.pull_request.labels.*.name, 'scipy') }}
+          SCIPY_INPUT="${{ github.event.inputs.scipy }}"
+          GITHUB_EVENT_NAME="${{ github.event_name }}"
+
+          if [[ "$COMMIT_MSG" =~ \[scipy\] ]] || \
+             [[ "$PR_TITLE" =~ \[scipy\] ]] || \
+             [[ "$SCIPY_LABEL" == "true" ]] || \
+             { [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$SCIPY_INPUT" == "true" ]]; }
+          then
+            echo "SciPy tests will run"
+            echo "trigger=true" >> $GITHUB_OUTPUT
+          else
+            echo "SciPy tests will not run"
+            echo "trigger=false" >> $GITHUB_OUTPUT
+          fi
+
   build:
     runs-on: ubuntu-latest
+    needs: [check-scipy-test-trigger]
     defaults:
       run:
         shell: bash -l {0}
@@ -151,11 +192,34 @@ jobs:
 
           echo "Changed recipes: $CHANGED_RECIPES"
 
+          # Check if scipy should be included
+          SCIPY_WILL_BE_TESTED="${{ needs.check-scipy-test-trigger.outputs.test-scipy }}"
+
           # If there are no changed recipes, we build only core packages sets
           if [ -z "$CHANGED_RECIPES" ]; then
-            echo "recipes=tag:core" >> "$GITHUB_OUTPUT"
+            # No changed recipes
+            if [ "$SCIPY_WILL_BE_TESTED" == "true" ]; then
+              echo "recipes=tag:core,scipy" >> "$GITHUB_OUTPUT"
+              echo "Building: tag:core,scipy (no changes + scipy trigger)"
+            else
+              echo "recipes=tag:core" >> "$GITHUB_OUTPUT"
+              echo "Building: tag:core (no changes)"
+            fi
           else
-            echo "recipes=$CHANGED_RECIPES,tag:core" >> "$GITHUB_OUTPUT"
+            # There are changed recipes
+            if [ "$SCIPY_WILL_BE_TESTED" == "true" ]; then
+              # Check if scipy is already in changed recipes to avoid duplication
+              if [[ "$CHANGED_RECIPES" == *"scipy"* ]]; then
+                echo "recipes=$CHANGED_RECIPES,tag:core" >> "$GITHUB_OUTPUT"
+                echo "Building: $CHANGED_RECIPES,tag:core (scipy already included in changes)"
+              else
+                echo "recipes=$CHANGED_RECIPES,tag:core,scipy" >> "$GITHUB_OUTPUT"
+                echo "Building: $CHANGED_RECIPES,tag:core,scipy (changes + scipy trigger)"
+              fi
+            else
+              echo "recipes=$CHANGED_RECIPES,tag:core" >> "$GITHUB_OUTPUT"
+              echo "Building: $CHANGED_RECIPES,tag:core (changes only)"
+            fi
           fi
 
       - name: Build recipes (full)
@@ -317,55 +381,15 @@ jobs:
             --rt ${{ matrix.test-config.runtime }} \
             packages
 
-  check-scipy-test-trigger:
-    runs-on: ubuntu-latest
-    outputs:
-      test-scipy: ${{ steps.check-build-trigger.outputs.scipy-will-be-tested }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          submodules: recursive
-          persist-credentials: false
-
-      - name: Check if SciPy tests should run
-        id: check-build-trigger
-        shell: bash -l {0}
-        # Run if commit_msg contains "[scipy]" or
-        # if the PR has the "scipy" label or
-        # if the PR title contains "[scipy]" or if
-        # the workflow is triggered manually with the `scipy` input set to true
-        run: |
-          set -ex
-
-          COMMIT_MSG=$(git log --no-merges -1 --oneline)
-          PR_TITLE="${{ github.event.pull_request.title }}"
-          SCIPY_LABEL=${{ contains(github.event.pull_request.labels.*.name, 'scipy') }}
-          SCIPY_INPUT="${{ github.event.inputs.scipy }}"
-          GITHUB_EVENT_NAME="${{ github.event_name }}"
-
-          if [[ "$COMMIT_MSG" =~ \[scipy\] ]] || \
-             [[ "$PR_TITLE" =~ \[scipy\] ]] || \
-             [[ "$SCIPY_LABEL" == "true" ]] || \
-             { [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$SCIPY_INPUT" == "true" ]]; }
-          then
-            echo "SciPy tests will run"
-            echo "scipy-will-be-tested=true" >> $GITHUB_OUTPUT
-          else
-            echo "SciPy tests will not run"
-            echo "scipy-will-be-tested=false" >> $GITHUB_OUTPUT
-          fi
-
-  # This job is exactly the same as the test job, but it
-  # only runs the SciPy tests with Node.js based on the
-  # above check.
+  # This job runs the SciPy tests with Node.js based on the
+  # above checks; separate from the main test job.
   test-scipy:
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash -l {0}
     needs: [build, check-scipy-test-trigger]
-    if: needs.check-scipy-test-trigger.outputs.scipy-will-be-tested == 'true'
+    if: needs.check-scipy-test-trigger.outputs.test-scipy == 'true'
     steps:
       - uses: actions/checkout@v4
         with:
