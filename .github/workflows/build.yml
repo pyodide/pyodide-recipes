@@ -325,17 +325,24 @@ jobs:
       - name: Check if SciPy tests should run
         id: check-build-trigger
         shell: bash -l {0}
-        # Run if commit_msg contains "[scipy]" or if the PR has the "scipy" label or if the PR title contains "[scipy]"
+        # Run if commit_msg contains "[scipy]" or
+        # if the PR has the "scipy" label or
+        # if the PR title contains "[scipy]" or if
+        # the workflow is triggered manually with the `scipy` input set to true
         run: |
           set -ex
 
           COMMIT_MSG=$(git log --no-merges -1 --oneline)
           PR_TITLE="${{ github.event.pull_request.title }}"
           SCIPY_LABEL=${{ contains(github.event.pull_request.labels.*.name, 'scipy') }}
+          SCIPY_INPUT="${{ github.event.inputs.scipy }}"
+          GITHUB_EVENT_NAME="${{ github.event_name }}"
 
-          if [[ $COMMIT_MSG" =~ \[scipy\] ||
-                $PR_TITLE" =~ \[scipy\] ||
-                $SCIPY_LABEL ]]; then
+          if [[ "$COMMIT_MSG" =~ \[scipy\] ]] || \
+             [[ "$PR_TITLE" =~ \[scipy\] ]] || \
+             [[ "$SCIPY_LABEL" == "true" ]] || \
+             { [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$SCIPY_INPUT" == "true" ]]; }
+          then
             echo "SciPy tests will run"
             echo "test-scipy=true" >> $GITHUB_OUTPUT
           else
@@ -344,9 +351,8 @@ jobs:
           fi
 
   # This job is exactly the same as the test job, but it
-  # only runs the SciPy tests with Node.js. It needs either
-  # "[scipy]" in the PR title, or in the last pushed commit
-  # message, or the "scipy" label on the PR.
+  # only runs the SciPy tests with Node.js based on the
+  # above check.
   test-scipy:
     runs-on: ubuntu-latest
     defaults:
