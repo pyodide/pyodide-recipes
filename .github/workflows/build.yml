@@ -136,27 +136,22 @@ jobs:
           mamba env update -n pyodide-env -f environment.yml
         if: steps.conda-cache.outputs.cache-hit != 'true'
 
-      # ref. https://github.com/apache/flink/blob/master/tools/azure-pipelines/free_disk_space.sh#L28-L53
-      - name: Free unused disk space
+      # See https://github.com/jlumbroso/free-disk-space/issues/40
+      - name: Disable man-db to free up disk space faster
         run: |
-          # delete packages
-          sudo apt-get remove -y '^dotnet-.*' || true
-          sudo apt-get remove -y '^llvm-.*' || true
-          sudo apt-get remove -y '^temurin-.*' || true
-          sudo apt-get remove -y '^mysql-server-core-.*' || true
-          sudo apt-get remove -y '^postgresql-.*' || true
-          sudo apt-get remove -y azure-cli google-chrome-stable google-cloud-cli firefox powershell microsoft-edge-stable mono-devel || true
-          sudo apt-get autoremove -y
-          sudo apt-get clean
+          echo 'set man-db/auto-update false' | sudo debconf-communicate >/dev/null
+          sudo dpkg-reconfigure man-db
 
-          # delete directories
-          sudo rm -rf /usr/share/dotnet/
-          sudo rm -rf /usr/share/swift/
-          sudo rm -rf /usr/local/graalvm/
-          sudo rm -rf /usr/local/.ghcup/
-          sudo rm -rf /usr/local/share/powershell
-          sudo rm -rf /usr/local/share/chromium
-          sudo rm -rf /usr/local/lib/android
+      - name: Free unused disk space
+        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: false
+          docker-images: true
+          swap-storage: false # https://github.com/jlumbroso/free-disk-space/issues/12
 
       - name: Install latest pyodide-build and build dependencies
         run : |
