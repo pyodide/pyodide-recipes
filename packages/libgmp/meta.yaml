@@ -13,7 +13,7 @@ build:
   script: |
     emconfigure ./configure \
         CFLAGS="-fPIC" \
-        HOST_CC=$(which clang) \
+        CC_FOR_BUILD="cc" \
         --host=wasm32-unknown-emscripten \
         --build=$(./config.guess) \
         --disable-assembly \
