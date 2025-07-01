@@ -136,6 +136,12 @@ jobs:
           mamba env update -n pyodide-env -f environment.yml
         if: steps.conda-cache.outputs.cache-hit != 'true'
 
+      # See https://github.com/jlumbroso/free-disk-space/issues/40
+      - name: Disable man-db to free up disk space faster
+        run: |
+          echo 'set man-db/auto-update false' | sudo debconf-communicate >/dev/null
+          sudo dpkg-reconfigure man-db
+
       # ref. https://github.com/apache/flink/blob/master/tools/azure-pipelines/free_disk_space.sh#L28-L53
       - name: Free unused disk space
         run: |
