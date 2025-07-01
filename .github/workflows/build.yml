@@ -47,7 +47,9 @@ jobs:
 
       - name: Check if SciPy tests should run
         id: check-build-trigger
-        shell: bash -l {0}
+        env:
+          GITHUB_EVENT_PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
+          GITHUB_EVENT_INPUTS_SCIPY: ${{ github.event.inputs.scipy }}
         # Run if commit_msg contains "[scipy]" or
         # if the PR has the "scipy" label or
         # if the PR title contains "[scipy]" or if
@@ -56,9 +58,9 @@ jobs:
           set -ex
 
           COMMIT_MSG=$(git log --no-merges -1 --oneline)
-          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_TITLE="${GITHUB_EVENT_PULL_REQUEST_TITLE}"
           SCIPY_LABEL=${{ contains(github.event.pull_request.labels.*.name, 'scipy') }}
-          SCIPY_INPUT="${{ github.event.inputs.scipy }}"
+          SCIPY_INPUT="${GITHUB_EVENT_INPUTS_SCIPY}"
           GITHUB_EVENT_NAME="${{ github.event_name }}"
 
           if [[ "$COMMIT_MSG" =~ \[scipy\] ]] || \
@@ -185,15 +187,18 @@ jobs:
       - name: Calculate recipes to build (pull_request)
         if: github.event_name == 'pull_request'
         id: calculate_recipes_pr
+        env:
+          GITHUB_EVENT_PULL_REQUEST_BASE_REF: ${{ github.event.pull_request.base.ref }}
+          NEEDS_CHECK_SCIPY_TEST_TRIGGER_OUTPUTS_TEST_SCIPY: ${{ needs.check-scipy-test-trigger.outputs.test-scipy }}
         run: |
           export CHANGED_RECIPES=$(python ./tools/calc_diff.py \
-            --base origin/${{ github.event.pull_request.base.ref }} \
+            --base origin/${GITHUB_EVENT_PULL_REQUEST_BASE_REF} \
             --target ${{ github.sha }})
 
           echo "Changed recipes: $CHANGED_RECIPES"
 
           # Check if scipy should be included
-          SCIPY_WILL_BE_TESTED="${{ needs.check-scipy-test-trigger.outputs.test-scipy }}"
+          SCIPY_WILL_BE_TESTED="${NEEDS_CHECK_SCIPY_TEST_TRIGGER_OUTPUTS_TEST_SCIPY}"
 
           # If there are no changed recipes, we build only core packages sets
           if [ -z "$CHANGED_RECIPES" ]; then
@@ -236,6 +241,8 @@ jobs:
 
       - name: Build recipes (changed only)
         if: github.event_name == 'pull_request' && !contains(github.event.pull_request.title, '[full build]')
+        env:
+          STEPS_CALCULATE_RECIPES_PR_OUTPUTS_RECIPES: ${{ steps.calculate_recipes_pr.outputs.recipes }}
         run: |
           ccache -z
           export _EMCC_CACHE=1
@@ -243,7 +250,7 @@ jobs:
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
           source emsdk/emsdk_env.sh
           mkdir -p result
-          pyodide build-recipes ${{ steps.calculate_recipes_pr.outputs.recipes }} --install --install-dir=./repodata --log-dir=build-logs | tee result/build_output.log
+          pyodide build-recipes ${STEPS_CALCULATE_RECIPES_PR_OUTPUTS_RECIPES} --install --install-dir=./repodata --log-dir=build-logs | tee result/build_output.log
           ccache -s
 
       - name: Parse build results
