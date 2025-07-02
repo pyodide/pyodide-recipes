@@ -13,12 +13,15 @@ build:
   script: |
     emconfigure ./configure \
         CFLAGS="-fPIC" \
-        --disable-dependency-tracking \
-        --host none \
+        CC_FOR_BUILD="cc" \
+        --host=wasm32-unknown-emscripten \
+        --build=$(./config.guess) \
+        --disable-assembly \
         --disable-shared \
         --enable-static \
         --enable-cxx \
-        --prefix=${WASM_LIBRARY_DIR}
+        --prefix=${WASM_LIBRARY_DIR} \
+        ac_cv_prog_cc_cross=yes
     emmake make -j ${PYODIDE_JOBS:-3}
     emmake make install
 about:

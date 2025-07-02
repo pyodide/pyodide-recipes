@@ -39,7 +39,7 @@ jobs:
     outputs:
       test-scipy: ${{ steps.check-build-trigger.outputs.trigger }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
           submodules: recursive
@@ -47,7 +47,9 @@ jobs:
 
       - name: Check if SciPy tests should run
         id: check-build-trigger
-        shell: bash -l {0}
+        env:
+          GITHUB_EVENT_PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
+          GITHUB_EVENT_INPUTS_SCIPY: ${{ github.event.inputs.scipy }}
         # Run if commit_msg contains "[scipy]" or
         # if the PR has the "scipy" label or
         # if the PR title contains "[scipy]" or if
@@ -56,9 +58,9 @@ jobs:
           set -ex
 
           COMMIT_MSG=$(git log --no-merges -1 --oneline)
-          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_TITLE="${GITHUB_EVENT_PULL_REQUEST_TITLE}"
           SCIPY_LABEL=${{ contains(github.event.pull_request.labels.*.name, 'scipy') }}
-          SCIPY_INPUT="${{ github.event.inputs.scipy }}"
+          SCIPY_INPUT="${GITHUB_EVENT_INPUTS_SCIPY}"
           GITHUB_EVENT_NAME="${{ github.event_name }}"
 
           if [[ "$COMMIT_MSG" =~ \[scipy\] ]] || \
@@ -80,7 +82,7 @@ jobs:
       run:
         shell: bash -l {0}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
           submodules: recursive
@@ -101,7 +103,7 @@ jobs:
           which ccache
 
       - name: Cache conda
-        uses: actions/cache@v4
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         with:
           path: ~/conda_pkgs_dir
           key:
@@ -109,7 +111,7 @@ jobs:
             hashFiles('environment.yml') }}
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3.2.0
         with:
           miniforge-variant: Miniforge3
           miniforge-version: latest
@@ -123,7 +125,7 @@ jobs:
 
       - name: Cache Conda env
         id: conda-cache
-        uses: actions/cache@v4
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         with:
           path: ${{ env.CONDA }}/envs
           key:
@@ -134,27 +136,22 @@ jobs:
           mamba env update -n pyodide-env -f environment.yml
         if: steps.conda-cache.outputs.cache-hit != 'true'
 
-      # ref. https://github.com/apache/flink/blob/master/tools/azure-pipelines/free_disk_space.sh#L28-L53
-      - name: Free unused disk space
+      # See https://github.com/jlumbroso/free-disk-space/issues/40
+      - name: Disable man-db to free up disk space faster
         run: |
-          # delete packages
-          sudo apt-get remove -y '^dotnet-.*' || true
-          sudo apt-get remove -y '^llvm-.*' || true
-          sudo apt-get remove -y '^temurin-.*' || true
-          sudo apt-get remove -y '^mysql-server-core-.*' || true
-          sudo apt-get remove -y '^postgresql-.*' || true
-          sudo apt-get remove -y azure-cli google-chrome-stable google-cloud-cli firefox powershell microsoft-edge-stable mono-devel || true
-          sudo apt-get autoremove -y
-          sudo apt-get clean
+          echo 'set man-db/auto-update false' | sudo debconf-communicate >/dev/null
+          sudo dpkg-reconfigure man-db
 
-          # delete directories
-          sudo rm -rf /usr/share/dotnet/
-          sudo rm -rf /usr/share/swift/
-          sudo rm -rf /usr/local/graalvm/
-          sudo rm -rf /usr/local/.ghcup/
-          sudo rm -rf /usr/local/share/powershell
-          sudo rm -rf /usr/local/share/chromium
-          sudo rm -rf /usr/local/lib/android
+      - name: Free unused disk space
+        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: false
+          docker-images: true
+          swap-storage: false # https://github.com/jlumbroso/free-disk-space/issues/12
 
       - name: Install latest pyodide-build and build dependencies
         run : |
@@ -175,7 +172,7 @@ jobs:
           fi
 
       - name: Cache ccache
-        uses: actions/cache@v4
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ env.CCACHE_DIR }}-${{ env.CCACHE_CACHE_NUMBER }}-${{ env.EMSCRIPTEN_VERSION }}-${{ runner.os }}${{ env.CCACHE_SUFFIX }}
@@ -185,15 +182,18 @@ jobs:
       - name: Calculate recipes to build (pull_request)
         if: github.event_name == 'pull_request'
         id: calculate_recipes_pr
+        env:
+          GITHUB_EVENT_PULL_REQUEST_BASE_REF: ${{ github.event.pull_request.base.ref }}
+          NEEDS_CHECK_SCIPY_TEST_TRIGGER_OUTPUTS_TEST_SCIPY: ${{ needs.check-scipy-test-trigger.outputs.test-scipy }}
         run: |
           export CHANGED_RECIPES=$(python ./tools/calc_diff.py \
-            --base origin/${{ github.event.pull_request.base.ref }} \
+            --base origin/${GITHUB_EVENT_PULL_REQUEST_BASE_REF} \
             --target ${{ github.sha }})
 
           echo "Changed recipes: $CHANGED_RECIPES"
 
           # Check if scipy should be included
-          SCIPY_WILL_BE_TESTED="${{ needs.check-scipy-test-trigger.outputs.test-scipy }}"
+          SCIPY_WILL_BE_TESTED="${NEEDS_CHECK_SCIPY_TEST_TRIGGER_OUTPUTS_TEST_SCIPY}"
 
           # If there are no changed recipes, we build only core packages sets
           if [ -z "$CHANGED_RECIPES" ]; then
@@ -236,6 +236,8 @@ jobs:
 
       - name: Build recipes (changed only)
         if: github.event_name == 'pull_request' && !contains(github.event.pull_request.title, '[full build]')
+        env:
+          STEPS_CALCULATE_RECIPES_PR_OUTPUTS_RECIPES: ${{ steps.calculate_recipes_pr.outputs.recipes }}
         run: |
           ccache -z
           export _EMCC_CACHE=1
@@ -243,7 +245,7 @@ jobs:
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
           source emsdk/emsdk_env.sh
           mkdir -p result
-          pyodide build-recipes ${{ steps.calculate_recipes_pr.outputs.recipes }} --install --install-dir=./repodata --log-dir=build-logs | tee result/build_output.log
+          pyodide build-recipes ${STEPS_CALCULATE_RECIPES_PR_OUTPUTS_RECIPES} --install --install-dir=./repodata --log-dir=build-logs | tee result/build_output.log
           ccache -s
 
       - name: Parse build results
@@ -268,7 +270,7 @@ jobs:
         run: |
           ./tools/copy_pyodide_runtime.sh ./repodata
       - name: Store the build summary
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: github.event_name == 'pull_request' && env.SUMMARY_CREATED == 'true'
         with:
           name: build-result
@@ -276,21 +278,21 @@ jobs:
           retention-days: 7
 
       - name: Store artifacts build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: repodata
           path: ./repodata/
           retention-days: 7
       
       - name: Store build logs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: build-log
           path: ./build-logs/
           retention-days: 7
 
       - name: Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@72f2c25fcb47643c292f7107632f7a47c1df5cd8 # v2.3.2
         if: startsWith(github.ref, 'refs/tags/')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -315,14 +317,14 @@ jobs:
         ]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
           submodules: recursive
           persist-credentials: false
 
       - name: Cache conda
-        uses: actions/cache@v4
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         with:
           path: ~/conda_pkgs_dir
           key:
@@ -330,7 +332,7 @@ jobs:
             hashFiles('environment.yml') }}
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3.2.0
         with:
           miniforge-variant: Miniforge3
           miniforge-version: latest
@@ -344,7 +346,7 @@ jobs:
 
       - name: Cache Conda env
         id: conda-cache
-        uses: actions/cache@v4
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         with:
           path: ${{ env.CONDA }}/envs
           key:
@@ -355,14 +357,14 @@ jobs:
           mamba env update -n pyodide-env -f environment.yml
         if: steps.conda-cache.outputs.cache-hit != 'true'
 
-      - uses: pyodide/pyodide-actions/install-browser@v2
+      - uses: pyodide/pyodide-actions/install-browser@012fa537869d343726d01863a34b773fc4d96a14 # v2
         with:
           runner: ${{ matrix.test-config.runner }}
           browser: ${{ matrix.test-config.runtime }}
           browser-version: ${{ matrix.test-config.runtime-version }}
 
       - name: Download build artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: repodata
           path: ./dist/
@@ -391,21 +393,21 @@ jobs:
     needs: [build, check-scipy-test-trigger]
     if: needs.check-scipy-test-trigger.outputs.test-scipy == 'true'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
           submodules: recursive
           persist-credentials: false
 
       - name: Cache conda
-        uses: actions/cache@v4
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         with:
           path: ~/conda_pkgs_dir
           key:
             ${{ runner.os }}-conda-${{ env.CONDA_CACHE_NUMBER }}-${{ hashFiles('environment.yml') }}
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3.2.0
         with:
           miniforge-variant: Miniforge3
           miniforge-version: latest
@@ -419,7 +421,7 @@ jobs:
 
       - name: Cache Conda env
         id: conda-cache
-        uses: actions/cache@v4
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         with:
           path: ${{ env.CONDA }}/envs
           key:
@@ -431,13 +433,13 @@ jobs:
         if: steps.conda-cache.outputs.cache-hit != 'true'
 
       - name: Download build artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: repodata
           path: ./dist/
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: "24"
 
@@ -475,14 +477,14 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
     environment: deploy
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
           submodules: recursive
           persist-credentials: false
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3.2.0
         with:
           miniforge-variant: Miniforge3
           miniforge-version: latest
@@ -491,7 +493,7 @@ jobs:
           channels: conda-forge
 
       - name: Download build artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: repodata
           path: ./repodata/
