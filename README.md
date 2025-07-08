@@ -9,7 +9,7 @@ Collections of package recipes for Pyodide
 To add a new package, create a package recipe in the `packages` directory.
 
 It is required to clone the repository with the `--recurse-submodules` option to ensure
-that all submodules are initialized. If hyou have already cloned the repository without
+that all submodules are initialized. If you have already cloned the repository without
 this option, you can run the following command to initialize the submodules:
 
 ```bash
