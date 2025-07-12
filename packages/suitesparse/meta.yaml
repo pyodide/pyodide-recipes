@@ -14,7 +14,7 @@ requirements:
   run:
     - openblas
   host:
-    - openblas
+    - libopenblas
 
 build:
   type: shared_library
