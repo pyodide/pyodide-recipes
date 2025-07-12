@@ -19,7 +19,7 @@ requirements:
     - six
     - cffi
   host:
-    - openssl
+    - libopenssl
     - cffi
   executable:
     - rustup
