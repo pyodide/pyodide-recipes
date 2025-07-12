@@ -12,7 +12,7 @@ source:
 requirements:
   host:
     - libgmp
-    - glpk
+    - libglpk
 
 build:
   type: static_library
