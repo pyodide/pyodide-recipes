@@ -1,5 +1,5 @@
 package:
-  name: suitesparse
+  name: libsuitesparse
   version: 5.11.0
   tag:
     - library
