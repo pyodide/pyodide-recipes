@@ -9,7 +9,7 @@ source:
 requirements:
   host:
     - libgmp
-    - ppl
+    - libppl
     - gmpy2
   run:
     - gmpy2
