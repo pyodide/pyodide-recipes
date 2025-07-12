@@ -1,0 +1,16 @@
+package:
+  name: audioop-lts
+  version: 0.2.1
+  top-level:
+    - audioop
+
+source:
+  url: https://files.pythonhosted.org/packages/dd/3b/69ff8a885e4c1c42014c2765275c4bd91fe7bc9847e9d8543dbcbb09f820/audioop_lts-0.2.1.tar.gz
+  sha256: e81268da0baa880431b68b1308ab7257eb33f356e57a5f9b1f915dfb13dd1387
+
+about:
+  license: PSF-2.0
+
+extra:
+  recipe-maintainers:
+    - swnf
