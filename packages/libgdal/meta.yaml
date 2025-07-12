@@ -1,5 +1,5 @@
 package:
-  name: gdal
+  name: libgdal
   version: 3.8.3
   tag:
     - library
