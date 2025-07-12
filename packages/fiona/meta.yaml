@@ -12,7 +12,7 @@ test:
 requirements:
   host:
     - libgdal
-    - geos
+    - libgeos
   run:
     - attrs
     - certifi

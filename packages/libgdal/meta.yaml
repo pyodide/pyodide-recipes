@@ -12,7 +12,7 @@ requirements:
     - libtiff
     - libproj
     - libiconv
-    - geos
+    - libgeos
   run:
     - geos
 
