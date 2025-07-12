@@ -11,8 +11,8 @@ test:
     - fiona.fio
 requirements:
   host:
-    - gdal
-    - geos
+    - libgdal
+    - libgeos
   run:
     - attrs
     - certifi

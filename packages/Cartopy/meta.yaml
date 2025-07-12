@@ -14,7 +14,7 @@ test:
     - cartopy.crs
 requirements:
   host:
-    - geos
+    - libgeos
     - numpy
   run:
     - shapely

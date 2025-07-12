@@ -14,7 +14,7 @@ requirements:
     - numpy
   host:
     - boost-cpp
-    - openssl
+    - libopenssl
     - numpy
 
 build:

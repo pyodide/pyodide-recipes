@@ -17,7 +17,7 @@ requirements:
     - scipy
     - suitesparse
   host:
-    - suitesparse
+    - libsuitesparse
 build:
   script: |
     # FIXME: We are not dealing with poetry build system correctly.

@@ -136,7 +136,7 @@ build:
 requirements:
   host:
     - numpy
-    - openblas
+    - libopenblas
     - boost-cpp
   run:
     - numpy

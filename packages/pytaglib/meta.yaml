@@ -6,7 +6,7 @@ package:
 
 requirements:
   host:
-    - taglib
+    - libtaglib
   run:
     - taglib
 

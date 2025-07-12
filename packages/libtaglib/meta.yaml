@@ -1,0 +1,38 @@
+package:
+  name: libtaglib
+  version: "2.1"
+  tag:
+    - library
+    - shared_library
+    - cmake
+source:
+  url: https://github.com/taglib/taglib/releases/download/v2.1/taglib-2.1.tar.gz
+  sha256: 95b788b39eaebab41f7e6d1c1d05ceee01a5d1225e4b6d11ed8976e96ba90b0c
+
+build:
+  type: shared_library
+  script: |
+    # utfcpp is a header-only library in a git submodule. Unfortunately,  it is missing in the release .tar.gz.
+    # Therefore, we need to download the commit referenced by the git submodule
+    # Commit id can be found here: https://github.com/taglib/taglib/tree/d48f02030d0d8eb94003da7213ea38e7aae6b422/3rdparty
+    wget -O utfcpp.tar.gz https://github.com/nemtrif/utfcpp/archive/df857efc5bbc2aa84012d865f7d7e9cccdc08562.tar.gz
+    tar -zxvf utfcpp.tar.gz -C 3rdparty/utfcpp/ --strip-components=1
+    # See https://github.com/supermihi/pytaglib/blob/9e315c2b932d96fa54c2477a82747d0d9f211c87/build_native_taglib.py#L155-L167
+    emcmake cmake \
+      -DWITH_ZLIB=OFF \
+      -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+      -DBUILD_TESTING=OFF \
+      -DBUILD_EXAMPLES=OFF \
+      -DBUILD_SHARED_LIBS=ON \
+      ./
+
+    emmake make -j ${PYODIDE_JOBS:-3}
+    emmake make install
+    cp ${WASM_LIBRARY_DIR}/lib/libtag.so ${WASM_LIBRARY_DIR}/lib/libtag_c.so ${DISTDIR}
+
+about:
+  license: LGPL-2.1 AND MPL-1.1
+
+extra:
+  recipe-maintainers:
+    - swnf

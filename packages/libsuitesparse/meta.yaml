@@ -1,5 +1,5 @@
 package:
-  name: suitesparse
+  name: libsuitesparse
   version: 5.11.0
   tag:
     - library
@@ -14,7 +14,7 @@ requirements:
   run:
     - openblas
   host:
-    - openblas
+    - libopenblas
 
 build:
   type: shared_library
