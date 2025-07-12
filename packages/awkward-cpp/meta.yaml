@@ -18,6 +18,7 @@ requirements:
 test:
   imports:
     - awkward_cpp
+    - awkward_cpp.lib._ext
 
 about:
   home: https://pypi.org/project/awkward-cpp/
