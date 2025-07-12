@@ -15,7 +15,7 @@ about:
 requirements:
   host:
     - libprimecount
-    - primesieve
+    - libprimesieve
   run:
     - cysignals
 build:
