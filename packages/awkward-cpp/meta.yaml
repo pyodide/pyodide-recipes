@@ -10,6 +10,8 @@ source:
 
 build:
   exports: requested
+  backend-flags: |
+    cmake.define.BUILD_WITH_INSTALL_PATH=ON
 
 requirements:
   run:
