@@ -11,7 +11,7 @@ source:
 build:
   exports: requested
   backend-flags: |
-    cmake.define.CMAKE_BUILD_WITH_INSTALL_PATH=ON
+    cmake.define.CMAKE_BUILD_WITH_INSTALL_RPATH=ON
 
 requirements:
   run:
