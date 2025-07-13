@@ -12,6 +12,7 @@ build:
   exports: requested
   backend-flags: |
     cmake.define.CMAKE_BUILD_WITH_INSTALL_RPATH=ON
+    build.verbose=ON
 
 requirements:
   run:
