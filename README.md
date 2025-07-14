@@ -27,7 +27,7 @@ This will create a new directory in the `packages/` directory with the package n
 You can then edit the `meta.yaml` file in the package directory to add build scripts
 and other metadata including the dependencies.
 
-See the [Pyodide documentation](https://pyodide.org/en/stable/development/new-packages.html)
+See the [Pyodide documentation](https://pyodide.org/en/stable/development/adding-packages-into-pyodide-distribution.html)
 for more information on creating package recipes.
 
 ## Maintainer information
