@@ -314,6 +314,7 @@ jobs:
         test-config: [
           {runner: selenium, runtime: chrome, runtime-version: 134 },
           {runner: selenium, runtime: firefox, runtime-version: "136.0" },
+          {runner: selenium, runtime: node, runtime-version: "24" },
         ]
 
     steps:
