@@ -2,7 +2,7 @@ from pytest_pyodide import run_in_pyodide
 
 
 @run_in_pyodide(
-    packages=["numpy", "svgwrite", "attrs", "pyrsistent", "jsonschema", "tskit"]
+    packages=["numpy", "attrs", "pyrsistent", "jsonschema", "tskit"]
 )
 def test_tskit(selenium):
     import tskit

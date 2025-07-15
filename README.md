@@ -9,7 +9,7 @@ Collections of package recipes for Pyodide
 To add a new package, create a package recipe in the `packages` directory.
 
 It is required to clone the repository with the `--recurse-submodules` option to ensure
-that all submodules are initialized. If hyou have already cloned the repository without
+that all submodules are initialized. If you have already cloned the repository without
 this option, you can run the following command to initialize the submodules:
 
 ```bash
@@ -27,7 +27,7 @@ This will create a new directory in the `packages/` directory with the package n
 You can then edit the `meta.yaml` file in the package directory to add build scripts
 and other metadata including the dependencies.
 
-See the [Pyodide documentation](https://pyodide.org/en/stable/development/new-packages.html)
+See the [Pyodide documentation](https://pyodide.org/en/stable/development/adding-packages-into-pyodide-distribution.html)
 for more information on creating package recipes.
 
 ## Maintainer information
