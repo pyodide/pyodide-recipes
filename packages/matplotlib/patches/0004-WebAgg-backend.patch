@@ -66,7 +66,7 @@ index 14c0b525fb..43c034a046 100644
 
 
  class FigureManagerWebAgg(core.FigureManagerWebAgg):
-@@ -54,107 +37,62 @@ class FigureManagerWebAgg(core.FigureManagerWebAgg):
+@@ -54,107 +37,63 @@ class FigureManagerWebAgg(core.FigureManagerWebAgg):
      def pyplot_show(cls, *, block=None):
          WebAggApplication.initialize()
 
@@ -90,7 +90,8 @@ index 14c0b525fb..43c034a046 100644
 +        js_code = \
 +            """
 +            var websocket_type = mpl.get_websocket_type();
-+            var fig = new mpl.figure(fig_id, new websocket_type(fig_id), null, document.body);
++            const parent_element = document.pyodideMplTarget ?? document.body;
++            const fig = new mpl.figure(fig_id, new websocket_type(fig_id), null, parent_element);
 +            fig;
 +            """
 +        js_code = f"var fig_id = '{fignum}';" + js_code
