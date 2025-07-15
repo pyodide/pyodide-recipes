@@ -470,3 +470,43 @@ def test_transparency(selenium_standalone):
 
     save_canvas_data(selenium, ref)
     compare_canvas_data(selenium, ref.read_bytes())
+
+
+@pytest.mark.parametrize("use_mpl_target", [False, True])
+@matplotlib_test_decorator
+def test_pyodide_mpl_target(selenium_standalone, use_mpl_target):
+    selenium = selenium_standalone
+
+    skip_if_no_matplotlib()
+
+    @run_in_pyodide(packages=["matplotlib"])
+    def run(selenium, use_mpl_target):
+        from js import document
+        target = document.createElement('div')
+        target.id = "my-target-id"
+        document.body.appendChild(target)
+
+        if use_mpl_target:
+            document.pyodideMplTarget = target
+
+        import matplotlib
+        import matplotlib.pyplot as plt
+
+        _, ax = plt.subplots()
+        ax.plot([1, 3, 2])
+        plt.show()
+        assert matplotlib.get_backend().lower() == "webagg"
+
+        # Matplotlib figure is placed in a <canvas class='mpl-canvas'>
+        doc_matches = document.getElementsByClassName('mpl-canvas')
+        assert len(doc_matches) == 1
+        assert doc_matches[0].tagName.lower() == 'canvas'
+
+        target_matches = target.getElementsByClassName('mpl-canvas')
+        if use_mpl_target:
+            assert len(target_matches) == 1
+            assert target_matches[0].tagName.lower() == 'canvas'
+        else:
+            assert len(target_matches) == 0
+
+    run(selenium, use_mpl_target)
