@@ -27,6 +27,6 @@ requirements:
   host:
     - libopenssl
   run:
-    - openssl
+    - libopenssl
 about:
   license: PSF

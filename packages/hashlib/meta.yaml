@@ -24,7 +24,7 @@ build:
 
 requirements:
   run:
-    - openssl
+    - libopenssl
   host:
     - libopenssl
 about:
