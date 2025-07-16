@@ -11,7 +11,7 @@ source:
 build:
   exports: requested
   backend-flags: |
-    cmake.define.CMAKE_BUILD_WITH_INSTALL_RPATH=ON
+    cmake.define.CMAKE_MODULE_LINKER_FLAGS=-Wl,-rpath=\$ORIGIN
     build.verbose=ON
 
 requirements:
