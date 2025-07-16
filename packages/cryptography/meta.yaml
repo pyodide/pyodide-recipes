@@ -15,7 +15,7 @@ build:
     export OPENSSL_DIR=$WASM_LIBRARY_DIR
 requirements:
   run:
-    - openssl
+    - libopenssl
     - six
     - cffi
   host:
