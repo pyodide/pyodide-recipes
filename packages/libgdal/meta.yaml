@@ -14,7 +14,7 @@ requirements:
     - libiconv
     - libgeos
   run:
-    - geos
+    - libgeos
 
 build:
   type: shared_library
