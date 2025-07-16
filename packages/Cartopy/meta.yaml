@@ -20,7 +20,7 @@ requirements:
     - shapely
     - pyshp
     - pyproj
-    - geos
+    - libgeos
     - matplotlib
     - scipy
 
