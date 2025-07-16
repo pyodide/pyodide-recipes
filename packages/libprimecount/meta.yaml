@@ -10,7 +10,7 @@ source:
   sha256: 9d8a0127cc4dd9319006b5db6c6f9844532dab9da9c2d410d1e244902463a399
 requirements:
   host:
-    - primesieve
+    - libprimesieve
   run: []
 about:
   home: https://github.com/kimwalisch/primecount
