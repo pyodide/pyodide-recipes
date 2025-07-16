@@ -140,7 +140,7 @@ requirements:
     - boost-cpp
   run:
     - numpy
-    - openblas
+    - libopenblas
   executable:
     - gfortran
 
