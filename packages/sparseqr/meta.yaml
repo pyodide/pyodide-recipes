@@ -15,7 +15,7 @@ requirements:
     - cffi
     - numpy
     - scipy
-    - suitesparse
+    - libsuitesparse
   host:
     - libsuitesparse
 build:
