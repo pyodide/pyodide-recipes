@@ -1,11 +1,11 @@
 package:
   name: css-inline
-  version: 0.15.0
+  version: 0.16.0
   top-level:
     - css_inline
 source:
-  url: https://github.com/Stranger6667/css-inline/releases/download/python-v0.15.0/css_inline-0.15.0-cp39-abi3-pyodide_2025_0_wasm32.whl
-  sha256: ea44bbe39922760ae6e3d60929611aa22ddf205f90155dab0b91bcfbb0f7e00f
+  url: https://github.com/Stranger6667/css-inline/releases/download/python-v0.16.0/css_inline-0.16.0-cp39-abi3-pyodide_2025_0_wasm32.whl
+  sha256: e3cd4378d743ada1748ba8bab5ce3443033adb96e5aaf8e1627b67d501641740
 about:
   home: https://github.com/Stranger6667/css-inline
   summary: High-performance library for inlining CSS into HTML 'style' attributes
