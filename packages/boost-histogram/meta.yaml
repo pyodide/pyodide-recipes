@@ -13,7 +13,7 @@ requirements:
     - numpy # runtime only
   constraint:
     # Fixed in https://github.com/scikit-hep/boost-histogram/pull/1024 I guess
-    - pybind<3
+    - pybind11<3
 about:
   home: https://github.com/scikit-hep/boost-histogram
   PyPI: https://pypi.org/project/boost-histogram
