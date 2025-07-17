@@ -42,7 +42,7 @@ def package_is_built(package_name):
     return _package_is_built(package_name, pytest.pyodide_dist_dir)
 
 
-def test_parse_recipe(name: str) -> None:
+def test_parse_recipe() -> None:
     for pkg in registered_packages():
         # check that we can parse the meta.yaml
         meta = MetaConfig.from_yaml(PKG_DIR / pkg / "meta.yaml")
