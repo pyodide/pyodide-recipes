@@ -15,9 +15,9 @@ requirements:
     - cffi
     - numpy
     - scipy
-    - suitesparse
+    - libsuitesparse
   host:
-    - suitesparse
+    - libsuitesparse
 build:
   script: |
     # FIXME: We are not dealing with poetry build system correctly.

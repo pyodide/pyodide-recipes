@@ -1,5 +1,5 @@
 package:
-  name: geos
+  name: libgeos
   version: 3.12.1
   tag:
     - library

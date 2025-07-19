@@ -1,5 +1,5 @@
 package:
-  name: flint
+  name: libflint
   version: 3.2.2
   tag:
     - library
@@ -24,7 +24,7 @@ build:
         --with-mpfr=${WASM_LIBRARY_DIR} \
         --host=wasm32-unknown-emscripten \
         --disable-assembly \
-        --disable-pthread 
+        --disable-pthread
     emmake make -j ${PYODIDE_JOBS:-3}
     emmake make install
 about:

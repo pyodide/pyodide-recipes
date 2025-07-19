@@ -1,5 +1,5 @@
 package:
-  name: ngspice
+  name: libngspice
   version: "44.2"
   tag:
     - library

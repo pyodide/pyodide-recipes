@@ -1,5 +1,5 @@
 package:
-  name: gdal
+  name: libgdal
   version: 3.8.3
   tag:
     - library
@@ -12,9 +12,9 @@ requirements:
     - libtiff
     - libproj
     - libiconv
-    - geos
+    - libgeos
   run:
-    - geos
+    - libgeos
 
 build:
   type: shared_library

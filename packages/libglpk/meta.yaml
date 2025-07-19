@@ -1,5 +1,5 @@
 package:
-  name: glpk
+  name: libglpk
   version: "5.0"
   tag:
     - library

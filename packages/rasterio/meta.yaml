@@ -9,12 +9,12 @@ source:
 requirements:
   host:
     - numpy
-    - gdal
+    - libgdal
     - libproj
   run:
     - numpy
     - affine
-    - gdal
+    - libgdal
     - attrs
     - certifi
     - click
