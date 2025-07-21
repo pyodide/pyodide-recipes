@@ -23,6 +23,4 @@ build:
   script: |
     export PYMUPDF_SETUP_FLAVOUR=pb
     export PYMUPDF_SETUP_MUPDF_TESSERACT=0
-    export PYMUPDF_SETUP_MUPDF_BUILD="git:--recursive --depth 1 --shallow-submodules --branch master https://github.com/ArtifexSoftware/mupdf.git"
     export HAVE_LIBCRYPTO=no
-    export OS=pyodide
