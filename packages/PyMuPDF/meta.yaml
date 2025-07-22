@@ -20,6 +20,7 @@ extra:
     - sanzoghenzo
 build:
   exports: whole_archive
+  ldflags: "-Wl,-rpath,/lib:/lib/python3.13/site-packages/pymupdf:/lib/python3.13/site-packages/PyMuPDF.libs"
   script: |
     export PYMUPDF_SETUP_FLAVOUR=pb
     export PYMUPDF_SETUP_MUPDF_TESSERACT=0
