@@ -51,7 +51,7 @@ Mauris eu facilisis ligula. Mauris sit amet feugiat ligula. Nulla bibendum fring
     doc = pymupdf.open()
     ocg = doc.add_ocg("ocg1")
     page = doc.new_page()
-    rect = pymupdf.Rect(50, 50, 400, 400)
+    rect = pymupdf.Rect(50, 50, 450, 450)
     blue = pymupdf.utils.getColor("lightblue")
     _ = pymupdf.utils.getColorHSV("red")
     page.insert_textbox(
