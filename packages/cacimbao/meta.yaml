@@ -1,0 +1,16 @@
+package:
+  name: cacimbao
+  version: 0.2.0
+  top-level:
+    - cacimbao
+source:
+  url: https://files.pythonhosted.org/packages/py3/c/cacimbao/cacimbao-0.2.0-py3-none-any.whl
+  sha256: 1261daf71c98d550b814a7133b20cc10b3d39c7203f43afbc12161ac9a4c09b2
+about:
+  home: https://github.com/anapaulagomes/cacimbao
+  PyPI: https://pypi.org/project/cacimbao
+  summary: Base de dados brasileiras com dados reais para propósitos educacionais
+  license: GNU General Public License v3.0
+extra:
+  recipe-maintainers:
+    - anapaulagomes
