@@ -1,5 +1,5 @@
 package:
-  name: taglib
+  name: libtaglib
   version: "2.1.1"
   tag:
     - library
