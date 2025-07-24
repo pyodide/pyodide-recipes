@@ -8,6 +8,14 @@ source:
   url: 
     https://files.pythonhosted.org/packages/source/p/pymupdf/pymupdf-1.26.3.tar.gz
   sha256: b7d2c3ffa9870e1e4416d18862f5ccd356af5fe337b4511093bbbce2ca73b7e5
+build:
+  exports: whole_archive
+  ldflags: |
+    -Wl,-rpath,$ORIGIN/../PyMuPDF.libs
+  script: |
+    export PYMUPDF_SETUP_FLAVOUR=pb
+    export PYMUPDF_SETUP_MUPDF_TESSERACT=0
+    export HAVE_LIBCRYPTO=no
 about:
   home: https://pymupdf.readthedocs.io
   PyPI: https://pypi.org/project/pymupdf
@@ -18,11 +26,4 @@ about:
 extra:
   recipe-maintainers:
     - sanzoghenzo
-build:
-  exports: whole_archive
-  ldflags: |
-    -Wl,-rpath,/lib/python$(PYMAJOR).$(PYMINOR)/site-packages/pymupdf:/lib/python$(PYMAJOR).$(PYMINOR)/site-packages/PyMuPDF.libs
-  script: |
-    export PYMUPDF_SETUP_FLAVOUR=pb
-    export PYMUPDF_SETUP_MUPDF_TESSERACT=0
-    export HAVE_LIBCRYPTO=no
+    - linuxrider
