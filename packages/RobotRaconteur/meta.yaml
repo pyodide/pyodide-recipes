@@ -13,8 +13,8 @@ requirements:
   run:
     - numpy
   host:
-    - boost-cpp
-    - openssl
+    - libboost
+    - libopenssl
     - numpy
 
 build:
