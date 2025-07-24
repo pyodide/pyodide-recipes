@@ -1,5 +1,5 @@
 package:
-  name: primesieve
+  name: libprimesieve
   version: "12.6"
   tag:
     - library
