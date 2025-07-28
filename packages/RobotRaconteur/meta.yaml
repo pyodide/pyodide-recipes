@@ -5,7 +5,7 @@ package:
 # Please contact @johnwason before disabling!
 
 source:
-  url: https://github.com/robotraconteur/robotraconteur/releases/download/v1.2.2/RobotRaconteur-1.2.5-Source.tar.gz
+  url: https://github.com/robotraconteur/robotraconteur/releases/download/v1.2.5/RobotRaconteur-1.2.5-Source.tar.gz
   sha256: 3dd5e6a90032cc97089177a3525bd322b479333a87a6021ac9cc9e0a4d124fdf
 
 requirements:
