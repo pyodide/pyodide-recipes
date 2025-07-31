@@ -2,7 +2,7 @@ from pytest_pyodide import run_in_pyodide
 
 @run_in_pyodide(packages=["bitstring"])
 def test_bitstring(selenium):
-    from bitstring import BitArray
+    from bitstring import BitArray, BitStream
 
     a = BitArray('0x3348')
     assert a.hex == '3348'
