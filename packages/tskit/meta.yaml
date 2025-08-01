@@ -1,15 +1,14 @@
 package:
   name: tskit
-  version: 0.6.0
+  version: 0.6.4
   top-level:
     - tskit
 source:
-  url: https://files.pythonhosted.org/packages/01/dc/6962a28d6e2eac38f088fced8b0e62fff683bd5fa7e6c25bd38306ea6433/tskit-0.6.0.tar.gz
-  sha256: 9dda2acc84ae8dab3484dfedcb721807a4efe48e159f74f24b07789404b54106
+  url: https://files.pythonhosted.org/packages/94/95/2c2d8bdaae4a3948181de68d1fac0569d9c937a42f7ccfcf097f9a428721/tskit-0.6.4.tar.gz
+  sha256: bdac1bb7e3ae3d1f562ec191b5d840156e082dd2adc6af7c41b170c4fb1be792
 requirements:
   run:
     - numpy
-    - svgwrite
     - jsonschema
     - rpds-py
   host:

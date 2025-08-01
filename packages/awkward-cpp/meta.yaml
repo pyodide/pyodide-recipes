@@ -1,15 +1,18 @@
 package:
   name: awkward-cpp
-  version: "44"
+  version: "47"
   top-level:
     - awkward_cpp
 
 source:
-  url: https://files.pythonhosted.org/packages/a0/9c/d7655969d075f99edb4d3d0e57ea63d4742af3bfff4953ed54c7224dfca5/awkward_cpp-44.tar.gz
-  sha256: 8dc499288d6d16b2ea20b51a27d5047e51a247b6aacfcbcb3b302cad6d3c87d8
+  url: https://files.pythonhosted.org/packages/78/e3/5a255643d0ffdd1b2c8e53c4e0376a073f0547b85daa18f20cefa14bd90f/awkward_cpp-47.tar.gz
+  sha256: 676cf4976810edab32187edf5a8a716af95047b9038c96d27d3be44f1331950f
 
 build:
   exports: requested
+  backend-flags: |
+    cmake.define.CMAKE_MODULE_LINKER_FLAGS=-Wl,-rpath=\$ORIGIN
+    build.verbose=ON
 
 requirements:
   run:
@@ -18,6 +21,7 @@ requirements:
 test:
   imports:
     - awkward_cpp
+    - awkward_cpp.lib._ext
 
 about:
   home: https://pypi.org/project/awkward-cpp/

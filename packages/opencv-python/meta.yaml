@@ -22,7 +22,7 @@ requirements:
   run:
     - numpy
   host:
-    - ffmpeg
+    - libffmpeg
     - libwebp
     - libtiff
     - setuptools

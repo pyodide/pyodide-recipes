@@ -5,7 +5,7 @@ package:
     - flint
 requirements:
   host:
-    - flint
+    - libflint
     - libgmp
     - libmpfr
 source:
