@@ -1,0 +1,16 @@
+package:
+  name: starlette
+  version: 0.47.2
+  top-level:
+    - starlette
+source:
+  url: https://files.pythonhosted.org/packages/py3/s/starlette/starlette-0.47.2-py3-none-any.whl
+  sha256: c5847e96134e5c5371ee9fac6fdf1a67336d5815e09eb2a01fdb57a351ef915b
+about:
+  home: https://github.com/encode/starlette
+  PyPI: https://pypi.org/project/starlette
+  summary: The little ASGI library that shines.
+  license:  BSD-3-Clause
+extra:
+  recipe-maintainers:
+    - hoodmane
