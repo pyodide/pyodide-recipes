@@ -17,6 +17,7 @@ extra:
 requirements:
   run:
     - requests
+    - requests-toolbelt
     - typing-extensions
     - pydantic
 test:
