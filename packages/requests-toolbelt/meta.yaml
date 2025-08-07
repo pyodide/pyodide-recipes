@@ -6,6 +6,9 @@ package:
 source:
   url: https://files.pythonhosted.org/packages/py2.py3/r/requests_toolbelt/requests_toolbelt-1.0.0-py2.py3-none-any.whl
   sha256: cccfdd665f0a24fcf4726e690f65639d272bb0637b9b92dfd91a5568ccf6bd06
+requirements:
+  run:
+    - requests
 about:
   home: https://toolbelt.readthedocs.io/
   PyPI: https://pypi.org/project/requests-toolbelt
