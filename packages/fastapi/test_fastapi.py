@@ -1,7 +1,8 @@
 from pytest_pyodide import run_in_pyodide
 from pathlib import Path
 
-def test_fastapi(selenium):
+@pytest.mark.xfail_browsers(firefox="Requires JSPI", safari="Requires JSPI")
+def test_fastapi(selenium_jspi):
 
     @run_in_pyodide(packages=["fastapi", "pytest_asyncio"])
     def inner(selenium, file_contents):
