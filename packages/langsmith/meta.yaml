@@ -20,6 +20,7 @@ requirements:
     - typing-extensions
     - pydantic
     - httpx
+    - zstandard
 test:
   imports:
     - langsmith
