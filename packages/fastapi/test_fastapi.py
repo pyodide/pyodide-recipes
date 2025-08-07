@@ -4,7 +4,7 @@ import pytest
 
 
 @pytest.mark.xfail_browsers(firefox="Requires JSPI", safari="Requires JSPI")
-def test_fastapi(selenium_jspi):
+def test_fastapi(selenium):
 
     @run_in_pyodide(packages=["fastapi", "pytest_asyncio"])
     def inner(selenium, file_contents):
