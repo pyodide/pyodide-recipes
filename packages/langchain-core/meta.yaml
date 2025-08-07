@@ -21,7 +21,6 @@ requirements:
     - packaging
     - pyyaml
     - tenacity
-    - httpx
 test:
   imports:
     - langchain_core
