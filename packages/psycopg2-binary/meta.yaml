@@ -1,0 +1,13 @@
+package:
+  name: psycopg2-binary
+  version: 2.9.10
+  top-level:
+    - psycopg2
+source:
+  url: https://files.pythonhosted.org/packages/cb/0e/bdc8274dc0585090b4e3432267d7be4dfbfd8971c0fa59167c711105a6bf/psycopg2-binary-2.9.10.tar.gz
+  sha256: 4b3df0e6990aa98acda57d983942eff13d824135fe2250e6522edaa782a06de2
+about:
+  home: https://psycopg.org/
+  PyPI: https://pypi.org/project/psycopg2-binary
+  summary: psycopg2 - Python-PostgreSQL Database Adapter
+  license: LGPL with exceptions
