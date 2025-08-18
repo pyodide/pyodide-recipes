@@ -1,6 +1,6 @@
 package:
   name: inspice
-  version: 1.6.3.3
+  version: 1.6.4.1
   top-level:
     - InSpice
 source:
