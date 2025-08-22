@@ -4,7 +4,7 @@ package:
   top-level:
     - highspy
 source:
-  url: https://files.pythonhosted.org/packages/source/h/highspy/highspy-1.11.0.tar.gz
+  url: https://github.com/ERGO-Code/HiGHS/archive/refs/tags/v1.8.1.tar.gz
   sha256: 771e58c076122d207ff1b19759c21d3227f0da5b80dfd89a4145681524969cef
 requirements:
   run:
