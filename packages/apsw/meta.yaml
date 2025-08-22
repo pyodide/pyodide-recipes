@@ -1,11 +1,11 @@
 package:
   name: apsw
-  version: 3.49.1.0
+  version: 3.50.4.0
   top-level:
     - apsw
 source:
-  url: https://files.pythonhosted.org/packages/93/44/df6b76e11ff1bc412d09bbd433a14203395e05ea5d28a01a0a321d6c4da5/apsw-3.49.1.0.tar.gz
-  sha256: 24d8ee5dde78acabe7ef3a49a187dbab21da287c6a2e1313a6b1920e16b43c1c
+  url: https://files.pythonhosted.org/packages/02/ea/7469e89d75a07972255aac4c1b98675bfbc74df32a19dd5dc8ba87aa552b/apsw-3.50.4.0.tar.gz
+  sha256: a817c387ce2f4030ab7c3064cf21e9957911155f24f226c3ad4938df3a155e11
 test:
   imports:
     - apsw
