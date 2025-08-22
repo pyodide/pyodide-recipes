@@ -1,0 +1,16 @@
+package:
+  name: pyvrp
+  version: 0.11.3
+  top-level:
+    - pyvrp
+source:
+  url: https://files.pythonhosted.org/packages/source/p/pyvrp/pyvrp-0.11.3.tar.gz
+  sha256: 3ad5aad85df683b918904bcbec8de94149d3aa9efdc53f94bd46917b0b8dc1f6
+about:
+  home: https://pyvrp.org/
+  PyPI: https://pypi.org/project/pyvrp
+  summary: A state-of-the-art vehicle routing problem solver.
+  license: MIT
+extra:
+  recipe-maintainers:
+    - airen1986
