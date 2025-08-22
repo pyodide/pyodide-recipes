@@ -1,11 +1,11 @@
 package:
   name: bitarray
-  version: 3.4.3
+  version: 3.6.1
   top-level:
     - bitarray
 source:
-  url: https://files.pythonhosted.org/packages/source/b/bitarray/bitarray-3.4.3.tar.gz
-  sha256: dddfb2bf086b66aec1c0110dc46642b7161f587a6441cfe74da9e323975f62f0
+  url: https://files.pythonhosted.org/packages/source/b/bitarray/bitarray-3.6.1.tar.gz
+  sha256: 4255bff37b01562b8e6adcf9db256029765985b0790c5ff76bbe1837edcd53ea
 about:
   home: https://github.com/ilanschnell/bitarray
   PyPI: https://pypi.org/project/bitarray
