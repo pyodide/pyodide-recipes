@@ -200,6 +200,7 @@ jobs:
             # No changed recipes
             if [ "$SCIPY_WILL_BE_TESTED" == "true" ]; then
               echo "recipes=tag:core,scipy" >> "$GITHUB_OUTPUT"
+              sed -i 's/unvendor-tests: true/unvendor-tests: false/' packages/scipy/meta.yaml
               echo "Building: tag:core,scipy (no changes + scipy trigger)"
             else
               echo "recipes=tag:core" >> "$GITHUB_OUTPUT"
@@ -211,9 +212,11 @@ jobs:
               # Check if scipy is already in changed recipes to avoid duplication
               if [[ "$CHANGED_RECIPES" == *"scipy"* ]]; then
                 echo "recipes=$CHANGED_RECIPES,tag:core" >> "$GITHUB_OUTPUT"
+                sed -i 's/unvendor-tests: true/unvendor-tests: false/' packages/scipy/meta.yaml
                 echo "Building: $CHANGED_RECIPES,tag:core (scipy already included in changes)"
               else
                 echo "recipes=$CHANGED_RECIPES,tag:core,scipy" >> "$GITHUB_OUTPUT"
+                sed -i 's/unvendor-tests: true/unvendor-tests: false/' packages/scipy/meta.yaml
                 echo "Building: $CHANGED_RECIPES,tag:core,scipy (changes + scipy trigger)"
               fi
             else
