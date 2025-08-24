@@ -1,12 +1,12 @@
 package:
   name: RobotRaconteur
-  version: 1.2.5
+  version: 1.2.6
 
 # Please contact @johnwason before disabling!
 
 source:
-  url: https://github.com/robotraconteur/robotraconteur/releases/download/v1.2.5/RobotRaconteur-1.2.5-Source.tar.gz
-  sha256: 285b09046ba78eff542366524604a47404d2a30c00421e1964f86d893b93454f
+  url: https://github.com/robotraconteur/robotraconteur/releases/download/v1.2.6/RobotRaconteur-1.2.6-Source.tar.gz
+  sha256: ad6a3429ec009240f4e208b983da46ba576a1936b1031ffd9003ecf3797fcd98
 
 requirements:
   run:
