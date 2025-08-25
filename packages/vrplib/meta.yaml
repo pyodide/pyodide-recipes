@@ -1,0 +1,19 @@
+package:
+  name: vrplib
+  version: 2.0.0
+  top-level:
+    - vrplib
+source:
+  url: https://files.pythonhosted.org/packages/f4/a6/3cd94acf14036cee52418b4701caaf7bd0e0f619611648deb41725693e29/vrplib-2.0.0.tar.gz
+  sha256: 9a5623e0e03a992c000a216c36656779975d7647928ad63211196d1a59275d70
+requirements:
+  run:
+    - numpy
+about:
+  home: null
+  PyPI: https://pypi.org/project/vrplib
+  summary: Python library for reading and writing VRP instances.
+  license: null
+extra:
+  recipe-maintainers:
+    - airen1986
