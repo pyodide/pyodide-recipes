@@ -11,6 +11,8 @@ requirements:
 source:
   url: https://files.pythonhosted.org/packages/source/p/python_flint/python_flint-0.7.1.tar.gz
   sha256: 8594cdbcba0c29503eefca76dfca37fe2388f11ee95c8d1f74e47006b97ce6d2
+  patches:
+    - patches/0001-maint-bump-max-Cython-version-and-add-pypy-wheels.patch
 build:
   cflags: |
     -I$(WASM_LIBRARY_DIR)/include
