@@ -2,7 +2,6 @@ package:
   name: bilby.cython
   version: 0.5.3
   top-level:
-    - docs
     - bilby_cython
 source:
   url: https://files.pythonhosted.org/packages/source/b/bilby_cython/bilby_cython-0.5.3.tar.gz
