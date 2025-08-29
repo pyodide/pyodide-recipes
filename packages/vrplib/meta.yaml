@@ -4,8 +4,8 @@ package:
   top-level:
     - vrplib
 source:
-  url: https://files.pythonhosted.org/packages/f4/a6/3cd94acf14036cee52418b4701caaf7bd0e0f619611648deb41725693e29/vrplib-2.0.0.tar.gz
-  sha256: 9a5623e0e03a992c000a216c36656779975d7647928ad63211196d1a59275d70
+  url: https://files.pythonhosted.org/packages/9d/ef/98a0e4abda802dfc63312fb6c1858f76c01ea45e47d61568ecc81edc6669/vrplib-2.0.0-py3-none-any.whl
+  sha256: 35a31730306be034dc6d0bfd5e07fcc454282d05ba5eb6609016ca3ef8858ecb
 requirements:
   run:
     - numpy
