@@ -1,7 +1,7 @@
 from pytest_pyodide import run_in_pyodide
 
 
-@run_in_pyodide(packages=["bilby_cython"])
+@run_in_pyodide(packages=["bilby.cython"])
 def test_time_delay_from_geocenter(selenium):
     import bilby_cython
     import numpy as np
@@ -17,7 +17,7 @@ def test_time_delay_from_geocenter(selenium):
     )
 
 
-@run_in_pyodide(packages=["bilby_cython"])
+@run_in_pyodide(packages=["bilby.cython"])
 def test_frame_conversion(selenium):
     import bilby_cython
     import numpy as np
@@ -29,7 +29,7 @@ def test_frame_conversion(selenium):
     assert abs(phi - 1.5202320529440563) < 1e-5
 
 
-@run_in_pyodide(packages=["bilby_cython"])
+@run_in_pyodide(packages=["bilby.cython"])
 def test_polarization_tensor(selenium):
     import bilby_cython
     import numpy as np
@@ -46,7 +46,7 @@ def test_polarization_tensor(selenium):
     )
 
 
-@run_in_pyodide(packages=["bilby_cython"])
+@run_in_pyodide(packages=["bilby.cython"])
 def test_detector_tensor(selenium):
     import bilby_cython
     import numpy as np
@@ -65,7 +65,7 @@ def test_detector_tensor(selenium):
     )
 
 
-@run_in_pyodide(packages=["bilby_cython"])
+@run_in_pyodide(packages=["bilby.cython"])
 def test_greenwich_sidereal_time(selenium):
     import bilby_cython
 
