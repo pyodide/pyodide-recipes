@@ -1,0 +1,29 @@
+package:
+  name: pylimer-tools
+  version: 0.3.6
+  top-level:
+    - pylimer_tools
+
+source:
+  url: https://files.pythonhosted.org/packages/source/p/pylimer_tools/pylimer_tools-0.3.6.tar.gz
+  sha256: 32de5e8fdec24779621e8ffc3f86a93f65fa0e374bbc778c5d654175972441bd
+
+test:
+  imports:
+    - pylimer_tools
+    - pylimer_tools_cpp
+
+requirements:
+  run:
+    - numpy
+    - pint
+
+about:
+  home: https://github.com/GenieTim/pylimer-tools
+  PyPI: https://pypi.org/project/pylimer-tools
+  summary: A toolkit for handling bead-spring polymers and LAMMPS output in
+    Python
+  license: GPL-3.0-or-later
+extra:
+  recipe-maintainers:
+    - GenieTim
