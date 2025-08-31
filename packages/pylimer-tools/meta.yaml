@@ -16,7 +16,6 @@ test:
 requirements:
   run:
     - numpy
-    - pint
 
 about:
   home: https://github.com/GenieTim/pylimer-tools
