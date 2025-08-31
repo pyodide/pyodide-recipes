@@ -3,7 +3,7 @@
 ## How packages are built and tested in CI
 
 When a PR is opened, the GHA workflow will build submitted packages and run tests on them.
-It only builds the packages that have been modified in the PR, and their dependenciesto reduce the build time.
+It only builds the packages that have been modified in the PR, and their dependencies to reduce the build time.
 See [tools/calc_diff.py](../tools/calc_diff.py) for the logic used to determine which packages to build.
 
 When the PR is merged, the GHA workflow will build all packages in the repository and run tests on them.
