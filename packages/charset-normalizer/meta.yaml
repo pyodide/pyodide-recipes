@@ -1,11 +1,11 @@
 package:
   name: charset-normalizer
-  version: 3.4.2
+  version: 3.4.3
   top-level:
     - charset_normalizer
 source:
-  url: https://files.pythonhosted.org/packages/20/94/c5790835a017658cbfabd07f3bfb549140c3ac458cfc196323996b10095a/charset_normalizer-3.4.2-py3-none-any.whl
-  sha256: 7f56930ab0abd1c45cd15be65cc741c28b1c9a34876ce8c17a2fa107810c0af0
+  url: https://files.pythonhosted.org/packages/8a/1f/f041989e93b001bc4e44bb1669ccdcf54d3f00e628229a85b08d330615c5/charset_normalizer-3.4.3-py3-none-any.whl
+  sha256: ce571ab16d890d23b5c278547ba694193a45011ff86a9162a71307ed9f86759a
 about:
   home: https://github.com/Ousret/charset_normalizer
   PyPI: https://pypi.org/project/charset-normalizer
