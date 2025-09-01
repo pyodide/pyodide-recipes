@@ -1,12 +1,12 @@
 package:
   name: pylimer-tools
-  version: 0.3.6
+  version: 0.3.7
   top-level:
     - pylimer_tools
 
 source:
-  url: https://files.pythonhosted.org/packages/source/p/pylimer_tools/pylimer_tools-0.3.6.tar.gz
-  sha256: 32de5e8fdec24779621e8ffc3f86a93f65fa0e374bbc778c5d654175972441bd
+  url: https://files.pythonhosted.org/packages/source/p/pylimer_tools/pylimer_tools-0.3.7.tar.gz
+  sha256: 447b5133e88c46b9cfdb39824c998575fab525fee80a6c7c8a9165c3b743e037
 
 test:
   imports:
