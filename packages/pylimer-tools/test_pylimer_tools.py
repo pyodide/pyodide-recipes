@@ -4,7 +4,7 @@ from pytest_pyodide import run_in_pyodide
 @run_in_pyodide(packages=[
   "pylimer-tools", "numpy", "micropip"
 ])
-def test_pylimer_tools_cpp(selenium):
+async def test_pylimer_tools_cpp(selenium):
     import numpy as np
     
     from pylimer_tools_cpp import Universe
