@@ -1,11 +1,11 @@
 package:
   name: vrplib
-  version: 2.0.0
+  version: 2.0.1
   top-level:
     - vrplib
 source:
-  url: https://files.pythonhosted.org/packages/9d/ef/98a0e4abda802dfc63312fb6c1858f76c01ea45e47d61568ecc81edc6669/vrplib-2.0.0-py3-none-any.whl
-  sha256: 35a31730306be034dc6d0bfd5e07fcc454282d05ba5eb6609016ca3ef8858ecb
+  url: https://files.pythonhosted.org/packages/26/54/ef1aa5b1e388a42480d181cae0d1477f99cad1f1590312c74ce2853cf9e8/vrplib-2.0.1-py3-none-any.whl
+  sha256: 1c4d9693cd0ef8d904e18f890a5647b2dd8e726e13e784a3f5e16ddda2515d53
 requirements:
   run:
     - numpy
