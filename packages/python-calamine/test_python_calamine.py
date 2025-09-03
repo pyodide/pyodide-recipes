@@ -2,7 +2,10 @@ import pathlib
 
 from pytest_pyodide import run_in_pyodide
 
-@run_in_pyodide()
+@run_in_pyodide(
+packages=["python-calamine"],
+)
+
 async def calamine_test_helper(selenium):
     from python_calamine import CalamineWorkbook
 
