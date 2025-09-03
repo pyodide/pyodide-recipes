@@ -10,7 +10,7 @@ requirements:
   run:
     - numpy
 about:
-  home: null
+  home: https://github.com/PyVRP/VRPLIB
   PyPI: https://pypi.org/project/vrplib
   summary: Python library for reading and writing VRP instances.
   license: null
