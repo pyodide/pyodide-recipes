@@ -9,6 +9,8 @@ packages=["python-calamine"],
 
 async def calamine_test_helper(selenium):
     from python_calamine import CalamineWorkbook
+    from pathlib import Path
+    from datetime import date, datetime, time, timedelta
 
     names = ["Sheet1", "Sheet2", "Sheet3", "Merged Cells"]
     data = [
@@ -27,7 +29,7 @@ async def calamine_test_helper(selenium):
         ],
     ]
 
-    reader = CalamineWorkbook.from_object(pathlib.Path(__file__).parent / "test-data" / "base.xlsx")
+    reader = CalamineWorkbook.from_object(Path(__file__).parent / "test-data" / "base.xlsx")
 
     assert names == reader.sheet_names
     assert data == reader.get_sheet_by_index(0).to_python(skip_empty_area=False)
