@@ -12,6 +12,7 @@ requirements:
     - matplotlib
     - tqdm
     - tomli
+    - vrplib
 about:
   home: https://pyvrp.org/
   PyPI: https://pypi.org/project/pyvrp
