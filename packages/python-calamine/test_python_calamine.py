@@ -4,7 +4,7 @@ from pytest_pyodide import run_in_pyodide
 @run_in_pyodide(
     packages=["python-calamine"],
 )
-async def test_python_calamine(selenium):
+async def test_python_calamine(selenium, excel_data):
     from python_calamine import CalamineWorkbook
     from datetime import date, datetime, time, timedelta
     import io
@@ -28,15 +28,14 @@ async def test_python_calamine(selenium):
     ]
 
     # Load the Excel file from the bytes data passed to the function
-    excel_data = selenium.pyodide.globals.get("excel_file_data")
     excel_file = io.BytesIO(excel_data)
-    
+
     # Create the workbook reader
     reader = CalamineWorkbook.from_object(excel_file)
 
     # Test sheet names
     assert names == reader.sheet_names
-    
+
     # Test sheet data
     actual_data = reader.get_sheet_by_index(0).to_python(skip_empty_area=False)
     assert expected_data == actual_data
@@ -48,9 +47,6 @@ def test_python_calamine_wrapper(selenium):
     excel_file_path = Path(__file__).parent / "test-data" / "base.xlsx"
     with open(excel_file_path, "rb") as f:
         excel_file_data = f.read()
-    
-    # Set the data in pyodide globals so the inner test can access it
-    selenium.pyodide.globals["excel_file_data"] = excel_file_data
-    
+
     # Run the actual test
-    test_python_calamine(selenium)
+    test_python_calamine(selenium, excel_file_data)
