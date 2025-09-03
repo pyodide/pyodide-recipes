@@ -5,13 +5,10 @@ from pytest_pyodide import run_in_pyodide
   "pylimer-tools", "numpy", "micropip"
 ])
 async def test_pylimer_tools_cpp(selenium):
-    import micropip
-    await micropip.install("pint")
-    
     import numpy as np
     
     from pylimer_tools_cpp import Universe
-    from pylimer_tools.calc.miller_macosko_theory import predict_gelation_point
+    from pylimer_tools.calc.structure_analysis import compute_stoichiometric_imbalance
 
 
     # Basic test for the compiled part
@@ -20,7 +17,7 @@ async def test_pylimer_tools_cpp(selenium):
     assert np.isclose(universe.get_volume(), 10.**3)
 
     # Basic test for the Python part
-    p_gel = predict_gelation_point(r=1, f=4, b2=1)
+    r = compute_stoichiometric_imbalance(universe)
 
-    assert np.isclose(p_gel, 0.5773502691896257)
+    assert np.isclose(r, 0., atol=1e-12)
 
