@@ -5,13 +5,14 @@ from pytest_pyodide import run_in_pyodide
   "pylimer-tools", "numpy", "micropip"
 ])
 async def test_pylimer_tools_cpp(selenium):
+    import micropip
+    await micropip.install("pint")
+    
     import numpy as np
     
     from pylimer_tools_cpp import Universe
     from pylimer_tools.calc.miller_macosko_theory import predict_gelation_point
 
-    import micropip
-    await micropip.install("pint")
 
     # Basic test for the compiled part
     universe = Universe(10., 10., 10.)
