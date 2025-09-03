@@ -1,15 +1,12 @@
-import pathlib
-from datetime import date, datetime, time, timedelta
-
+from pathlib import Path
 from pytest_pyodide import run_in_pyodide
 
 @run_in_pyodide(
 packages=["python-calamine"],
 )
 
-async def calamine_test_helper(selenium):
+async def calamine_test_helper(selenium, excel_file):
     from python_calamine import CalamineWorkbook
-    from pathlib import Path
     from datetime import date, datetime, time, timedelta
 
     names = ["Sheet1", "Sheet2", "Sheet3", "Merged Cells"]
@@ -29,11 +26,12 @@ async def calamine_test_helper(selenium):
         ],
     ]
 
-    reader = CalamineWorkbook.from_object(Path(__file__).parent / "test-data" / "base.xlsx")
+    reader = CalamineWorkbook.from_object(excel_file)
 
     assert names == reader.sheet_names
     assert data == reader.get_sheet_by_index(0).to_python(skip_empty_area=False)
 
 
 def test_python_calamine(selenium):
-    calamine_test_helper(selenium)
+    excel_file = Path(__file__).parent / "test-data" / "base.xlsx"
+    calamine_test_helper(selenium, excel_file)
