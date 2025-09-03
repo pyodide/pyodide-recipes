@@ -33,5 +33,5 @@ async def calamine_test_helper(selenium, excel_file):
 
 
 def test_python_calamine(selenium):
-    excel_file = Path(__file__).parent / "test-data" / "base.xlsx"
+    excel_file = open(Path(__file__).parent / "test-data" / "base.xlsx", "rb")
     calamine_test_helper(selenium, excel_file)
