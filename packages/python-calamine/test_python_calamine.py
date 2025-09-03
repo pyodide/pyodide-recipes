@@ -1,13 +1,15 @@
 from pathlib import Path
-from pytest_pyodide import run_in_pyodide
+from pytest_pyodide import run_in_pyodide, copy_files_to_pyodide
 
 @run_in_pyodide(
     packages=["python-calamine"],
 )
-async def test_python_calamine(selenium, excel_data):
+@copy_files_to_pyodide(
+    [(Path(__file__).parent / "test-data" / "base.xlsx", "base.xlsx")]
+)
+async def test_python_calamine(selenium):
     from python_calamine import CalamineWorkbook
     from datetime import date, datetime, time, timedelta
-    import io
 
     # Test data to verify against
     names = ["Sheet1", "Sheet2", "Sheet3", "Merged Cells"]
@@ -27,11 +29,8 @@ async def test_python_calamine(selenium, excel_data):
         ],
     ]
 
-    # Load the Excel file from the bytes data passed to the function
-    excel_file = io.BytesIO(excel_data)
-
     # Create the workbook reader
-    reader = CalamineWorkbook.from_object(excel_file)
+    reader = CalamineWorkbook.from_object("base.xlsx")
 
     # Test sheet names
     assert names == reader.sheet_names
@@ -43,10 +42,6 @@ async def test_python_calamine(selenium, excel_data):
 
 def test_python_calamine_wrapper(selenium):
     """Wrapper test function that reads the Excel file and passes bytes to pyodide"""
-    # Read the Excel file as bytes
-    excel_file_path = Path(__file__).parent / "test-data" / "base.xlsx"
-    with open(excel_file_path, "rb") as f:
-        excel_file_data = f.read()
 
     # Run the actual test
-    test_python_calamine(selenium, excel_file_data)
+    test_python_calamine(selenium)
