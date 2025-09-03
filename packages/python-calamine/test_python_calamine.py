@@ -1,13 +1,14 @@
 from pathlib import Path
 from pytest_pyodide import run_in_pyodide, copy_files_to_pyodide
 
-@run_in_pyodide(
-    packages=["python-calamine"],
-)
+
 @copy_files_to_pyodide(
     [(Path(__file__).parent / "test-data" / "base.xlsx", "base.xlsx")]
 )
-async def test_python_calamine(selenium):
+@run_in_pyodide(
+    packages=["python-calamine"]
+)
+def test_python_calamine(selenium):
     from python_calamine import CalamineWorkbook
     from datetime import date, datetime, time, timedelta
 
@@ -38,10 +39,3 @@ async def test_python_calamine(selenium):
     # Test sheet data
     actual_data = reader.get_sheet_by_index(0).to_python(skip_empty_area=False)
     assert expected_data == actual_data
-
-
-def test_python_calamine_wrapper(selenium):
-    """Wrapper test function that reads the Excel file and passes bytes to pyodide"""
-
-    # Run the actual test
-    test_python_calamine(selenium)
