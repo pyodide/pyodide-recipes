@@ -1,9 +1,7 @@
 import pytest
 from pytest_pyodide import run_in_pyodide
 
-@run_in_pyodide(packages=[
-  "pylimer-tools", "numpy", "micropip"
-])
+@run_in_pyodide(packages=["pylimer-tools", "numpy"])
 async def test_pylimer_tools_cpp(selenium):
     import numpy as np
     
