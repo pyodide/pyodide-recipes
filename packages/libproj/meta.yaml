@@ -3,7 +3,7 @@ package:
   version: 9.6.2
   tag:
     - library
-    - static_library
+    - shared_library
     - cmake
 source:
   sha256: 53d0cafaee3bb2390264a38668ed31d90787de05e71378ad7a8f35bb34c575d1
@@ -18,7 +18,7 @@ requirements:
     - sqlite3
 
 build:
-  type: static_library
+  type: shared_library
   script: |
     mkdir -p build
 
@@ -31,7 +31,7 @@ build:
         -DCMAKE_BUILD_TYPE=Release \
         -DENABLE_CURL=OFF \
         -DBUILD_APPS=OFF \
-        -DBUILD_SHARED_LIBS=OFF \
+        -DBUILD_SHARED_LIBS=ON \
         -DBUILD_TESTING=OFF \
         -DTIFF_INCLUDE_DIR=$WASM_LIBRARY_DIR/include \
         -DTIFF_LIBRARY=$WASM_LIBRARY_DIR/lib/libtiff.a \

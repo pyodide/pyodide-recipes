@@ -22,6 +22,7 @@ build:
     export PROJ_WHEEL=1
     mkdir -p pyproj/proj_dir/share
     cp -r ${WASM_LIBRARY_DIR}/share/proj pyproj/proj_dir/share
+  vendor-sharedlib: true
 test:
   imports:
     - pyproj
