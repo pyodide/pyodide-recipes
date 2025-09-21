@@ -14,8 +14,8 @@ about:
   license: GPL-3.0
 requirements:
   host:
-    - primecount
-    - primesieve
+    - libprimecount
+    - libprimesieve
   run:
     - cysignals
 build:

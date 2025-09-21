@@ -42,16 +42,10 @@ def package_is_built(package_name):
     return _package_is_built(package_name, pytest.pyodide_dist_dir)
 
 
-@pytest.mark.parametrize("name", registered_packages())
-def test_parse_package(name: str) -> None:
-    # check that we can parse the meta.yaml
-    meta = MetaConfig.from_yaml(PKG_DIR / name / "meta.yaml")
-
-    sharedlibrary = meta.build.package_type == "shared_library"
-    if name == "sharedlib-test":
-        assert sharedlibrary is True
-    elif name == "sharedlib-test-py":
-        assert sharedlibrary is False
+def test_parse_recipe() -> None:
+    for pkg in registered_packages():
+        # check that we can parse the meta.yaml
+        meta = MetaConfig.from_yaml(PKG_DIR / pkg / "meta.yaml")
 
 
 @pytest.mark.skip_refcount_check

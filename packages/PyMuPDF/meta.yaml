@@ -1,0 +1,29 @@
+package:
+  name: PyMuPDF
+  version: 1.26.3
+  top-level:
+  - pymupdf
+  - fitz
+source:
+  url: 
+    https://files.pythonhosted.org/packages/source/p/pymupdf/pymupdf-1.26.3.tar.gz
+  sha256: b7d2c3ffa9870e1e4416d18862f5ccd356af5fe337b4511093bbbce2ca73b7e5
+build:
+  exports: whole_archive
+  ldflags: |
+    -Wl,-rpath,$ORIGIN/../PyMuPDF.libs
+  script: |
+    export PYMUPDF_SETUP_FLAVOUR=pb
+    export PYMUPDF_SETUP_MUPDF_TESSERACT=0
+    export HAVE_LIBCRYPTO=no
+about:
+  home: https://pymupdf.readthedocs.io
+  PyPI: https://pypi.org/project/pymupdf
+  summary:
+    A high performance Python library for data extraction, analysis, conversion
+    & manipulation of PDF (and other) documents.
+  license: Dual Licensed - GNU AFFERO GPL 3.0 or Artifex Commercial License
+extra:
+  recipe-maintainers:
+    - sanzoghenzo
+    - linuxrider

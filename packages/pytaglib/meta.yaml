@@ -6,9 +6,9 @@ package:
 
 requirements:
   host:
-    - taglib
+    - libtaglib
   run:
-    - taglib
+    - libtaglib
 
 build:
   cflags: |

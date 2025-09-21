@@ -15,7 +15,7 @@ build:
 
 requirements:
   host:
-    - glpk
+    - libglpk
   executable:
     - swig
 about:

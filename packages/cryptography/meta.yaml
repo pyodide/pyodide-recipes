@@ -1,13 +1,13 @@
 package:
   name: cryptography
-  version: 45.0.4
+  version: 45.0.6
   tag:
     - rust
   top-level:
     - cryptography
 source:
-  url: https://files.pythonhosted.org/packages/fe/c8/a2a376a8711c1e11708b9c9972e0c3223f5fc682552c82d8db844393d6ce/cryptography-45.0.4.tar.gz
-  sha256: 7405ade85c83c37682c8fe65554759800a4a8c54b2d96e0f8ad114d31b808d57
+  url: https://files.pythonhosted.org/packages/d6/0d/d13399c94234ee8f3df384819dc67e0c5ce215fb751d567a55a1f4b028c7/cryptography-45.0.6.tar.gz
+  sha256: 5c966c732cf6e4a276ce83b6e4c729edda2df6929083a952cc7da973c539c719
   patches:
     - patches/0001-Tell-rust-lang-libc-that-time_t-is-64-bits.patch
 build:
@@ -15,11 +15,11 @@ build:
     export OPENSSL_DIR=$WASM_LIBRARY_DIR
 requirements:
   run:
-    - openssl
+    - libopenssl
     - six
     - cffi
   host:
-    - openssl
+    - libopenssl
     - cffi
   executable:
     - rustup
