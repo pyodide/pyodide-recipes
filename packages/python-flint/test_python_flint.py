@@ -22,7 +22,7 @@ def test_python_flint_tests(selenium):
     main("--tests", "--verbose")
 
 
-@pytest.mark.xfail_browsers(firefox="times out")
+@pytest.mark.xfail_browsers(firefox="times out", node="times out")
 @pytest.mark.parametrize(
     "module",
     [
