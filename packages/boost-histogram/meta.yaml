@@ -1,11 +1,10 @@
 package:
   name: boost-histogram
   version: 1.6.1
-  pinned: true
   top-level:
     - boost_histogram
 source:
-  url: https://files.pythonhosted.org/packages/0e/85/eb1db36e997997677fe5ac12ef33a5149c2438b6f8afe7aa256baaa784c6/boost_histogram-1.6.1.tar.gz
+  url: https://files.pythonhosted.org/packages/source/b/boost_histogram/boost_histogram-1.6.1.tar.gz
   sha256: cbe67507f62063590395cc9fe177bf979f26a53c0574365f8241b883b9a6f756
 requirements:
   run:
