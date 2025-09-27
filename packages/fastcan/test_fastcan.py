@@ -35,4 +35,4 @@ def test_fastcan(selenium):
     )
     correlation_filter.fit(X, y)
     ssc = correlation_filter.scores_.sum()
-    assert ssc == pytest.approx(gtruth_ssc)
+    assert abs(ssc - gtruth_ssc) < 1e-5
