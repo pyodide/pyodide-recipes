@@ -5,7 +5,7 @@ package:
     - clingo
 source:
   url: https://files.pythonhosted.org/packages/f0/05/1a8a34eea27e73e4c6f7c9d0654b4fd7f509a5fbbb7b3eae7735e5ecd1c2/clingo-5.8.0.tar.gz
-  sha256: 8c92e8964f6abca79aa104ad2d6664762b3e86bc21c076f771708bb0930b4f39
+  sha256: e557d0ab209bfe185e4ae9dde531ca777be1b72a1a13a5d169926a1f9e4c4480
 about:
   home: https://github.com/potassco/clingo
   PyPI: https://pypi.org/project/clingo
