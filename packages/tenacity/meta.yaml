@@ -1,0 +1,26 @@
+package:
+  name: tenacity
+  version: 9.1.2
+  top-level:
+    - tenacity
+
+source:
+  url: https://files.pythonhosted.org/packages/py3/t/tenacity/tenacity-9.1.2-py3-none-any.whl
+  sha256: f77bf36710d8b73a50b2dd155c97b870017ad21afe6ab300326b0371b3b05138
+
+requirements:
+  run: []
+
+test:
+  imports:
+    - tenacity
+
+about:
+  home: https://github.com/jd/tenacity
+  PyPI: https://pypi.org/project/tenacity
+  summary: Retry code until it succeeds
+  license: Apache-2.0
+
+extra:
+  recipe-maintainers:
+    - jd
