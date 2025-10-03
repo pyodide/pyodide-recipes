@@ -1,13 +1,13 @@
 package:
   name: numpy-tests
-  version: 2.3.1
+  version: 2.2.5
   tag:
     - min-scipy-stack
   top-level:
     - numpy
 # NOTE: keep in sync with numpy/meta.yaml
 source:
-  path: ../numpy/build/numpy-2.3.1
+  path: ../numpy/build/numpy-2.2.5
 
 build:
   unvendor-tests: false # we do this on our own using Meson's install tags
