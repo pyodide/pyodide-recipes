@@ -1,11 +1,11 @@
 package:
   name: geopandas
-  version: 1.0.1
+  version: 1.1.1
   top-level:
     - geopandas
 source:
-  url: https://files.pythonhosted.org/packages/c4/64/7d344cfcef5efddf9cf32f59af7f855828e9d74b5f862eddf5bfd9f25323/geopandas-1.0.1-py3-none-any.whl
-  sha256: 01e147d9420cc374d26f51fc23716ac307f32b49406e4bd8462c07e82ed1d3d6
+  url: https://files.pythonhosted.org/packages/0b/70/d5cd0696eff08e62fdbdebe5b46527facb4e7220eabe0ac6225efab50168/geopandas-1.1.1-py3-none-any.whl
+  sha256: 589e61aaf39b19828843df16cb90234e72897e2579be236f10eee0d052ad98e8
 requirements:
   run:
     - shapely
