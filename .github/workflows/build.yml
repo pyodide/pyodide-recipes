@@ -387,7 +387,7 @@ jobs:
 
       - name: Surface failing tests
         if: always()
-        uses: pmeier/pytest-results-action@v0.7.2
+        uses: pmeier/pytest-results-action@20b595761ba9bf89e115e875f8bc863f913bc8ad # v0.7.2
         with:
           path: test-results-${{ matrix.test-config.runtime }}.xml
           summary: true  # Always display overall test statistics summary
@@ -396,7 +396,7 @@ jobs:
           title: "Test Results - ${{ matrix.test-config.runtime }}"
 
       - name: Upload test results XML
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: test-results-${{ matrix.test-config.runtime }}
           path: test-results-${{ matrix.test-config.runtime }}.xml
@@ -484,27 +484,9 @@ jobs:
           mv packages/scipy/scipy-conftest.py packages/scipy/conftest.py
 
       - name: Run SciPy test suite
-        run: node scipy-pytest.js --pyargs scipy -m "not slow" -vra --junitxml=test-results-scipy.xml
+        run: node scipy-pytest.js --pyargs scipy -m "not slow" -vra
         working-directory: packages/scipy/
 
-      - name: Parse SciPy test results
-        id: parse_scipy_test_results
-        run: |
-          if [ -f packages/scipy/test-results-scipy.xml ]; then
-            python tools/parse_test_result.py packages/scipy/test-results-scipy.xml scipy > test-summary-scipy.md
-            echo "SCIPY_TEST_SUMMARY_CREATED=true" >> $GITHUB_ENV
-          else
-            echo "No SciPy test results XML found"
-            echo "SCIPY_TEST_SUMMARY_CREATED=false" >> $GITHUB_ENV
-          fi
-
-      - name: Store SciPy test summary
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        if: github.event_name == 'pull_request' && env.SCIPY_TEST_SUMMARY_CREATED == 'true'
-        with:
-          name: test-summary-scipy
-          path: test-summary-scipy.md
-          retention-days: 7
 
   release: # deploy to pyodide channel
     runs-on: ubuntu-latest
