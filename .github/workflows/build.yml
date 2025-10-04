@@ -382,7 +382,25 @@ jobs:
             -n $(nproc) \
             --runner=${{ matrix.test-config.runner }} \
             --rt ${{ matrix.test-config.runtime }} \
+            --junitxml=test-results-${{ matrix.test-config.runtime }}.xml \
             packages
+
+      - name: Surface failing tests
+        if: always()
+        uses: pmeier/pytest-results-action@v0.7.2
+        with:
+          path: test-results-${{ matrix.test-config.runtime }}.xml
+          summary: true  # 전체 테스트 결과 요약 표시
+          display-options: fE  # 상세 내용은 실패(f)와 에러(E)만 표시
+          fail-on-empty: true
+          title: "Test Results - ${{ matrix.test-config.runtime }}"
+
+      - name: Upload test results XML
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.test-config.runtime }}
+          path: test-results-${{ matrix.test-config.runtime }}.xml
+        if: always()
 
   # This job runs the SciPy tests with Node.js based on the
   # above checks; separate from the main test job.
@@ -466,8 +484,27 @@ jobs:
           mv packages/scipy/scipy-conftest.py packages/scipy/conftest.py
 
       - name: Run SciPy test suite
-        run: node scipy-pytest.js --pyargs scipy -m "not slow" -vra
+        run: node scipy-pytest.js --pyargs scipy -m "not slow" -vra --junitxml=test-results-scipy.xml
         working-directory: packages/scipy/
+
+      - name: Parse SciPy test results
+        id: parse_scipy_test_results
+        run: |
+          if [ -f packages/scipy/test-results-scipy.xml ]; then
+            python tools/parse_test_result.py packages/scipy/test-results-scipy.xml scipy > test-summary-scipy.md
+            echo "SCIPY_TEST_SUMMARY_CREATED=true" >> $GITHUB_ENV
+          else
+            echo "No SciPy test results XML found"
+            echo "SCIPY_TEST_SUMMARY_CREATED=false" >> $GITHUB_ENV
+          fi
+
+      - name: Store SciPy test summary
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: github.event_name == 'pull_request' && env.SCIPY_TEST_SUMMARY_CREATED == 'true'
+        with:
+          name: test-summary-scipy
+          path: test-summary-scipy.md
+          retention-days: 7
 
   release: # deploy to pyodide channel
     runs-on: ubuntu-latest
