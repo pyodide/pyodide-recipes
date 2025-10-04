@@ -390,8 +390,8 @@ jobs:
         uses: pmeier/pytest-results-action@v0.7.2
         with:
           path: test-results-${{ matrix.test-config.runtime }}.xml
-          summary: true  # 전체 테스트 결과 요약 표시
-          display-options: fE  # 상세 내용은 실패(f)와 에러(E)만 표시
+          summary: true  # Always display overall test statistics summary
+          display-options: fE  # Show detailed list only for failed (f) and error (E) tests
           fail-on-empty: true
           title: "Test Results - ${{ matrix.test-config.runtime }}"
 
