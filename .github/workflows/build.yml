@@ -382,7 +382,25 @@ jobs:
             -n $(nproc) \
             --runner=${{ matrix.test-config.runner }} \
             --rt ${{ matrix.test-config.runtime }} \
+            --junitxml=test-results-${{ matrix.test-config.runtime }}.xml \
             packages
+
+      - name: Surface failing tests
+        if: always()
+        uses: pmeier/pytest-results-action@20b595761ba9bf89e115e875f8bc863f913bc8ad # v0.7.2
+        with:
+          path: test-results-${{ matrix.test-config.runtime }}.xml
+          summary: true  # Always display overall test statistics summary
+          display-options: fE  # Show detailed list only for failed (f) and error (E) tests
+          fail-on-empty: true
+          title: "Test Results - ${{ matrix.test-config.runtime }}"
+
+      - name: Upload test results XML
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: test-results-${{ matrix.test-config.runtime }}
+          path: test-results-${{ matrix.test-config.runtime }}.xml
+        if: always()
 
   # This job runs the SciPy tests with Node.js based on the
   # above checks; separate from the main test job.
@@ -468,6 +486,7 @@ jobs:
       - name: Run SciPy test suite
         run: node scipy-pytest.js --pyargs scipy -m "not slow" -vra
         working-directory: packages/scipy/
+
 
   release: # deploy to pyodide channel
     runs-on: ubuntu-latest
