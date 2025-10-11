@@ -1,0 +1,16 @@
+package:
+  name: msgpack-white
+  version: 1.0.0
+  top-level:
+    - msgpack_white
+source:
+  url: https://files.pythonhosted.org/packages/source/m/msgpack_white/msgpack_white-1.0.0.tar.gz
+  sha256: 3c6431a567eda360e66b4a581d55ffc557eea374f130a3ef7da38f8bbdb74b81
+about:
+  home: null
+  PyPI: https://pypi.org/project/msgpack-white
+  summary: Determine the end of MessagePack data quickly
+  license: BSD-3-Clause
+extra:
+  recipe-maintainers:
+    - sometimes-i-send-pull-requests
