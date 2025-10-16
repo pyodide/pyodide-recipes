@@ -20,7 +20,7 @@ build:
     # Remove docs to reduce the size of a wheel
     rm -rf ./pygame/docs
 about:
-  home: https://www.pygame.org
-  PyPI: https://pypi.org/project/pygame
+  home: https://pyga.me
+  PyPI: https://pypi.org/project/pygame-ce
   summary: Python Game Development
   license: LGPL-2.1
