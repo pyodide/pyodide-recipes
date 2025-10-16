@@ -16,9 +16,6 @@ build:
     emcc dummy_src_for_port.c -sSUPPORT_LONGJMP="wasm" -sRELOCATABLE=1 -fpic "--use-port=sdl2_image:formats=bmp,gif,jpg,lbm,pcx,png,pnm,qoi,svg,tga,xcf,xpm,xv"
 
     embuilder --pic build sdl2 libhtml5 sdl2_ttf 'sdl2_mixer:formats=ogg,mp3,mod,mid'
-  post: |
-    # Remove docs to reduce the size of a wheel
-    rm -rf ./pygame/docs
 about:
   home: https://pyga.me
   PyPI: https://pypi.org/project/pygame-ce
