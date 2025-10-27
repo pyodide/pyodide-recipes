@@ -4,7 +4,7 @@ package:
   top-level:
     - multidict
 source:
-  url: hhttps://files.pythonhosted.org/packages/source/m/multidict/multidict-6.7.0.tar.gz
+  url: https://files.pythonhosted.org/packages/source/m/multidict/multidict-6.7.0.tar.gz
   sha256: c6e99d9a65ca282e578dfea819cfa9c0a62b2499d8677392e09feaf305e9e6f5
 about:
   home: https://github.com/aio-libs/multidict
