@@ -1,3 +1,9 @@
+From a82e4b5423d72d6365a31d7cd088685b1cfc406d Mon Sep 17 00:00:00 2001
+From: mrfantastic <mrfantastic@local>
+Date: Sun, 26 Oct 2025 21:26:02 -0400
+Subject: [PATCH] Fix
+
+---
 diff --git a/setup.py b/setup.py
 index ea87da7..779f334 100644
 --- a/setup.py
