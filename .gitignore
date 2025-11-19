@@ -134,5 +134,3 @@ emsdk/
 ccache/
 pyodide
 packages/.libs/
-repodata/
-build-libngspice.log
