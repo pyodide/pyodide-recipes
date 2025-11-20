@@ -1,0 +1,38 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Claude Code <claude@anthropic.com>
+Date: Tue, 19 Nov 2025 07:45:00 +0000
+Subject: [PATCH] Fix hicum2 C++ name mangling issue
+
+The hicum2ext.h header was missing extern "C" guards, causing C++
+name mangling when included from C++ files. This resulted in linking
+errors because the actual function implementations in C files have
+C linkage.
+
+This patch adds the necessary extern "C" guards to ensure all
+function declarations in hicum2ext.h use C linkage regardless of
+whether they're included from C or C++ code.
+---
+ src/spicelib/devices/hicum2/hicum2ext.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+--- a/src/spicelib/devices/hicum2/hicum2ext.h
++++ b/src/spicelib/devices/hicum2/hicum2ext.h
+@@ -6,6 +6,9 @@
+ #ifndef __HICUMEXT_H
+ #define __HICUMEXT_H
+
++#ifdef __cplusplus
++extern "C" {
++#endif
+
+ extern int HICUMacLoad(GENmodel *,CKTcircuit*);
+ extern int HICUMask(CKTcircuit *,GENinstance*,int,IFvalue*,IFvalue*);
+@@ -30,4 +33,8 @@
+ extern int HICUMbindCSCComplexToReal (GENmodel*, CKTcircuit*) ;
+ #endif
+
++#ifdef __cplusplus
++}
++#endif
++
+ #endif
