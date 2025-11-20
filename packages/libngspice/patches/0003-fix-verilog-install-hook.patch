@@ -1,0 +1,17 @@
+diff --git a/src/xspice/verilog/Makefile.am b/src/xspice/verilog/Makefile.am
+index 1234567..abcdefg 100644
+--- a/src/xspice/verilog/Makefile.am
++++ b/src/xspice/verilog/Makefile.am
+@@ -45,9 +45,11 @@ endif
+ # On Windows, the dummy libvvp.* files are removed also.
+
+ install-exec-hook:
+ 	cd $(DESTDIR)$(pkglibdir); \
+ 	rm -f ivlng*a libvvp* ; \
+-	mv ivlngvpi.* ivlng.vpi
++	if [ -f ivlngvpi.so ] || [ -f ivlngvpi.dll ] || [ -f ivlngvpi.dylib ]; then \
++		mv ivlngvpi.* ivlng.vpi; \
++	fi
+
+ uninstall-hook:
+ 	rm -f $(DESTDIR)$(pkglibdir)/ivlng.vpi $(DESTDIR)$(pkglibdir)/ivlng.so
