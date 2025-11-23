@@ -9,8 +9,8 @@ source:
   sha256: 3ae94703938247a22148f60a1307d52719d42a9134b5aef6252594000f513902
   patches:
     - patches/0001-keep-alive-API-functions.patch
-    - patches/0003-fix-verilog-install-hook.patch
     - patches/0002-fix-hicum2-extern-c.patch
+    - patches/0003-fix-verilog-install-hook.patch
 
 build:
   type: shared_library
@@ -51,7 +51,6 @@ build:
     cp ${WASM_LIBRARY_DIR}/lib/libngspice.so ${DISTDIR}
 
     # Copy XSPICE code model libraries to ngspice/*.cm
-    # Since shared_library packages extract to /usr/lib/, the final path will be /usr/lib/ngspice/*.cm
     mkdir -p ${DISTDIR}/ngspice
     cp ${WASM_LIBRARY_DIR}/lib/ngspice/*.cm ${DISTDIR}/ngspice/
 
