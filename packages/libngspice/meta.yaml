@@ -10,15 +10,22 @@ source:
   patches:
     - patches/0001-keep-alive-API-functions.patch
     - patches/0002-fix-hicum2-extern-c.patch
+    - patches/0003-fix-verilog-install-hook.patch
 
 build:
   type: shared_library
   script: |
     bash ./autogen.sh
 
+    # First build cmpp natively for build-time code generation
+    mkdir build-native && cd build-native
+    ../configure --enable-xspice --disable-debug --without-x --with-readline=no
+    make -C src/xspice/cmpp -j ${PYODIDE_JOBS:-3}
+    cd ..
+
     configure_args=(
       --prefix=${WASM_LIBRARY_DIR}
-      --disable-xspice
+      --enable-xspice
       --disable-debug
       --disable-dependency-tracking
       --enable-cider
@@ -30,9 +37,22 @@ build:
 
     mkdir release-lib && cd release-lib
     emconfigure ../configure "${configure_args[@]}" CFLAGS="${SIDE_MODULE_CFLAGS}"
+
+    # Build everything except xspice/cmpp first
+    emmake make -j ${PYODIDE_JOBS:-3} -C src/xspice/cmpp LDFLAGS="${SIDE_MODULE_LDFLAGS}"
+
+    # Now replace the wasm cmpp with the native one and touch to prevent rebuild
+    cp ../build-native/src/xspice/cmpp/cmpp src/xspice/cmpp/cmpp
+    touch src/xspice/cmpp/cmpp
+
+    # Continue building the rest
     emmake make -j ${PYODIDE_JOBS:-3} LDFLAGS="${SIDE_MODULE_LDFLAGS}"
     emmake make install
     cp ${WASM_LIBRARY_DIR}/lib/libngspice.so ${DISTDIR}
+
+    # Copy XSPICE code model libraries to ngspice/*.cm
+    mkdir -p ${DISTDIR}/ngspice
+    cp ${WASM_LIBRARY_DIR}/lib/ngspice/*.cm ${DISTDIR}/ngspice/
 
 about:
   home: http://ngspice.sourceforge.net
