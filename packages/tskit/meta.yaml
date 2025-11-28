@@ -8,7 +8,7 @@ source:
   sha256: 77a5f33923d58758ec460d40e3d68c585c9654ddbd9da6326155ecf36290d0e0
 requirements:
   run:
-    - numpy
+    - numpy>2
     - jsonschema
     - rpds-py
   host:
