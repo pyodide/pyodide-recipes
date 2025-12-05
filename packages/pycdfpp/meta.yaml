@@ -1,0 +1,19 @@
+package:
+  name: pycdfpp
+  version: 0.8.3
+  top-level:
+    - pycdfpp
+source:
+  url: https://github.com/SciQLop/CDFpp/archive/refs/tags/v0.8.3.tar.gz
+  sha256: 7076cf165a6bdbd4648b863676ca293f8251d660f5a2f2aa2b15acc4737023fe
+
+build:
+  cross-build-env: true
+about:
+  home: https://github.com/SciQLop/CDFpp
+  PyPI: https://pypi.org/project/pycdfpp
+  summary: "A modern C++ header only cdf library with Python bindings"
+  license: MIT
+extra:
+  recipe-maintainers:
+    - jeandet
