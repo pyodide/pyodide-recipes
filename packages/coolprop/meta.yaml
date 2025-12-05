@@ -18,6 +18,11 @@ build:
   ldflags: -fwasm-exceptions
 
 requirements:
+  host:
+    - python
+    - scikit-build-core
+    - cmake
+    - ninja
   run:
     - numpy
     - matplotlib
