@@ -1,0 +1,20 @@
+package:
+  name: pycdfpp
+  version: 0.8.5
+  top-level:
+    - pycdfpp
+source:
+  url: https://files.pythonhosted.org/packages/37/08/2b352c2c04028465a242b7fdca069718f235033d423e8c27f77623fe53ec/pycdfpp-0.8.5.tar.gz
+  sha256: 6f9116f0446fe5e9d32234ee447e52c564db20055d89576b6d6f3119007d481e
+requirements:
+  run:
+    - numpy
+    - pyyaml
+about:
+  home: https://github.com/SciQLop/CDFpp
+  PyPI: https://pypi.org/project/pycdfpp
+  summary: "A modern C++ header only cdf library with Python bindings"
+  license: MIT
+extra:
+  recipe-maintainers:
+    - jeandet
