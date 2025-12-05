@@ -18,11 +18,6 @@ build:
   ldflags: -fwasm-exceptions
 
 requirements:
-  build:
-    - python
-    - scikit-build-core
-    - cmake
-    - ninja
   run:
     - numpy
     - matplotlib
