@@ -14,6 +14,9 @@ source:
 requirements:
   run:
     - numpy
+  constraint:
+    # static_assert(pyobj_name::total_count * sizeof(PyObject*) == NB_MOD_STATE_SIZE); fails
+    - nanobind < 2.10
 about:
   home: https://github.com/dofuuz/python-soxr
   PyPI: https://pypi.org/project/soxr
