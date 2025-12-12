@@ -38,6 +38,7 @@ build:
       -DBUILD_APPS=OFF \
       -DCMAKE_C_FLAGS="${SIDE_MODULE_CFLAGS} -Wno-deprecated-declarations -Wno-single-bit-bitfield-constant-conversion" \
       -DCMAKE_CXX_FLAGS="${SIDE_MODULE_CFLAGS} -Wno-deprecated-declarations -Wno-single-bit-bitfield-constant-conversion" \
+      -DCMAKE_SHARED_LINKER_FLAGS="-sSIDE_MODULE=1" \
       -DCMAKE_SHARED_LINKER_FLAGS="-sSIDE_MODULE=1 -sWASM_BIGINT" \
       -DGDAL_USE_EXTERNAL_LIBS=OFF \
       -DGDAL_USE_INTERNAL_LIBS=OFF \
