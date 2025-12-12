@@ -12,6 +12,7 @@ requirements:
     - libgdal
     - libproj
   run:
+    - libproj
     - numpy
     - affine
     - libgdal
