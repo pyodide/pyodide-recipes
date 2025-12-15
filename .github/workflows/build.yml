@@ -223,7 +223,7 @@ jobs:
           fi
 
       - name: Build recipes (full)
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || contains(github.event.pull_request.title, '[full build]')
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || contains(github.event.pull_request.labels.*.name, 'full build')
         run: |
           ccache -z
           export _EMCC_CACHE=1
@@ -235,7 +235,7 @@ jobs:
           ccache -s
 
       - name: Build recipes (changed only)
-        if: github.event_name == 'pull_request' && !contains(github.event.pull_request.title, '[full build]')
+        if: github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'full build')
         env:
           STEPS_CALCULATE_RECIPES_PR_OUTPUTS_RECIPES: ${{ steps.calculate_recipes_pr.outputs.recipes }}
         run: |
