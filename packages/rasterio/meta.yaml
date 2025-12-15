@@ -12,10 +12,8 @@ requirements:
     - libgdal
     - libproj
   run:
-    - libproj
     - numpy
     - affine
-    - libgdal
     - attrs
     - certifi
     - click
