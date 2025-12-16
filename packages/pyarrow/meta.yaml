@@ -27,7 +27,9 @@ build:
       # pyarrow --continue to debug build errors without having to do a full rebuild
       mkdir cppbuild
       cd cppbuild
-      emcmake cmake --preset ninja-release-emscripten ${PKG_BUILD_DIR}_cpp/cpp
+      emcmake cmake --preset ninja-release-emscripten ${PKG_BUILD_DIR}_cpp/cpp \
+        -DCMAKE_C_FLAGS="${SIDE_MODULE_CFLAGS} -sSUPPORT_LONGJMP='wasm'" -DCMAKE_CXX_FLAGS="${SIDE_MODULE_CFLAGS} -sSUPPORT_LONGJMP='wasm'" \
+        -DCMAKE_SHARED_LINKER_FLAGS="${SIDE_MODULE_CFLAGS} -sSUPPORT_LONGJMP='wasm'"
     else
       cd cppbuild
     fi
@@ -37,11 +39,9 @@ build:
     export CMAKE_TOOLCHAIN_FILE=${BACKUP_TOOLCHAIN}
     rm -f CMakeCache.txt
     rm -rf CMakeFiles
+    export PYARROW_CXXFLAGS="-Wl,-rpath,\$ORIGIN ${SIDE_MODULE_CFLAGS} -sSUPPORT_LONGJMP='wasm'"
     export EMCC_DEBUG=1
-  cxxflags: |
-    -Wl,-rpath,$ORIGIN
-  ldflags: |
-    -rpath,$ORIGIN
+
 about:
   home: https://arrow.apache.org/
   PyPI: https://pypi.org/project/pyarrow
