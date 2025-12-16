@@ -3,45 +3,13 @@ package:
   version: 22.0.0
   top-level:
     - pyarrow
-source:
-  # PyArrow is too big to build directly in pyodide, so ideally it should be built in a arrow repository
-  # and then the resulting wheel used here. But to unblock Pyodide release, we temporarily build it here locally.
-  url: https://github.com/apache/arrow/releases/download/apache-arrow-22.0.0/apache-arrow-22.0.0.tar.gz
-  sha256: 131250cd24dec0cddde04e2ad8c9e2bc43edc5e84203a81cf71cf1a33a6e7e0f
-  patches:
-    - patches/autoload_timezones.patch
-build:
-  script: |
-    # move things around so that the top level folder is the python folder
-    # with the pyproject.toml, so pyodide build works
-    cd ..
-    # build libarrow as static library without the pyodide toolchain file
-    # because that does bad things to the build
-    BACKUP_TOOLCHAIN=${CMAKE_TOOLCHAIN_FILE}
-    unset CMAKE_TOOLCHAIN_FILE
-    if [ ! -d "${PKG_BUILD_DIR}_cpp" ]; then
-      mv $PKG_BUILD_DIR ${PKG_BUILD_DIR}_cpp
-      cp -r ${PKG_BUILD_DIR}_cpp/python $PKG_BUILD_DIR
-      # build arrow cpp library and install to emscripten sysroot
-      # n.b. the if statements below mean that you can call pyodide build-packages-no-deps
-      # pyarrow --continue to debug build errors without having to do a full rebuild
-      mkdir cppbuild
-      cd cppbuild
-      emcmake cmake --preset ninja-release-emscripten ${PKG_BUILD_DIR}_cpp/cpp \
-        -DCMAKE_C_FLAGS="${SIDE_MODULE_CFLAGS} -sSUPPORT_LONGJMP='wasm'" -DCMAKE_CXX_FLAGS="${SIDE_MODULE_CFLAGS} -sSUPPORT_LONGJMP='wasm'" \
-        -DCMAKE_SHARED_LINKER_FLAGS="${SIDE_MODULE_CFLAGS} -sSUPPORT_LONGJMP='wasm'"
-    else
-      cd cppbuild
-    fi
-    cmake --build . --target=protobuf_ep_host -j 4
-    cmake --build . --target=install -j 4
-    cd ${PKG_BUILD_DIR}
-    export CMAKE_TOOLCHAIN_FILE=${BACKUP_TOOLCHAIN}
-    rm -f CMakeCache.txt
-    rm -rf CMakeFiles
-    export PYARROW_CXXFLAGS="-Wl,-rpath,\$ORIGIN ${SIDE_MODULE_CFLAGS} -sSUPPORT_LONGJMP='wasm'"
-    export EMCC_DEBUG=1
 
+source:
+  # the build script for pyarrow is stored in meta.yaml.backup file. You can use that to build pyarrow from source.
+  # however, we are not building from source in CI to save time as it takes a long time to build.
+  # TODO: upstream the build script to arrow so we don't need to maintain it here.
+  url: https://anaconda.org/pyodide/pyarrow/22.0.0/download/pyarrow-22.0.0-cp313-cp313-pyodide_2025_0_wasm32.whl
+  sha256: 79e051fd57d25ff08e46250eb149e61aba1b6a0498ef12e75e1524fd258105de
 about:
   home: https://arrow.apache.org/
   PyPI: https://pypi.org/project/pyarrow
@@ -52,8 +20,6 @@ requirements:
     - numpy
     - pandas
     - pyodide-unix-timezones
-  host:
-    - numpy
 extra:
   recipe-maintainers:
     - joemarshall
