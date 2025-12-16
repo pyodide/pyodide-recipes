@@ -41,7 +41,7 @@ build:
         -DTIFF_LIBRARY=$WASM_LIBRARY_DIR/lib/libtiff.a \
         -DCMAKE_C_FLAGS="-fPIC" \
         -DCMAKE_CXX_FLAGS="-fPIC" \
-        -DCMAKE_SHARED_LINKER_FLAGS="-ljpeg";
+        -DCMAKE_SHARED_LINKER_FLAGS="${SIDE_MODULE_LDFLAGS} -ljpeg";
     emmake make -j ${PYODIDE_JOBS:-3} install;
 about:
   home: https://proj.org/en/9.5/
