@@ -7,7 +7,7 @@ It only builds the packages that have been modified in the PR, and their depende
 See [tools/calc_diff.py](../tools/calc_diff.py) for the logic used to determine which packages to build.
 
 When the PR is merged, the GHA workflow will build all packages in the repository and run tests on them.
-Optionally, you can trigger a full build by adding the `[full build]` in the PR title.
+Optionally, you can trigger a full build by adding the "full build" label to the PR.
 
 The packages are always built with the tip-of-tree commit of Pyodide, fetching it directly from the CDN.
 This is to ensure that the packages in this repository are always compatible with the latest version of Pyodide.
