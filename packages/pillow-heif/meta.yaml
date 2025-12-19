@@ -6,17 +6,15 @@ package:
 source:
   url: https://files.pythonhosted.org/packages/source/p/pillow_heif/pillow_heif-1.1.1.tar.gz
   sha256: f60e8c8a8928556104cec4fff39d43caa1da105625bdb53b11ce3c89d09b6bde
-  # patches:
-  #   - patches/0001-Remove-include-path-check.patch
 requirements:
   run:
     - cffi
     - Pillow
-    - libheif
   host:
     - cffi
     - libheif
 build:
+  vendor_sharedlib: true
   script: |
     export LIBHEIF_ROOT=${WASM_LIBRARY_DIR}
 test:

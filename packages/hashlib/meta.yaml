@@ -8,6 +8,7 @@ package:
 source:
   path: src
 build:
+  vendor_sharedlib: true
   type: cpython_module
   script: |
     wget ${PYTHON_ARCHIVE_URL} -O Python-${PYVERSION}.tgz
@@ -24,8 +25,6 @@ build:
     cp _hashlib.so ${PKG_BUILD_DIR}/_hashlib.so
 
 requirements:
-  run:
-    - libopenssl
   host:
     - libopenssl
 about:

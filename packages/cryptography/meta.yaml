@@ -11,11 +11,11 @@ source:
   patches:
     - patches/0001-Tell-rust-lang-libc-that-time_t-is-64-bits.patch
 build:
+  vendor_sharedlib: true
   script: |
     export OPENSSL_DIR=$WASM_LIBRARY_DIR
 requirements:
   run:
-    - libopenssl
     - six
     - cffi
   host:

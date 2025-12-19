@@ -7,6 +7,7 @@ source:
   url: https://files.pythonhosted.org/packages/7e/d8/72c0afc43244e702d77a43a286aa6be41f04eb004c77a0c633b2c178fc42/inspice-1.6.4.1-py3-none-any.whl
   sha256: 60e6504c2c14f4a20d7aafa95d4f39be59df691effb9223d4819d2f70fad06c5
 requirements:
+  vendor_sharedlib: true
   run:
     - numpy
     - matplotlib
@@ -15,6 +16,7 @@ requirements:
     - diskcache
     - h5py
     - ply
+  host:
     - libngspice
 about:
   home: https://github.com/Innovoltive/InSpice

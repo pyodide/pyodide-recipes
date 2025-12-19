@@ -7,10 +7,9 @@ package:
 requirements:
   host:
     - libtaglib
-  run:
-    - libtaglib
 
 build:
+  vendor_sharedlib: true
   cflags: |
     -I$(WASM_LIBRARY_DIR)/include
   ldflags: |
