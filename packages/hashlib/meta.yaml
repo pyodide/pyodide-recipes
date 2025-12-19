@@ -8,7 +8,8 @@ package:
 source:
   path: src
 build:
-  vendor-sharedlib: true
+  # maybe support this in pyodide-build
+  # vendor-sharedlib: true
   type: cpython_module
   script: |
     wget ${PYTHON_ARCHIVE_URL} -O Python-${PYVERSION}.tgz
