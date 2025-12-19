@@ -8,7 +8,7 @@ package:
 source:
   path: src
 build:
-  vendor_sharedlib: true
+  vendor-sharedlib: true
   type: cpython_module
   script: |
     wget ${PYTHON_ARCHIVE_URL} -O Python-${PYVERSION}.tgz

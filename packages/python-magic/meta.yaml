@@ -10,7 +10,7 @@ source:
 requirements:
   # TODO: It searches libmagic from /usr/lib by default. Maybe we
   # need to send a patch to make it search from the local directory instead.
-  vendor_sharedlib: false
+  vendor-sharedlib: false
   run:
     - libmagic
 

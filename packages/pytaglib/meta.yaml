@@ -9,7 +9,7 @@ requirements:
     - libtaglib
 
 build:
-  vendor_sharedlib: true
+  vendor-sharedlib: true
   cflags: |
     -I$(WASM_LIBRARY_DIR)/include
   ldflags: |

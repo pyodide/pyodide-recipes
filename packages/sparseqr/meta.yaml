@@ -18,7 +18,7 @@ requirements:
   host:
     - libsuitesparse
 build:
-  vendor_sharedlib: true
+  vendor-sharedlib: true
   script: |
     # FIXME: We are not dealing with poetry build system correctly.
     #        So for now remove `pyproject.toml` to force pypabuild to use setup.py
