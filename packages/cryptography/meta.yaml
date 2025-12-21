@@ -1,13 +1,13 @@
 package:
   name: cryptography
-  version: 46.0.1
+  version: 46.0.3
   tag:
     - rust
   top-level:
     - cryptography
 source:
-  url: https://files.pythonhosted.org/packages/source/c/cryptography/cryptography-46.0.1.tar.gz
-  sha256: ed570874e88f213437f5cf758f9ef26cbfc3f336d889b1e592ee11283bb8d1c7
+  url: https://files.pythonhosted.org/packages/source/c/cryptography/cryptography-46.0.3.tar.gz
+  sha256: a8b17438104fed022ce745b362294d9ce35b4c2e45c1d958ad4a4b019285f4a1
   patches:
     - patches/0001-Tell-rust-lang-libc-that-time_t-is-64-bits.patch
 build:
@@ -26,6 +26,7 @@ requirements:
 test:
   imports:
     - cryptography
+    - cryptography.exceptions
     - cryptography.fernet
     - cryptography.hazmat
     - cryptography.utils

@@ -1,11 +1,11 @@
 package:
   name: python-calamine
-  version: 0.4.0
+  version: 0.5.3
   top-level:
     - python_calamine
 source:
-  url: https://files.pythonhosted.org/packages/source/p/python_calamine/python_calamine-0.4.0.tar.gz
-  sha256: 94afcbae3fec36d2d7475095a59d4dc6fae45829968c743cb799ebae269d7bbf
+  url: https://files.pythonhosted.org/packages/source/p/python_calamine/python_calamine-0.5.3.tar.gz
+  sha256: b4529c955fa64444184630d5bc8c82c472d1cf6bfe631f0a7bfc5e4802d4e996
 requirements:
   run:
     - packaging

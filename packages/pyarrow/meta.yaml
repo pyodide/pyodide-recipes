@@ -1,22 +1,25 @@
 package:
   name: pyarrow
-  version: 18.1.0
-  # TODO: re-enable once we have a build for abi 2025_0
-  _disabled: true
+  version: 22.0.0
   top-level:
     - pyarrow
+
 source:
-  # TODO: Rebuild via https://github.com/joemarshall/pyarrow-pyodide/ once 0.27 xbuildenvs are available
-  url: https://github.com/pyodide/pyodide-numpy-2.0-rebuilds/releases/download/v1.0.0/pyarrow-18.1.0-cp312-cp312-pyodide_2024_0_wasm32.whl
-  sha256: a01eed6b96e645c31bff9af941632e0a75e00aa7762211c74b5abca275e99020
+  # the build script for pyarrow is stored in meta.yaml.backup file. You can use that to build pyarrow from source.
+  # however, we are not building from source in CI to save time as it takes a long time to build.
+  # TODO: upstream the build script to arrow so we don't need to maintain it here.
+  url: https://anaconda.org/pyodide/pyarrow/22.0.0/download/pyarrow-22.0.0-cp313-cp313-pyodide_2025_0_wasm32.whl
+  sha256: 79e051fd57d25ff08e46250eb149e61aba1b6a0498ef12e75e1524fd258105de
+about:
+  home: https://arrow.apache.org/
+  PyPI: https://pypi.org/project/pyarrow
+  summary: Python library for Apache Arrow
+  license: Apache-2.0
 requirements:
   run:
     - numpy
     - pandas
     - pyodide-unix-timezones
-about:
-  home: https://github.com/apache/arrow
-  license: Apache-2.0
 extra:
   recipe-maintainers:
     - joemarshall

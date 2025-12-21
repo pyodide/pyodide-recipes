@@ -1,13 +1,13 @@
 package:
   name: rpds-py
-  version: 0.27.0
+  version: 0.28.0
   tag:
     - rust
   top-level:
     - rpds
 source:
-  url: https://files.pythonhosted.org/packages/source/r/rpds_py/rpds_py-0.27.0.tar.gz
-  sha256: 8b23cf252f180cda89220b378d917180f29d313cd6a07b2431c0d3b776aae86f
+  url: https://files.pythonhosted.org/packages/source/r/rpds_py/rpds_py-0.28.0.tar.gz
+  sha256: abd4df20485a0983e2ca334a216249b6186d6e3c1627e106651943dbdb791aea
 requirements:
   executable:
     - rustup

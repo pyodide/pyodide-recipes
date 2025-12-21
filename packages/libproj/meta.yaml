@@ -1,13 +1,13 @@
 package:
   name: libproj
-  version: 9.3.1
+  version: 9.6.2
   tag:
     - library
-    - static_library
+    - shared_library
     - cmake
 source:
-  sha256: b0f919cb9e1f42f803a3e616c2b63a78e4d81ecfaed80978d570d3a5e29d10bc
-  url: https://download.osgeo.org/proj/proj-9.3.1.tar.gz
+  sha256: 53d0cafaee3bb2390264a38668ed31d90787de05e71378ad7a8f35bb34c575d1
+  url: https://download.osgeo.org/proj/proj-9.6.2.tar.gz
   patches:
     - patches/0001-stod-empty-zero.patch
 
@@ -18,25 +18,30 @@ requirements:
     - sqlite3
 
 build:
-  type: static_library
+  type: shared_library
   script: |
     mkdir -p build
 
     embuilder build zlib --pic
     embuilder build sqlite3 --pic
+    embuilder build libjpeg --pic
 
+    # Linking libjpeg is not explicitly required (it is coming from libtiff),
+    # but without it libproj tries to load jpeg symbols dynamically at runtime for some reason,
+    # which results in missing symbol errors.
     cd build \
         && LDFLAGS="-s NODERAWFS=1 -sFORCE_FILESYSTEM=1" emcmake cmake ../ \
         -DCMAKE_INSTALL_PREFIX=$WASM_LIBRARY_DIR \
         -DCMAKE_BUILD_TYPE=Release \
         -DENABLE_CURL=OFF \
         -DBUILD_APPS=OFF \
-        -DBUILD_SHARED_LIBS=OFF \
+        -DBUILD_SHARED_LIBS=ON \
         -DBUILD_TESTING=OFF \
         -DTIFF_INCLUDE_DIR=$WASM_LIBRARY_DIR/include \
         -DTIFF_LIBRARY=$WASM_LIBRARY_DIR/lib/libtiff.a \
         -DCMAKE_C_FLAGS="-fPIC" \
-        -DCMAKE_CXX_FLAGS="-fPIC";
+        -DCMAKE_CXX_FLAGS="-fPIC" \
+        -DCMAKE_SHARED_LINKER_FLAGS="${SIDE_MODULE_LDFLAGS} -ljpeg";
     emmake make -j ${PYODIDE_JOBS:-3} install;
 about:
   home: https://proj.org/en/9.5/
