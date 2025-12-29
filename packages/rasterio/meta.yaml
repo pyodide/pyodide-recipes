@@ -14,7 +14,6 @@ requirements:
   run:
     - numpy
     - affine
-    - libgdal
     - attrs
     - certifi
     - click
