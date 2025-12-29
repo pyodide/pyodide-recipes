@@ -13,8 +13,8 @@ source:
 
 
 build:
-  cflags: -fwasm-exceptions
-  cxxflags: -fwasm-exceptions
+  cflags: -fwasm-exceptions -DCOOLPROP_NO_INCBIN
+  cxxflags: -fwasm-exceptions -DCOOLPROP_NO_INCBIN
   ldflags: -fwasm-exceptions
 
 requirements:
