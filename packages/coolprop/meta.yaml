@@ -1,8 +1,6 @@
 package:
   name: coolprop
   version: 7.2.0
-  # Now uses upstream scikit-build-core-based build; local pyproject.toml/setup.py no longer needed
-  pinned: true
   top-level:
     - CoolProp
 
