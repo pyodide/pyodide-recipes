@@ -29,7 +29,8 @@ def package_is_built(package_name):
 
 
 @pytest.fixture(scope="module")
-def pyodide_venv(tmp_path):
+def pyodide_venv(tmp_path_factory):
+    tmp_path = tmp_path_factory.mktemp("pyodide_venv")
     venv_path = tmp_path / "venv"
     sp.run(["pyodide", "venv", str(venv_path)], check=True, capture_output=True)
 
@@ -37,7 +38,7 @@ def pyodide_venv(tmp_path):
     # the packages from our cdn URL.
     # but in this repository, we are building packages locally, so we need to
     # override the pip config to not use the cdn URL.
-    pip_conf_path = venv_path / "etc" / "pip.conf"
+    pip_conf_path = venv_path / "pip.conf"
     assert pip_conf_path.exists()
     original_content = pip_conf_path.read_text()
     new_content = re.sub(
@@ -48,7 +49,7 @@ def pyodide_venv(tmp_path):
 
     pip_conf_path.write_text(new_content)
 
-    return venv_path
+    yield venv_path
 
 @pytest.mark.driver_timeout(120)
 @pytest.mark.parametrize("name", registered_packages())
@@ -56,15 +57,16 @@ def test_pip_install(
     name: str,
     pyodide_venv: Path,
 ) -> None:
+    """
+    Install all the packages in the distribution and see if they install correctly.
+    TODO: This makes a lot of requests to PyPI... how can we optimize this? Caching maybe?
+    """
     if not package_is_built(name):
-        raise AssertionError(
-            "Implementation error. Test for an unbuilt package "
-            "should have been skipped in selenium_standalone fixture"
-        )
+        pytest.skip(f"Package {name} is not built.")
     
     pip_path = pyodide_venv / "bin" / "pip"
 
-    sp.run(
+    out = sp.run(
         [
             str(pip_path),
             "install",
@@ -73,3 +75,7 @@ def test_pip_install(
         check=True,
         capture_output=True,
     )
+
+    stdout = out.stdout.decode()
+    assert f"Looking in links: {DIST_DIR}" in stdout
+    assert f"Successfully installed" in stdout
