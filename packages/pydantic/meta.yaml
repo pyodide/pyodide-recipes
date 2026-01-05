@@ -15,6 +15,7 @@ requirements:
     - typing-extensions
     - pydantic_core
     - annotated-types
+    - typing-inspection
 test:
   imports:
     - pydantic
