@@ -1,0 +1,16 @@
+package:
+  name: typing-inspection
+  version: 0.4.2
+  top-level:
+    - typing_inspection
+source:
+  url: https://files.pythonhosted.org/packages/py3/t/typing_inspection/typing_inspection-0.4.2-py3-none-any.whl
+  sha256: 4ed1cacbdc298c220f1bd249ed5287caa16f34d44ef4e9c3d0cbad5b521545e7
+about:
+  home: https://github.com/pydantic/typing-inspection
+  PyPI: https://pypi.org/project/typing-inspection
+  summary: Runtime typing introspection tools
+  license: MIT
+extra:
+  recipe-maintainers:
+    - nightlark
