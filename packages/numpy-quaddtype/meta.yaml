@@ -10,6 +10,8 @@ requirements:
   host:
     - numpy
     - libsleef
+  run:
+    - numpy
 build:
   script: |
     export CXXFLAGS="${CXXFLAGS} -I${WASM_LIBRARY_DIR}/include -sRELOCATABLE=1";
