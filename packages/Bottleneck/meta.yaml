@@ -1,0 +1,22 @@
+package:
+  name: Bottleneck
+  version: 1.6.0
+  top-level:
+    - bottleneck
+source:
+  url: https://files.pythonhosted.org/packages/source/b/bottleneck/bottleneck-1.6.0.tar.gz
+  sha256: 028d46ee4b025ad9ab4d79924113816f825f62b17b87c9e1d0d8ce144a4a0e31
+requirements:
+  host:
+    - numpy
+  run:
+    - numpy
+build:
+  # The test module is imported from the top level `__init__.py`
+  # so it cannot be unvendored
+  unvendor-tests: false
+about:
+  home: https://github.com/pydata/bottleneck
+  PyPI: https://pypi.org/project/bottleneck
+  summary: Fast NumPy array functions written in C
+  license: Simplified BSD
