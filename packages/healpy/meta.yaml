@@ -1,0 +1,43 @@
+package:
+  name: healpy
+  version: 1.19.0
+  top-level:
+    - healpy
+source:
+  url: https://files.pythonhosted.org/packages/source/h/healpy/healpy-1.19.0.tar.gz
+  sha256: 28e839cb885a23d36c77fc3423a3cb9271a07fda94085bd12fc329f941130ec5
+  patches:
+    - patches/0001-build-no-binaries.patch
+requirements:
+  executable:
+    - gfortran
+  run:
+    - numpy
+    - astropy
+build:
+  vendor-sharedlib: true
+  exports: requested
+  cflags: |
+    -DgFortran
+    -I$(WASM_LIBRARY_DIR)/include
+    -fwasm-exceptions
+  cxxflags: |
+    -fwasm-exceptions
+  ldflags: |
+    -fwasm-exceptions
+  script: |
+    set -x
+    git clone https://github.com/hoodmane/f2c.git --depth 1
+    (cd f2c/src && cp makefile.u makefile && sed -i "s/gram.c:/gram.c1:/" makefile && make)
+    export F2C_PATH=$(pwd)/f2c/src/f2c
+  cross-script: |
+    export CXXFLAGS="$CXXFLAGS -sRELOCATABLE=1"
+  post: |
+    cp ${WASM_LIBRARY_DIR}/../healpy/build/healpy-1.19.0/build/temp.emscripten_4_0_9_wasm32-cpython-313/lib/libcfitsio.so ${WASM_LIBRARY_DIR}/lib
+    cp ${WASM_LIBRARY_DIR}/../healpy/build/healpy-1.19.0/build/temp.emscripten_4_0_9_wasm32-cpython-313/lib/libhealpix_cxx.so ${WASM_LIBRARY_DIR}/lib
+    cp ${WASM_LIBRARY_DIR}/../healpy/build/healpy-1.19.0/build/temp.emscripten_4_0_9_wasm32-cpython-313/lib/libsharp.so ${WASM_LIBRARY_DIR}/lib
+about:
+  home: https://github.com/healpy/healpy
+  PyPI: https://pypi.org/project/healpy
+  summary: Healpix tools package for Python
+  license: GPL-2.0-only
