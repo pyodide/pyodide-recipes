@@ -1,5 +1,5 @@
 package:
-  name: numcodecs_wasm
+  name: numcodecs-wasm
   version: 0.2.2
   tag:
     - rust
@@ -16,6 +16,12 @@ requirements:
     - numcodecs-observers
     - numpy
     - typing-extensions
+build:
+  script: |
+    # FIXME: remove once https://github.com/pyodide/pyodide/pull/6027 is used in pyodide-recipes
+    export RUST_TOOLCHAIN="nightly-2025-12-10"
+    rustup toolchain install ${RUST_TOOLCHAIN}
+    rustup target add wasm32-unknown-emscripten --toolchain ${RUST_TOOLCHAIN}
 about:
   home: https://github.com/juntyr/numcodecs-rs
   PyPI: https://pypi.org/project/numcodecs-wasm
