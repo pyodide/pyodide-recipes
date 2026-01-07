@@ -1,0 +1,23 @@
+package:
+  name: numcodecs_wasm
+  version: 0.2.2
+  tag:
+    - rust
+  top-level:
+    - numcodecs_wasm
+source:
+  url: https://files.pythonhosted.org/packages/source/n/numcodecs_wasm/numcodecs_wasm-0.2.2.tar.gz
+  sha256: 894f3d005ad2fe98224aa639c8d5e580d2db046589ed059641335ebf75d7b070
+requirements:
+  executable:
+    - rustup
+  run:
+    - numcodecs
+    - numcodecs-observers
+    - numpy
+    - typing-extensions
+about:
+  home: https://github.com/juntyr/numcodecs-rs
+  PyPI: https://pypi.org/project/numcodecs-wasm
+  summary: numcodecs compression for codecs compiled to WebAssembly
+  license: MPL-2.0
