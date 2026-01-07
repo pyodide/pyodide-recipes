@@ -1,0 +1,22 @@
+package:
+  name: google-crc32c
+  version: 1.8.0
+  top-level:
+    - google_crc32c
+source:
+  url: https://files.pythonhosted.org/packages/source/g/google_crc32c/google_crc32c-1.8.0.tar.gz
+  sha256: a428e25fb7691024de47fecfbff7ff957214da51eddded0da0ae0e0f03a2cf79
+requirements:
+  host:
+    - libcrc32c
+build:
+  vendor-sharedlib: true
+  script: |
+    export CRC32C_PURE_PYTHON=0;
+    export CFLAGS="${CFLAGS} -I${WASM_LIBRARY_DIR}/include";
+    export LDFLAGS="${CFLAGS} -L${WASM_LIBRARY_DIR}/lib";
+about:
+  home: https://github.com/googleapis/python-crc32c
+  PyPI: https://pypi.org/project/google-crc32c
+  summary: A python wrapper of the C library 'Google CRC32C'
+  license: Apache License 2.0
