@@ -6,8 +6,9 @@ from pytest_pyodide import run_in_pyodide
 @run_in_pyodide(packages=["Bottleneck"])
 def test_move_median_without_nans(selenium):
     import bottleneck as bn
+    import numpy as np
+    from numpy.testing import assert_array_almost_equal
     fmt = "\nfunc %s | window %d | min_count %s\n\nInput array:\n%s\n"
-    aaae = assert_array_almost_equal
     min_count = 1
     size = 10
     func = bn.move_median
@@ -20,12 +21,13 @@ def test_move_median_without_nans(selenium):
             actual = func(a, window=window, min_count=min_count)
             desired = func0(a, window=window, min_count=min_count)
             err_msg = fmt % (func.__name__, window, min_count, a)
-            aaae(actual, desired, decimal=5, err_msg=err_msg)
+            assert_array_almost_equal(actual, desired, decimal=5, err_msg=err_msg)
 
 
 @run_in_pyodide(packages=["Bottleneck"])
 def test_move_std_sqrt(selenium):
     import bottleneck as bn
+    import numpy as np
     a = [
         0.0011448196318903589,
         0.00028718669878572767,
@@ -49,6 +51,8 @@ def test_move_std_sqrt(selenium):
 @run_in_pyodide(packages=["Bottleneck"])
 def test_transpose(selenium):
     import bottleneck as bn
+    import numpy as np
+    from numpy.testing import assert_equal
     a = np.arange(12).reshape(4, 3)
     actual = bn.partition(a.T, 2, -1).T
     desired = bn.slow.partition(a.T, 2, -1).T
@@ -58,6 +62,8 @@ def test_transpose(selenium):
 @run_in_pyodide(packages=["Bottleneck"])
 def test_push(selenium):
     import bottleneck as bn
+    import numpy as np
+    from numpy.testing import assert_array_equal
     ns = (0, 1, 2, 3, 4, 5, None)
     a = np.array([np.nan, 1, 2, np.nan, np.nan, np.nan, np.nan, 3, np.nan])
     for n in ns:
