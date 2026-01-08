@@ -2,8 +2,26 @@ from pytest_pyodide import run_in_pyodide
 
 
 @run_in_pyodide(packages=["pyrodigal"])
-def test_pyrodigal_unittests(selenium):
-    import unittest
+def test_pyrodigal_gene_finder(selenium):
+    import pyrodigal
 
-    prog = unittest.main("pyrodigal.tests", exit=False)
-    assert prog.result.wasSuccessful
+    seq = (
+        "TTGGGCATACCGGCTGAATACGTCTTATTCGACAGCTGTTTCTCTTCACCTAAAA"
+        "TGTTCTGGCAGCTGAAACAATTAGGGTTAGACAGCGTAGGCATGCTTAAGCGGAC"
+        "CAAGAAAGCTTATTATCGTTACCGTGGCCGACTTTATGATGTCAAAGGCCTGTAC"
+        "GAGCGCTTAGCTGCTTCCAAAATGCGTCAAAAAGAAGACTATCCCTATAGCAGCG"
+        "TGGTCGAACCTGAATATCAGGGACATGTTTTCCAAATTAGATTAGTCTATGTCAC"
+        "TAAGCGCGGCGGTAAAGGAAAATATTTGGTACTGGTAACCACGCAATACAAGCTG"
+        "CGATCAAAGTATTGCACGTCTTCTATGACAAGTGGAACAGAGCTTATAATCATGT"
+        "CATAA"
+    )
+    gf = pyrodigal.GeneFinder(meta=True)
+    genes = gf.find_genes(seq)
+    assert len(genes) == 1
+
+    prot = (
+        "LGIPAEYVLFDSCFSSPKMFWQLKQLGLDSVGMLKRTKKAYYRYRGRLYDVKGLY"
+        "ERLAASKMRQKEDYPYSSVVEPEYQGHVFQIRLVYVTKRGGKGKYLVLVTTQYKL"
+        "RSKYCTSSMTSGTELIIMS*"
+    )
+    assert genes[0].translate() == prot
