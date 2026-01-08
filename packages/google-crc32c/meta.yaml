@@ -20,3 +20,6 @@ about:
   PyPI: https://pypi.org/project/google-crc32c
   summary: A python wrapper of the C library 'Google CRC32C'
   license: Apache License 2.0
+extra:
+  recipe-maintainers:
+    - juntyr
