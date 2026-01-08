@@ -73,6 +73,6 @@ _EXPECTED = [
 # adopted from https://github.com/googleapis/python-crc32c/blob/9652503fb296eef101d84b9b631f454cc7c1d538/tests/test___init__.py
 @pytest.mark.parametrize("chunk, expected", _EXPECTED)
 @run_in_pyodide(packages=["google-crc32c"])
-def test_checksum_value(chunk, expected):
+def test_checksum_value(selenium, chunk, expected):
     import google_crc32c
     assert google_crc32c.value(bytes(chunk)) == expected
