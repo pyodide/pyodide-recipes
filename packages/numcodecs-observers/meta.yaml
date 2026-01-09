@@ -17,3 +17,6 @@ about:
   PyPI: https://pypi.org/project/numcodecs-observers
   summary: Observe encoding and decoding in the `numcodecs` buffer compression API
   license: MPL-2.0
+extra:
+  recipe-maintainers:
+    - juntyr

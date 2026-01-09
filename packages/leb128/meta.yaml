@@ -1,0 +1,16 @@
+package:
+  name: leb128
+  version: 1.0.8
+  top-level:
+    - leb128
+source:
+  url: https://files.pythonhosted.org/packages/09/97/45ab4bab1a89e6fdbc822f818bb18b39eed0dd7ed1faac8b89bc6b49a9ed/leb128-1.0.8-py3-none-any.whl
+  sha256: 76cd271e75ea91aa2fbf7783d60cb7d667b62143d544bcee59159ff258bf4523
+about:
+  home: https://github.com/mohanson/leb128
+  PyPI: https://pypi.org/project/leb128
+  summary: LEB128(Little Endian Base 128)
+  license: MIT
+extra:
+  recipe-maintainers:
+    - juntyr

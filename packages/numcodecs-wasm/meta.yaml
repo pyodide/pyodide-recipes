@@ -27,3 +27,6 @@ about:
   PyPI: https://pypi.org/project/numcodecs-wasm
   summary: numcodecs compression for codecs compiled to WebAssembly
   license: MPL-2.0
+extra:
+  recipe-maintainers:
+    - juntyr
