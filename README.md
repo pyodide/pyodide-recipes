@@ -30,6 +30,14 @@ and other metadata including the dependencies.
 See the [Pyodide documentation](https://pyodide.org/en/stable/development/adding-packages-into-pyodide-distribution.html)
 for more information on creating package recipes.
 
+## Updating an existing package
+
+Assuming you've already followed the setup instructions above, just run:
+
+```bash
+$ pyodide skeleton pypi <package-name> --update
+```
+
 ## How to use the recipes in Pyodide
 
 There are three ways to use the packages built by this repository in Pyodide:
