@@ -8,34 +8,18 @@ source:
   sha256: 28e839cb885a23d36c77fc3423a3cb9271a07fda94085bd12fc329f941130ec5
   patches:
     - patches/0001-build-no-binaries.patch
-requirements:
-  executable:
-    - gfortran
-  host:
-    - libzlib
-  run:
-    - numpy
-    - astropy
+    - patches/0002-without-zlib-check-fortran.patch
 build:
   vendor-sharedlib: true
   exports: requested
   cflags: |
-    -DgFortran
     -I$(WASM_LIBRARY_DIR)/include
     -fwasm-exceptions
   cxxflags: |
     -fwasm-exceptions
   ldflags: |
     -fwasm-exceptions
-  script: |
-    embuilder build zlib --pic
-
-    set -x
-    git clone https://github.com/hoodmane/f2c.git --depth 1
-    (cd f2c/src && cp makefile.u makefile && sed -i "s/gram.c:/gram.c1:/" makefile && make)
-    export F2C_PATH=$(pwd)/f2c/src/f2c
   cross-script: |
-    export CFLAGS="$CFLAGS -I$(WASM_LIBRARY_DIR)/include"
     export CXXFLAGS="$CXXFLAGS -sRELOCATABLE=1"
   post: |
     cp ${WASM_LIBRARY_DIR}/../healpy/build/healpy-1.19.0/build/temp.emscripten_4_0_9_wasm32-cpython-313/lib/libcfitsio.so ${WASM_LIBRARY_DIR}/lib
@@ -46,3 +30,6 @@ about:
   PyPI: https://pypi.org/project/healpy
   summary: Healpix tools package for Python
   license: GPL-2.0-only
+extra:
+  recipe-maintainers:
+    - juntyr
