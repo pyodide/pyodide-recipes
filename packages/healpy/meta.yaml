@@ -9,6 +9,12 @@ source:
   patches:
     - patches/0001-build-no-binaries.patch
     - patches/0002-without-zlib-check-fortran.patch
+requirements:
+  host:
+    - libzlib
+  run:
+    - numpy
+    - astropy
 build:
   vendor-sharedlib: true
   exports: requested
