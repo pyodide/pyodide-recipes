@@ -1,12 +1,12 @@
 package:
   name: pylimer-tools
-  version: 0.3.11
+  version: 0.3.13
   top-level:
     - pylimer_tools
 
 source:
-  url: https://github.com/GenieTim/pylimer-tools/releases/download/v0.3.11/pylimer_tools-0.3.11-cp313-cp313-pyodide_2025_0_wasm32.whl
-  sha256: ada5e13caa75c5e75cc08a6023090c69d04eec55603b02985718f2149e2cb1b9
+  url: https://github.com/GenieTim/pylimer-tools/releases/download/v0.3.13/pylimer_tools-0.3.13-cp313-cp313-pyodide_2025_0_wasm32.whl
+  sha256: ecb140aead8054ab91e3fa6e1bcaf4476055e8f9b112e8d143e359608262bb16
 
 test:
   imports:
