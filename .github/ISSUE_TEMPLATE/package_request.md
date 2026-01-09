@@ -24,4 +24,4 @@ Therefore, a way to speed up your progress is to read the documentation, try bui
 ## Checklists
 
 - [ ] I have tried to install the package using `micropip.install(...)` and encountered the issue.
-- [ ] I have read the [documentation](https://pyodide.org/en/stable/development/building-and-testing-packages.html) and tried building the package myself.
+- [ ] I have read the [documentation](https://pyodide.org/en/stable/development/building-packages-from-source.html) and tried building the package myself.
