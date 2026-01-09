@@ -19,4 +19,7 @@ about:
   home: https://github.com/pydata/bottleneck
   PyPI: https://pypi.org/project/bottleneck
   summary: Fast NumPy array functions written in C
-  license: Simplified BSD
+  license: BSD-2-Clause
+extra:
+  recipe-maintainers:
+    - juntyr
