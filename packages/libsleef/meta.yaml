@@ -1,0 +1,67 @@
+package:
+  name: libsleef
+  version: "3.8"
+  tag:
+    - library
+    - static_library
+source:
+  sha256: a12ccd50f57083c530e1c76f10d52865defbd19fc9e2c85b483493065709874a
+  url: https://github.com/shibatch/sleef/archive/refs/tags/3.8.tar.gz
+  patches:
+    - patches/0001-no-x86intrin.patch
+    - patches/0002-no-mfpmatch.patch
+    - patches/0003-no-mfma.patch
+    - patches/0004-no-cpuid.patch
+build:
+  type: static_library
+  script: |
+    mkdir build-native
+    cd build-native
+
+    export NATIVE_BUILD_DIR=`pwd`
+
+    BACKUP_TOOLCHAIN=${CMAKE_TOOLCHAIN_FILE}
+    unset CMAKE_TOOLCHAIN_FILE
+
+    cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DSLEEF_BUILD_QUAD=ON \
+      -DSLEEF_BUILD_SHARED_LIBS=OFF \
+      -DSLEEF_BUILD_TESTS=OFF \
+      -DSLEEF_BUILD_INLINE_HEADERS=OFF \
+      -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+      ../
+    
+    make -j ${PYODIDE_JOBS:-3}
+
+    export CMAKE_TOOLCHAIN_FILE=${BACKUP_TOOLCHAIN}
+
+    cd ..
+    mkdir build
+    cd build
+
+    emcmake cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DSLEEF_BUILD_QUAD=ON \
+      -DSLEEF_BUILD_SHARED_LIBS=OFF \
+      -DSLEEF_BUILD_TESTS=OFF \
+      -DSLEEF_BUILD_INLINE_HEADERS=OFF \
+      -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+      -DCMAKE_INSTALL_PREFIX=${WASM_LIBRARY_DIR} \
+      -DNATIVE_BUILD_DIR=${NATIVE_BUILD_DIR} \
+      -DCMAKE_C_FLAGS="-msimd128 -msse2" \
+      -DCMAKE_CXX_FLAGS="-msimd128 -msse2" \
+      -DSLEEF_DISABLE_FLOAT128=ON \
+      ../
+
+    # -DSLEEF_ENABLE_SSE2=ON \
+    # -DSLEEF_ENABLE_AVX2=OFF \
+
+    emmake make -j ${PYODIDE_JOBS:-3}
+    emmake make install
+
+    mkdir -p dist
+    cp ${WASM_LIBRARY_DIR}/lib/libsleef* dist/
+about:
+  home: https://github.com/shibatch/sleef
+  license: Boost Software License - Version 1.0
