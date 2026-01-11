@@ -10,11 +10,11 @@ requirements:
   run:
     - cffi
     - Pillow
-    - libheif
   host:
     - cffi
     - libheif
 build:
+  vendor-sharedlib: true
   script: |
     export LIBHEIF_ROOT=${WASM_LIBRARY_DIR}
 test:
