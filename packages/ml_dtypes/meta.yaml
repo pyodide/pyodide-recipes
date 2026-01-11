@@ -1,5 +1,5 @@
 package:
-  name: ml_dtypes
+  name: ml-dtypes
   version: 0.5.4
   top-level:
     - ml_dtypes
