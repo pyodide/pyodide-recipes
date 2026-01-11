@@ -9,6 +9,7 @@ source:
   patches:
     - patches/0001-build-no-binaries.patch
     - patches/0002-without-zlib-check-fortran.patch
+    - patches/0003-install-path.patch
 requirements:
   host:
     - libzlib
@@ -25,13 +26,8 @@ build:
     -fwasm-exceptions
   ldflags: |
     -fwasm-exceptions
-    -Wl,-rpath,$ORIGIN
   script: |
     export CXXFLAGS="$CXXFLAGS -sRELOCATABLE=1"
-  # post: |
-  #   cp ${WASM_LIBRARY_DIR}/../healpy/build/healpy-1.19.0/build/temp.emscripten_4_0_9_wasm32-cpython-313/lib/libcfitsio.so ${WASM_LIBRARY_DIR}/lib
-  #   cp ${WASM_LIBRARY_DIR}/../healpy/build/healpy-1.19.0/build/temp.emscripten_4_0_9_wasm32-cpython-313/lib/libhealpix_cxx.so ${WASM_LIBRARY_DIR}/lib
-  #   cp ${WASM_LIBRARY_DIR}/../healpy/build/healpy-1.19.0/build/temp.emscripten_4_0_9_wasm32-cpython-313/lib/libsharp.so ${WASM_LIBRARY_DIR}/lib
 about:
   home: https://github.com/healpy/healpy
   PyPI: https://pypi.org/project/healpy
