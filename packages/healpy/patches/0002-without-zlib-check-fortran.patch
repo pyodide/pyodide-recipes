@@ -1,0 +1,13 @@
+diff --git a/setup.py b/setup.py
+index 638340b..3cab0f3 100755
+--- a/setup.py
++++ b/setup.py
+@@ -170,6 +170,8 @@ class build_external_clib(build_clib):
+                 "--disable-curl",
+                 "--with-pic",
+                 "--disable-maintainer-mode",
++                "--without-zlib-check",
++                "--without-fortran",
+             ]
+ 
+             log.info("%s", " ".join(cmd))

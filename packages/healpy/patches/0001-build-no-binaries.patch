@@ -1,0 +1,36 @@
+diff --git a/cextern/cfitsio/Makefile.in b/cextern/cfitsio/Makefile.in
+index 69ced1a..1cd91f4 100644
+--- a/cextern/cfitsio/Makefile.in
++++ b/cextern/cfitsio/Makefile.in
+@@ -101,10 +101,8 @@ host_triplet = @host@
+ target_triplet = @target@
+ @NOFORTRAN_FALSE@am__append_1 = $(F77_WRAPPERS)
+ @NOGSIFTP_FALSE@am__append_2 = ${GSIFTP_SRC}
+-bin_PROGRAMS = cookbook$(EXEEXT) fitscopy$(EXEEXT) fitsverify$(EXEEXT) \
+-	fpack$(EXEEXT) funpack$(EXEEXT) imcopy$(EXEEXT) smem$(EXEEXT) \
+-	speed$(EXEEXT)
+-noinst_PROGRAMS = testprog$(EXEEXT) $(am__EXEEXT_1)
++bin_PROGRAMS =
++noinst_PROGRAMS =
+ @NOFORTRAN_FALSE@am__append_3 = testf77
+ subdir = .
+ ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
+diff --git a/cextern/healpix/src/cxx/Makefile.in b/cextern/healpix/src/cxx/Makefile.in
+index 5e16e2e..5396de5 100644
+--- a/cextern/healpix/src/cxx/Makefile.in
++++ b/cextern/healpix/src/cxx/Makefile.in
+@@ -91,13 +91,7 @@ PRE_UNINSTALL = :
+ POST_UNINSTALL = :
+ build_triplet = @build@
+ host_triplet = @host@
+-bin_PROGRAMS = alm2map_cxx$(EXEEXT) anafast_cxx$(EXEEXT) \
+-	calc_powspec$(EXEEXT) hotspots_cxx$(EXEEXT) map2tga$(EXEEXT) \
+-	median_filter_cxx$(EXEEXT) mult_alm$(EXEEXT) \
+-	rotalm_cxx$(EXEEXT) smoothing_cxx$(EXEEXT) \
+-	syn_alm_cxx$(EXEEXT) udgrade_cxx$(EXEEXT) \
+-	udgrade_harmonic_cxx$(EXEEXT) compute_weights$(EXEEXT) \
+-	needlet_tool$(EXEEXT) alice3$(EXEEXT)
++bin_PROGRAMS =
+ check_PROGRAMS = hpxtest$(EXEEXT)
+ TESTS = hpxtest$(EXEEXT)
+ subdir = .
