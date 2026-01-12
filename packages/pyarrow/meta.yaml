@@ -9,7 +9,7 @@ source:
   # however, we are not building from source in CI to save time as it takes a long time to build.
   # TODO: upstream the build script to arrow so we don't need to maintain it here.
   url: https://anaconda.org/pyodide/pyarrow/22.0.0/download/pyarrow-22.0.0-cp313-cp313-pyodide_2025_0_wasm32.whl
-  sha256: 79e051fd57d25ff08e46250eb149e61aba1b6a0498ef12e75e1524fd258105de
+  sha256: c12e597efd26eea44ae6eca2d6e9b87064f0e011ecfb10a97c9ead896f1a7473
 about:
   home: https://arrow.apache.org/
   PyPI: https://pypi.org/project/pyarrow
