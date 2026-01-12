@@ -525,7 +525,7 @@ jobs:
       - name: Upload wheels
         run: |
           # Anaconda denies packages with long descriptions, so set summary to null
-          anaconda -t ${{ secrets.ANACONDA_API_TOKEN }} upload --force ./repodata/*.whl --summary=" " --description=" "
+          anaconda -t ${{ secrets.ANACONDA_API_TOKEN }} upload ./repodata/*.whl --summary=" " --description=" "
 
   release-nightly:  # deploys to pyodide-nightly channel
     runs-on: ubuntu-latest
@@ -564,4 +564,4 @@ jobs:
       - name: Upload wheels
         run: |
           # Anaconda denies packages with long descriptions, so set summary to null
-          anaconda -t ${{ secrets.ANACONDA_API_TOKEN }} upload --force ./repodata/*.whl --summary=" " --description=" "
+          anaconda -t ${{ secrets.ANACONDA_API_TOKEN }} upload ./repodata/*.whl --summary=" " --description=" "
