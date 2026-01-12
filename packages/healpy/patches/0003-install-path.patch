@@ -1,3 +1,10 @@
+healpy's setup.py script sets up its own build directory structure when
+building the shared library dependencies it needs. However, this structure
+makes it difficult for auditwheel-emscripten to find the libraries for
+vendoring, and many different rpath combinations do not work. However, we can
+just ask the subprojects to install their shared libraries into Pyodide's lib
+folder, which allows auditwheel-emscripten to find them.
+
 diff --git a/setup.py b/setup.py
 index 3cab0f3..db70742 100755
 --- a/setup.py

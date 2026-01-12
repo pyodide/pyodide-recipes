@@ -1,3 +1,9 @@
+Building healpy requires the `exports: requested` option to avoid missing
+symbols at runtime. However, enabling that makes the building of binaries
+in the cfitsio and healpix subprojects fail because of symbol duplication.
+Since we do not need those binaries anyways, this patch removes them from
+the Makefiles of the subprojects.
+
 diff --git a/cextern/cfitsio/Makefile.in b/cextern/cfitsio/Makefile.in
 index 69ced1a..1cd91f4 100644
 --- a/cextern/cfitsio/Makefile.in
