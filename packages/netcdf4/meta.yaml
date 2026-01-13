@@ -13,7 +13,6 @@ requirements:
   run:
     - numpy
     - packaging
-    - h5py
     - cftime
     - certifi
 test:
