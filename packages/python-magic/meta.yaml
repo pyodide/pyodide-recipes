@@ -8,12 +8,12 @@ source:
   sha256: c1ba14b08e4a5f5c31a302b7721239695b2f0f058d125bd5ce1ee36b9d9d3c3b
 
 requirements:
+  run:
+    - libmagic
+build:
   # TODO: It searches libmagic from /usr/lib by default. Maybe we
   # need to send a patch to make it search from the local directory instead.
   vendor-sharedlib: false
-  run:
-    - libmagic
-
 about:
   home: http://github.com/ahupp/python-magic
   PyPI: https://pypi.org/project/python-magic
