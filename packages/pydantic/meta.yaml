@@ -1,6 +1,6 @@
 package:
   name: pydantic
-  version: 2.10.6
+  version: 2.12.5
   tag:
     - rust
   # Warning: pydantic has a pin on pydantic_core, they need to be updated
@@ -8,13 +8,14 @@ package:
   top-level:
     - pydantic
 source:
-  url: https://files.pythonhosted.org/packages/b7/ae/d5220c5c52b158b1de7ca89fc5edb72f304a70a4c540c84c8844bf4008de/pydantic-2.10.6.tar.gz
-  sha256: ca5daa827cce33de7a42be142548b0096bf05a7e7b365aebfa5f8eeec7128236
+  url: https://files.pythonhosted.org/packages/source/p/pydantic/pydantic-2.12.5.tar.gz
+  sha256: 4d351024c75c0f085a9febbb665ce8c0c6ec5d30e903bdb6394b7ede26aebb49
 requirements:
   run:
     - typing-extensions
     - pydantic_core
     - annotated-types
+    - typing-inspection
 test:
   imports:
     - pydantic
