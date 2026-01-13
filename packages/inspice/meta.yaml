@@ -15,6 +15,7 @@ requirements:
     - diskcache
     - h5py
     - ply
+    - libngspice
 about:
   home: https://github.com/Innovoltive/InSpice
   PyPI: https://pypi.org/project/inspice
