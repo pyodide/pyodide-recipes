@@ -22,6 +22,7 @@ requirements:
     - mmh3
     - pydantic
     - pyparsing
+    - pyroaring
     - requests
     - rich
     - sortedcontainers
