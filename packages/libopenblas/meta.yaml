@@ -48,6 +48,9 @@ build:
 
     cp libopenblas.so dist
     emmake make install PREFIX=${WASM_LIBRARY_DIR}
+    # We need to copy the shared library again as the make install
+    # does not know we've modified the binary with libf2c symbols.
+    cp dist/libopenblas.so ${WASM_LIBRARY_DIR}/lib/libopenblas.so
 
 requirements:
   host:
