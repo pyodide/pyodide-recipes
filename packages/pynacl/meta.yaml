@@ -1,11 +1,11 @@
 package:
   name: pynacl
-  version: 1.5.0
+  version: 1.6.2
   top-level:
     - nacl
 source:
-  url: https://files.pythonhosted.org/packages/a7/22/27582568be639dfe22ddb3902225f91f2f17ceff88ce80e4db396c8986da/PyNaCl-1.5.0.tar.gz
-  sha256: 8ac7448f09ab85811607bdd21ec2464495ac8b7c66d146bf545b0f08fb9220ba
+  url: https://files.pythonhosted.org/packages/source/p/pynacl/pynacl-1.6.2.tar.gz
+  sha256: 018494d6d696ae03c7e656e5e74cdfd8ea1326962cc401bcf018f1ed8436811c
   patches:
     - patches/0001-Don-t-check-libsodium.patch
 requirements:
