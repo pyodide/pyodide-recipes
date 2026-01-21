@@ -2,7 +2,7 @@ from pytest_pyodide import run_in_pyodide
 
 
 @run_in_pyodide(
-    packages=["numcodecs", "numpy"],
+    packages=["lzma", "numcodecs", "numpy"],
 )
 def test_blosc(selenium_standalone):
     import array
