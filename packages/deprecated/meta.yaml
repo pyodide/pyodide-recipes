@@ -6,6 +6,9 @@ package:
 source:
   url: https://files.pythonhosted.org/packages/py2.py3/d/deprecated/deprecated-1.3.1-py2.py3-none-any.whl
   sha256: 597bfef186b6f60181535a29fbe44865ce137a5079f295b479886c82729d5f3f
+requirements:
+  run:
+    - wrapt
 about:
   home: https://github.com/laurent-laporte-pro/deprecated
   PyPI: https://pypi.org/project/deprecated
