@@ -9,8 +9,7 @@ source:
   url: https://files.pythonhosted.org/packages/71/cc/18245721fa7747065ab478316c7fea7c74777d07f37ae60db2e84f8172e8/beartype-0.22.9-py3-none-any.whl
 
 build:
-  _retain-test-patterns:
-    - "*test.py"
+  unvendor-tests: false  # Actually, *test.py files are not tests but important functional parts of the package
 
 about:
   home: https://github.com/beartype/beartype
