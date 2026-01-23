@@ -1,8 +1,6 @@
 package:
   name: coolname
   version: 2.2.0
-  tag:
-    - always
   top-level:
     - coolname
 
@@ -13,4 +11,4 @@ source:
 about:
   home: https://github.com/alexanderlukanin13/coolname
   PyPI: https://pypi.org/project/coolname
-  license: BSD
+  license: BSD-2-Clause
