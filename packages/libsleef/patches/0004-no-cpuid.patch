@@ -1,5 +1,5 @@
 diff --git a/src/libm/dispavx.c.org b/src/libm/dispavx.c.org
-index b50ff0a..fd0e4ed 100644
+index 86a0148..e309af7 100644
 --- a/src/libm/dispavx.c.org
 +++ b/src/libm/dispavx.c.org
 @@ -14,33 +14,15 @@
@@ -40,7 +40,7 @@ index b50ff0a..fd0e4ed 100644
  
  #ifdef ENABLE_FMA4
 diff --git a/src/libm/dispsse.c.org b/src/libm/dispsse.c.org
-index a6ca65a..df2e74b 100644
+index 4e0d09b..1e9a875 100644
 --- a/src/libm/dispsse.c.org
 +++ b/src/libm/dispsse.c.org
 @@ -14,33 +14,15 @@

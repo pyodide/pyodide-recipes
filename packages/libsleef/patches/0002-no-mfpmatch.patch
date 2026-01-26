@@ -1,8 +1,8 @@
 diff --git a/Configure.cmake b/Configure.cmake
-index 7c64ce9..06e01da 100644
+index 6741a6e..e029751 100644
 --- a/Configure.cmake
 +++ b/Configure.cmake
-@@ -196,10 +196,10 @@ if(CMAKE_C_COMPILER_ID MATCHES "(GNU|Clang)")
+@@ -276,10 +276,10 @@ if(CMAKE_C_COMPILER_ID MATCHES "(GNU|Clang|QCC)")
    set(FLAGS_FASTMATH "-ffast-math")
    set(FLAGS_NOSTRICTALIASING "-fno-strict-aliasing")
  

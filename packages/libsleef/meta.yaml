@@ -1,16 +1,16 @@
 package:
   name: libsleef
-  version: "3.8"
+  version: 3.9.0
   tag:
     - library
     - static_library
 source:
-  sha256: a12ccd50f57083c530e1c76f10d52865defbd19fc9e2c85b483493065709874a
-  url: https://github.com/shibatch/sleef/archive/refs/tags/3.8.tar.gz
+  sha256: af60856abac08a3b5e72a8d156dd71fec1f7ac23de8ee67793f45f9edcdf0908
+  url: https://github.com/shibatch/sleef/archive/refs/tags/3.9.0.tar.gz
   patches:
     - patches/0001-no-x86intrin.patch
     - patches/0002-no-mfpmatch.patch
-    - patches/0003-no-mfma.patch
+    - patches/0003-fix-purecfma-scalar-x86.patch
     - patches/0004-no-cpuid.patch
 build:
   type: static_library
@@ -18,20 +18,30 @@ build:
     mkdir build-native
     cd build-native
 
+    mkdir my-install
+
     export NATIVE_BUILD_DIR=`pwd`
 
     BACKUP_TOOLCHAIN=${CMAKE_TOOLCHAIN_FILE}
     unset CMAKE_TOOLCHAIN_FILE
 
     cmake \
+      -DCMAKE_INSTALL_PREFIX=$(pwd)/my-install \
       -DCMAKE_BUILD_TYPE=Release \
       -DSLEEF_BUILD_QUAD=ON \
       -DSLEEF_BUILD_SHARED_LIBS=OFF \
       -DSLEEF_BUILD_TESTS=OFF \
       -DSLEEF_BUILD_INLINE_HEADERS=OFF \
+      -DSLEEF_BUILD_GNUABI_LIBS=OFF \
+      -DSLEEF_ENABLE_TLFLOAT=OFF \
+      -DSLEEF_ENABLE_TESTER4=OFF \
+      -DSLEEF_DISABLE_FFTW=ON \
+      -DSLEEF_DISABLE_MPFR=ON \
+      -DSLEEF_DISABLE_SSL=ON \
+      -DSLEEF_DISABLE_OPENMP=ON \
       -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
       ../
-    
+
     make -j ${PYODIDE_JOBS:-3}
 
     export CMAKE_TOOLCHAIN_FILE=${BACKUP_TOOLCHAIN}
@@ -41,21 +51,28 @@ build:
     cd build
 
     emcmake cmake \
+      -DCMAKE_INSTALL_PREFIX=${WASM_LIBRARY_DIR} \
       -DCMAKE_BUILD_TYPE=Release \
       -DSLEEF_BUILD_QUAD=ON \
       -DSLEEF_BUILD_SHARED_LIBS=OFF \
       -DSLEEF_BUILD_TESTS=OFF \
       -DSLEEF_BUILD_INLINE_HEADERS=OFF \
+      -DSLEEF_BUILD_GNUABI_LIBS=OFF \
+      -DSLEEF_ENABLE_TLFLOAT=OFF \
+      -DSLEEF_ENABLE_TESTER4=OFF \
+      -DSLEEF_DISABLE_FFTW=ON \
+      -DSLEEF_DISABLE_MPFR=ON \
+      -DSLEEF_DISABLE_SSL=ON \
+      -DSLEEF_DISABLE_OPENMP=ON \
+      -DSLEEF_DISABLE_SSE2=OFF \
+      -DSLEEF_DISABLE_AVX2=ON \
+      -DSLEEF_DISABLE_AVX512F=ON \
+      -DSLEEF_DISABLE_PURECFMA_SCALAR=ON \
       -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
-      -DCMAKE_INSTALL_PREFIX=${WASM_LIBRARY_DIR} \
       -DNATIVE_BUILD_DIR=${NATIVE_BUILD_DIR} \
       -DCMAKE_C_FLAGS="-msimd128 -msse2" \
       -DCMAKE_CXX_FLAGS="-msimd128 -msse2" \
-      -DSLEEF_DISABLE_FLOAT128=ON \
       ../
-
-    # -DSLEEF_ENABLE_SSE2=ON \
-    # -DSLEEF_ENABLE_AVX2=OFF \
 
     emmake make -j ${PYODIDE_JOBS:-3}
     emmake make install
