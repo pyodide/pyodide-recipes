@@ -1,11 +1,11 @@
 package:
   name: boost-histogram
-  version: 1.7.0
+  version: 1.7.1
   top-level:
     - boost_histogram
 source:
-  url: https://files.pythonhosted.org/packages/source/b/boost_histogram/boost_histogram-1.7.0.tar.gz
-  sha256: 51ce2d84223078c3164bd733a23cd1b6b3e687a9c6dca0b73be54d0a70f62b64
+  url: https://files.pythonhosted.org/packages/source/b/boost_histogram/boost_histogram-1.7.1.tar.gz
+  sha256: 6ed3d7d2688fa32889dd441a7ef4920d60d696137d2abc3ab14eb9bd3b455b19
 requirements:
   run:
     - numpy # runtime only
