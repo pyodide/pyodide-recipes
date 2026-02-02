@@ -39,7 +39,7 @@ jobs:
     outputs:
       test-scipy: ${{ steps.check-build-trigger.outputs.trigger }}
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
           submodules: recursive
@@ -82,7 +82,7 @@ jobs:
       run:
         shell: bash -l {0}
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
           submodules: recursive
@@ -103,7 +103,7 @@ jobs:
           which ccache
 
       - name: Cache conda
-        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: ~/conda_pkgs_dir
           key:
@@ -111,7 +111,7 @@ jobs:
             hashFiles('environment.yml') }}
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3.2.0
+        uses: conda-incubator/setup-miniconda@fc2d68f6413eb2d87b895e92f8584b5b94a10167 # v3.3.0
         with:
           miniforge-variant: Miniforge3
           miniforge-version: latest
@@ -125,7 +125,7 @@ jobs:
 
       - name: Cache Conda env
         id: conda-cache
-        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: ${{ env.CONDA }}/envs
           key:
@@ -172,7 +172,7 @@ jobs:
           fi
 
       - name: Cache ccache
-        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ env.CCACHE_DIR }}-${{ env.CCACHE_CACHE_NUMBER }}-${{ env.EMSCRIPTEN_VERSION }}-${{ runner.os }}${{ env.CCACHE_SUFFIX }}
@@ -318,14 +318,14 @@ jobs:
         ]
 
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
           submodules: recursive
           persist-credentials: false
 
       - name: Cache conda
-        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: ~/conda_pkgs_dir
           key:
@@ -333,7 +333,7 @@ jobs:
             hashFiles('environment.yml') }}
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3.2.0
+        uses: conda-incubator/setup-miniconda@fc2d68f6413eb2d87b895e92f8584b5b94a10167 # v3.3.0
         with:
           miniforge-variant: Miniforge3
           miniforge-version: latest
@@ -347,7 +347,7 @@ jobs:
 
       - name: Cache Conda env
         id: conda-cache
-        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: ${{ env.CONDA }}/envs
           key:
@@ -412,21 +412,21 @@ jobs:
     needs: [build, check-scipy-test-trigger]
     if: needs.check-scipy-test-trigger.outputs.test-scipy == 'true'
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
           submodules: recursive
           persist-credentials: false
 
       - name: Cache conda
-        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: ~/conda_pkgs_dir
           key:
             ${{ runner.os }}-conda-${{ env.CONDA_CACHE_NUMBER }}-${{ hashFiles('environment.yml') }}
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3.2.0
+        uses: conda-incubator/setup-miniconda@fc2d68f6413eb2d87b895e92f8584b5b94a10167 # v3.3.0
         with:
           miniforge-variant: Miniforge3
           miniforge-version: latest
@@ -440,7 +440,7 @@ jobs:
 
       - name: Cache Conda env
         id: conda-cache
-        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: ${{ env.CONDA }}/envs
           key:
@@ -458,7 +458,7 @@ jobs:
           path: ./dist/
 
       - name: Set up Node.js
-        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version: "24"
 
@@ -497,14 +497,14 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
     environment: deploy
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
           submodules: recursive
           persist-credentials: false
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3.2.0
+        uses: conda-incubator/setup-miniconda@fc2d68f6413eb2d87b895e92f8584b5b94a10167 # v3.3.0
         with:
           miniforge-variant: Miniforge3
           miniforge-version: latest
@@ -536,14 +536,14 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment: deploy-nightly
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
           submodules: recursive
           persist-credentials: false
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3.2.0
+        uses: conda-incubator/setup-miniconda@fc2d68f6413eb2d87b895e92f8584b5b94a10167 # v3.3.0
         with:
           miniforge-variant: Miniforge3
           miniforge-version: latest
