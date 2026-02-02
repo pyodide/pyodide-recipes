@@ -1,6 +1,6 @@
 package:
   name: phispy
-  version: "5.0.1"
+  version: "5.0.2"
   top-level:
     - PhiSpyModules
     - PhiSpyRepeatFinder
