@@ -4,8 +4,8 @@ package:
   tag:
     - rust
 source:
-  url: https://github.com/kitao/pyxel/archive/refs/tags/v1.9.10.tar.gz
-  sha256: a784221be6f32fd57bdc6a1a8f30e8f68c78f83d8c84790beaf6ec2be062982f
+  url: https://github.com/kitao/pyxel/archive/refs/tags/v2.6.1.tar.gz
+  sha256: 10430b66cb79892e4d0b60602e1bb1872a334145402ea842cd29c493729857b9
 build:
   script: |
     embuilder build sdl2 --pic
@@ -18,8 +18,6 @@ build:
 requirements:
   executable:
     - rustup
-  constraint:
-    - maturin < 1.8
 test:
   imports:
     - pyxel
