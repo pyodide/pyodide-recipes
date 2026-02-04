@@ -6,8 +6,8 @@ package:
     - PhiSpyRepeatFinder
 
 source:
-  url: https://files.pythonhosted.org/packages/25/3d/58b2da1e722c1adf062ca1d846e1796f18c854862e39ad5eb6da776a682e/phispy-5.0.1.tar.gz
-  sha256: df40ba1f028c277b545608ed3fc7d03048364794c89a05731cf8140777186cda
+  url: https://files.pythonhosted.org/packages/d4/6b/cbc4b6be7755c7a1ffd58e51e878a57713f00829d340a46e894061477fc0/phispy-5.0.2.tar.gz
+  sha256: a9233471ccf50e6e58ecc83c589be2cfa04e728cc81e57cea296d23dc85d397c
 
 build:
   cxxflags: -fwasm-exceptions
