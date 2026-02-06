@@ -29,6 +29,7 @@ about:
   PyPI: https://pypi.org/project/PhiSpy
   summary: Prophage finder using multiple metrics
   license: MIT
-  extra:
-    recipe-maintainers:
-      - linsalrob
+
+extra:
+  recipe-maintainers:
+-   linsalrob
