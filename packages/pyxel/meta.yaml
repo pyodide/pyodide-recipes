@@ -4,7 +4,7 @@ package:
   tag:
     - rust
 source:
-  url: https://raw.githubusercontent.com/kitao/pyxel/refs/heads/main/wasm/pyxel-2.6.1-cp38-abi3-emscripten_4_0_9_wasm32.whl
+  url: https://github.com/kitao/pyxel/raw/refs/tags/v2.6.1/wasm/pyxel-2.6.1-cp38-abi3-emscripten_4_0_9_wasm32.whl
   sha256: 2dd73c5c03e9dcc60d1ae3ae07cc16d0e9f35a1a1e3aad8f3c5e9352e9496b73
 # build:
 #   script: |
