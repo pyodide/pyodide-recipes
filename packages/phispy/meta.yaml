@@ -14,8 +14,6 @@ build:
   ldflags: -fwasm-exceptions
 
 requirements:
-  host:
-    - numpy
   run:
     - biopython
     - numpy
@@ -31,3 +29,6 @@ about:
   PyPI: https://pypi.org/project/PhiSpy
   summary: Prophage finder using multiple metrics
   license: MIT
+  extra:
+    recipe-maintainers:
+      - linsalrob
