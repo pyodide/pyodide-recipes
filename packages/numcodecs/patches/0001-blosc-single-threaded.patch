@@ -1,0 +1,26 @@
+This patch disables multiprocessing and pthread for blosc
+diff --git a/c-blosc/blosc/blosc.c b/c-blosc/blosc/blosc.c
+index a3d137d..241984f 100644
+--- a/c-blosc/blosc/blosc.c
++++ b/c-blosc/blosc/blosc.c
+@@ -2212,6 +2212,7 @@ void blosc_atfork_child(void) {
+ 
+ void blosc_init(void)
+ {
++  g_initlib = 1;
+   /* Return if we are already initialized */
+   if (g_initlib) return;
+ 
+diff --git a/c-blosc/blosc/blosc.h b/c-blosc/blosc/blosc.h
+index c9dc8ed..c57ef91 100644
+--- a/c-blosc/blosc/blosc.h
++++ b/c-blosc/blosc/blosc.h
+@@ -48,7 +48,7 @@ extern "C" {
+   ((INT_MAX - BLOSC_MAX_TYPESIZE * sizeof(int32_t)) / 3)
+ 
+ /* The maximum number of threads (for some static arrays) */
+-#define BLOSC_MAX_THREADS 256
++#define BLOSC_MAX_THREADS 1
+ 
+ /* Codes for shuffling (see blosc_compress) */
+ #define BLOSC_NOSHUFFLE   0  /* no shuffle */

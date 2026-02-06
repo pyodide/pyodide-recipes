@@ -1,0 +1,19 @@
+healpy's setup.py script sets up its own build directory structure when
+building the shared library dependencies it needs. However, this structure
+makes it difficult for auditwheel-emscripten to find the libraries for
+vendoring, and many different rpath combinations do not work. However, we can
+just ask the subprojects to install their shared libraries into Pyodide's lib
+folder, which allows auditwheel-emscripten to find them.
+
+diff --git a/setup.py b/setup.py
+index 3cab0f3..db70742 100755
+--- a/setup.py
++++ b/setup.py
+@@ -167,6 +167,7 @@ class build_external_clib(build_clib):
+                 "/bin/sh",
+                 os.path.join(os.path.realpath(local_source), "configure"),
+                 "--prefix=" + build_clib,
++                "--exec-prefix=" + os.environ["WASM_LIBRARY_DIR"],
+                 "--disable-curl",
+                 "--with-pic",
+                 "--disable-maintainer-mode",
