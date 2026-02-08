@@ -18,7 +18,7 @@ def test_phispy_import(selenium):
 
 
 @run_in_pyodide(packages=["phispy"])
-def test_imports():
+def test_imports(selenium):
     """Test that all essential PhiSpy modules can be imported."""
     print("Testing PhiSpy imports...")
     
@@ -42,18 +42,4 @@ def test_imports():
     
     print("\nAll imports successful! PhiSpy is ready to use in Pyodide.")
     return True
-
-if __name__ == "__main__":
-    try:
-        test_phispy_version()
-        test_phispy_import()
-        test_imports()
-        print("\n" + "="*50)
-        print("All tests passed! PhiSpy is working in Pyodide.")
-        print("="*50)
-    except Exception as e:
-        print(f"\n✗ Test failed with error: {e}")
-        import traceback
-        traceback.print_exc()
-        raise
 
