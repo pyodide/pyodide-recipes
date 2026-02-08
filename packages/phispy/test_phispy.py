@@ -5,7 +5,7 @@ def test_phispy_version(selenium):
     import PhiSpyModules
     
     version = PhiSpyModules.__version__
-    assert version == "5.0.1"
+    assert version == "5.0.2"
 
 
 @run_in_pyodide(packages=["phispy"])
