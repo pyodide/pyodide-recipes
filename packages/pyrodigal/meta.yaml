@@ -1,0 +1,21 @@
+package:
+  name: pyrodigal
+  version: 3.7.0
+  top-level:
+    - pyrodigal
+
+source:
+  url: https://files.pythonhosted.org/packages/source/p/pyrodigal/pyrodigal-3.7.0.tar.gz
+  sha256: 415940f07a9e6e60ca023b99381f2d5f62f801914b9edd6da5a28dd7307b091d
+
+about:
+  home: https://github.com/althonos/pyrodigal
+  PyPI: https://pypi.org/project/pyrodigal
+  summary:
+    Cython bindings and Python interface to Prodigal, an ORF finder for genomes
+    and metagenomes.
+  license: GPL-3.0-or-later
+
+extra:
+  recipe-maintainers:
+    - althonos

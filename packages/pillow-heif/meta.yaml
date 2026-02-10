@@ -1,22 +1,20 @@
 package:
   name: pillow-heif
-  version: 1.1.0
+  version: 1.1.1
   top-level:
     - pillow_heif
 source:
-  url: https://files.pythonhosted.org/packages/6f/d4/597cf8c54d1ed494a46cc12e358d2f73a993b5f139402b35681f56beffde/pillow_heif-1.1.0.tar.gz
-  sha256: 6c0c5f81a780185bbddc56e0d5537c53aa6cb5fb6018f5a60534a47c53f5455d
-  # patches:
-  #   - patches/0001-Remove-include-path-check.patch
+  url: https://files.pythonhosted.org/packages/source/p/pillow_heif/pillow_heif-1.1.1.tar.gz
+  sha256: f60e8c8a8928556104cec4fff39d43caa1da105625bdb53b11ce3c89d09b6bde
 requirements:
   run:
     - cffi
     - Pillow
-    - libheif
   host:
     - cffi
     - libheif
 build:
+  vendor-sharedlib: true
   script: |
     export LIBHEIF_ROOT=${WASM_LIBRARY_DIR}
 test:

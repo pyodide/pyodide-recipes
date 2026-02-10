@@ -1,11 +1,11 @@
 package:
   name: texture2ddecoder
-  version: 1.0.5
+  version: 1.0.6
   top-level:
     - texture2ddecoder
 source:
-  url: https://files.pythonhosted.org/packages/source/t/texture2ddecoder/texture2ddecoder-1.0.5.tar.gz
-  sha256: 7767e865394ad8e0a0609d275caf3e8c99d03df107dfb961cb90ea21c9295dc2
+  url: https://files.pythonhosted.org/packages/source/t/texture2ddecoder/texture2ddecoder-1.0.6.tar.gz
+  sha256: 88f04d8951018ac13b8dacd07e57e8adad4a6f1cfe5509646e8a1020346a81ca
 about:
   home: https://github.com/K0lb3/texture2ddecoder
   PyPI: https://pypi.org/project/texture2ddecoder

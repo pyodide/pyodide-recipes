@@ -13,6 +13,7 @@ source:
 build:
   type: static_library
   script: |
+    embuilder build libjpeg --pic
     emconfigure ./configure \
         CFLAGS="-fPIC" \
         --disable-shared \

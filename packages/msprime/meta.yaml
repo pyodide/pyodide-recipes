@@ -1,11 +1,11 @@
 package:
   name: msprime
-  version: 1.3.3
+  version: 1.4.0
   top-level:
     - msprime
 source:
-  url: https://files.pythonhosted.org/packages/70/84/72a914d91c3e9cea91b8089ddc2a32cc9bdee50eda7e8900be6be70d1fdb/msprime-1.3.3.tar.gz
-  sha256: d8ae798076167f632b8fd7eccd5089faaa84c9034ca69422f886425f94a5b01b
+  url: https://files.pythonhosted.org/packages/source/m/msprime/msprime-1.4.0.tar.gz
+  sha256: 6a409765db3a5d40dcac024a3ae8966698b45050f13fe8e823c8124f750883bf
 build:
   script: |
     export LIBGSL_INCLUDE_PATH=$(pkg-config --cflags-only-I --dont-define-prefix gsl)
