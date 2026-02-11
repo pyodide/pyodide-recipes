@@ -10,7 +10,10 @@ source:
 requirements:
   run:
     - libmagic
-
+build:
+  # TODO: It searches libmagic from /usr/lib by default. Maybe we
+  # need to send a patch to make it search from the local directory instead.
+  vendor-sharedlib: false
 about:
   home: http://github.com/ahupp/python-magic
   PyPI: https://pypi.org/project/python-magic

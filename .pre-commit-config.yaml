@@ -28,5 +28,13 @@ repos:
     hooks:
       - id: black
 
+  - repo: local
+    hooks:
+    - id: recipe-file-ext-validation
+      name: Recipe metadata files must be named 'meta.yaml', not 'meta.yml'
+      entry: meta-yaml-not-yml
+      language: fail
+      files: ^packages/.*/meta\.yml$
+
 ci:
   autoupdate_schedule: "quarterly"

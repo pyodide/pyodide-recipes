@@ -1,16 +1,14 @@
 package:
   name: numcodecs
-  version: 0.13.1
-  # Need to update patches
-  pinned: true
+  version: 0.15.1
   top-level:
     - numcodecs
 source:
-  sha256: a3cf37881df0898f3a9c0d4477df88133fe85185bffe57ba31bcc2fa207709bc
-  url: https://files.pythonhosted.org/packages/85/56/8895a76abe4ec94ebd01eeb6d74f587bc4cddd46569670e1402852a5da13/numcodecs-0.13.1.tar.gz
+  sha256: eeed77e4d6636641a2cc605fbc6078c7a8f2cc40f3dfa2b3f61e52e6091b04ff
+  url: https://files.pythonhosted.org/packages/source/n/numcodecs/numcodecs-0.15.1.tar.gz
   patches:
-    - patches/fixblosc.patch
-    - patches/fixzlib.patch
+    - patches/0001-blosc-single-threaded.patch
+    - patches/0002-zlib-missing-headers.patch
 build:
   script: |
     export DISABLE_NUMCODECS_SSE2=1
@@ -19,8 +17,9 @@ requirements:
   host:
     - numpy
   run:
+    - deprecated
+    - lzma
     - numpy
-    - msgpack
 about:
   home: https://github.com/zarr-developers/numcodecs
   PyPI: https://pypi.org/project/numcodecs

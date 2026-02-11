@@ -8,6 +8,8 @@ package:
 source:
   path: src
 build:
+  # maybe support this in pyodide-build
+  # vendor-sharedlib: true
   type: cpython_module
   script: |
     wget ${PYTHON_ARCHIVE_URL} -O Python-${PYVERSION}.tgz
@@ -24,9 +26,9 @@ build:
     cp _hashlib.so ${PKG_BUILD_DIR}/_hashlib.so
 
 requirements:
-  run:
-    - libopenssl
   host:
+    - libopenssl
+  run:
     - libopenssl
 about:
   license: PSF

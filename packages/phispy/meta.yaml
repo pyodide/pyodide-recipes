@@ -1,0 +1,35 @@
+package:
+  name: phispy
+  version: "5.0.2"
+  top-level:
+    - PhiSpyModules
+    - PhiSpyRepeatFinder
+
+source:
+  url: https://files.pythonhosted.org/packages/d4/6b/cbc4b6be7755c7a1ffd58e51e878a57713f00829d340a46e894061477fc0/phispy-5.0.2.tar.gz
+  sha256: a9233471ccf50e6e58ecc83c589be2cfa04e728cc81e57cea296d23dc85d397c
+
+build:
+  cxxflags: -fwasm-exceptions
+  ldflags: -fwasm-exceptions
+
+requirements:
+  run:
+    - biopython
+    - numpy
+    - scikit-learn
+
+test:
+  imports:
+    - PhiSpyModules
+    - PhiSpyRepeatFinder
+
+about:
+  home: https://github.com/linsalrob/PhiSpy
+  PyPI: https://pypi.org/project/PhiSpy
+  summary: Prophage finder using multiple metrics
+  license: MIT
+
+extra:
+  recipe-maintainers:
+    - linsalrob
