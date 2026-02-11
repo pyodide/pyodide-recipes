@@ -32,6 +32,7 @@ from pytest_pyodide import run_in_pyodide
 )
 @pytest.mark.skip_refcount_check
 @pytest.mark.driver_timeout(120)
+@pytest.mark.xfail_browsers(node="flaky in CI because of network calls")
 @run_in_pyodide(packages=["astropy", "pytest", "micropip"])
 async def test_astropy(selenium, package, specific_test):
     import astropy
