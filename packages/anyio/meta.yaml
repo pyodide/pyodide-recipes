@@ -8,7 +8,6 @@ source:
   sha256: 9f76d541cad6e36af7beb62e978876f3b41e3e04f2c1fbf0884604c0a9c4d93c
 requirements:
   run:
-    - ssl
     - sniffio
     - typing-extensions
 about:
