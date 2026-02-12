@@ -5,6 +5,7 @@ package:
     - rustworkx
   tag:
     - rust
+  _disabled: true  # does not work with latest toolchain
 source:
   url: https://github.com/Qiskit/rustworkx/archive/refs/tags/0.17.1.tar.gz
   sha256: dc248da9cc364b81ac67f5d67b626ee3f03a1f6299f7a9b4d0a0501548715365
