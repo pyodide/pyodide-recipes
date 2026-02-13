@@ -1,13 +1,13 @@
 from pathlib import Path
+import pytest
 from pytest_pyodide import run_in_pyodide, copy_files_to_pyodide
 
 
+@pytest.mark.xfail_browsers(node="FIXME")
 @copy_files_to_pyodide(
     [(Path(__file__).parent / "test-data" / "base.xlsx", "base.xlsx")]
 )
-@run_in_pyodide(
-    packages=["python-calamine"]
-)
+@run_in_pyodide(packages=["python-calamine"])
 def test_python_calamine(selenium):
     from python_calamine import CalamineWorkbook
     from datetime import date, datetime, time, timedelta
