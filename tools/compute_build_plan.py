@@ -14,8 +14,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import subprocess
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from graphlib import TopologicalSorter
 from pathlib import Path
 
@@ -205,20 +207,47 @@ def compute_recipe_hash(pkg_dir: Path, meta: dict) -> str:
     return hasher.hexdigest()
 
 
-def load_all_package_metadata(packages_dir: Path) -> dict[str, dict]:
-    """Load meta.yaml for all packages in the packages directory."""
-    packages = {}
-    for meta_path in sorted(packages_dir.glob("*/meta.yaml")):
-        pkg_name = meta_path.parent.name
-        try:
-            meta = load_yaml(meta_path)
-            if meta is None:
-                print(f"Warning: empty meta.yaml for {pkg_name}", file=sys.stderr)
-                continue
-            packages[pkg_name] = meta
-        except Exception as e:
-            print(f"Warning: failed to parse {meta_path}: {e}", file=sys.stderr)
-    return packages
+def _load_single_package(
+    meta_path: Path,
+) -> tuple[str, dict | None, str | None]:
+    """Load meta.yaml and compute recipe hash for a single package.
+
+    Returns (pkg_name, meta_dict, recipe_hash) or (pkg_name, None, None) on failure.
+    """
+    pkg_name = meta_path.parent.name
+    pkg_dir = meta_path.parent
+    try:
+        meta = load_yaml(meta_path)
+        if meta is None:
+            print(f"Warning: empty meta.yaml for {pkg_name}", file=sys.stderr)
+            return pkg_name, None, None
+        recipe_hash = compute_recipe_hash(pkg_dir, meta)
+        return pkg_name, meta, recipe_hash
+    except Exception as e:
+        print(f"Warning: failed to parse {meta_path}: {e}", file=sys.stderr)
+        return pkg_name, None, None
+
+
+def load_all_package_metadata(
+    packages_dir: Path,
+) -> tuple[dict[str, dict], dict[str, str]]:
+    """Load meta.yaml and compute recipe hashes for all packages concurrently.
+
+    Returns (all_meta, recipe_hashes) dicts.
+    """
+    meta_paths = sorted(packages_dir.glob("*/meta.yaml"))
+    packages: dict[str, dict] = {}
+    recipe_hashes: dict[str, str] = {}
+
+    max_workers = min(32, (os.cpu_count() or 4) + 4)
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        results = pool.map(_load_single_package, meta_paths)
+        for pkg_name, meta, recipe_hash in results:
+            if meta is not None and recipe_hash is not None:
+                packages[pkg_name] = meta
+                recipe_hashes[pkg_name] = recipe_hash
+
+    return packages, recipe_hashes
 
 
 def get_host_dependencies(meta: dict) -> list[str]:
@@ -240,8 +269,8 @@ def get_package_type(meta: dict) -> str:
 
 
 def compute_all_fingerprints(
-    packages_dir: Path,
     all_meta: dict[str, dict],
+    recipe_hashes: dict[str, str],
     toolchain_hash: str,
 ) -> dict[str, str]:
     """Compute fingerprints for all packages in topological order.
@@ -249,20 +278,11 @@ def compute_all_fingerprints(
     Fingerprints are computed leaves-first so that each package's fingerprint
     includes the fingerprints of its host dependencies (recursive).
     """
-    # Build dependency graph (host deps only for fingerprint propagation)
     graph: dict[str, set[str]] = {}
     for name, meta in all_meta.items():
         host_deps = get_host_dependencies(meta)
-        # Only include deps that are in our package set
         graph[name] = {dep for dep in host_deps if dep in all_meta}
 
-    # Compute recipe hashes (no dependency info yet)
-    recipe_hashes: dict[str, str] = {}
-    for name, meta in all_meta.items():
-        pkg_dir = packages_dir / name
-        recipe_hashes[name] = compute_recipe_hash(pkg_dir, meta)
-
-    # Compute full fingerprints in topological order (leaves first)
     fingerprints: dict[str, str] = {}
 
     try:
@@ -299,7 +319,7 @@ def main() -> None:
     packages_dir = Path(args.packages_dir)
 
     print(f"Loading package metadata from {packages_dir}...")
-    all_meta = load_all_package_metadata(packages_dir)
+    all_meta, recipe_hashes = load_all_package_metadata(packages_dir)
     print(f"Found {len(all_meta)} packages")
 
     print("Computing toolchain hash...")
@@ -307,7 +327,7 @@ def main() -> None:
     print(f"Toolchain hash: {toolchain_hash[:16]}...")
 
     print("Computing per-package fingerprints...")
-    fingerprints = compute_all_fingerprints(packages_dir, all_meta, toolchain_hash)
+    fingerprints = compute_all_fingerprints(all_meta, recipe_hashes, toolchain_hash)
 
     # Identify cross-build-env packages
     cross_build_packages = sorted(
