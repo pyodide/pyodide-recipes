@@ -1,13 +1,13 @@
 package:
   name: numcodecs-wasm
-  version: 0.2.2
+  version: 0.2.3
   tag:
     - rust
   top-level:
     - numcodecs_wasm
 source:
-  url: https://files.pythonhosted.org/packages/source/n/numcodecs_wasm/numcodecs_wasm-0.2.2.tar.gz
-  sha256: 894f3d005ad2fe98224aa639c8d5e580d2db046589ed059641335ebf75d7b070
+  url: https://files.pythonhosted.org/packages/source/n/numcodecs_wasm/numcodecs_wasm-0.2.3.tar.gz
+  sha256: e7a8b46e0bd0506cd1ddb08c5992a106384ec425ee30d13431aee09d75875b4f
 requirements:
   executable:
     - rustup
