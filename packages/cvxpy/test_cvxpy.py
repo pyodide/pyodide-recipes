@@ -3,7 +3,7 @@ from pytest_pyodide import run_in_pyodide
 
 
 @pytest.mark.xfail_browsers(firefox="slow")
-@run_in_pyodide(packages=["cvxpy-base"])
+@run_in_pyodide(packages=["cvxpy"])
 def test_cvxpy_clarabel(selenium):
     import cvxpy as cp
 
@@ -26,7 +26,7 @@ def test_cvxpy_clarabel(selenium):
 
 
 @pytest.mark.xfail_browsers(firefox="slow")
-@run_in_pyodide(packages=["cvxpy-base"])
+@run_in_pyodide(packages=["cvxpy"])
 def test_cvxpy_scipy(selenium):
     import cvxpy as cp
 
