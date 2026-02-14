@@ -12,6 +12,14 @@ about:
   summary: A domain-specific language for modeling convex optimization problems
     in Python.
   license: Apache License, Version 2.0
+requirements:
+  run:
+    - numpy
+    - scipy
+    - osqp
+    - clarabel
+    - scs
+    - highspy
 extra:
   recipe-maintainers:
     - langestefan
