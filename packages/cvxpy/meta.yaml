@@ -1,0 +1,19 @@
+package:
+  name: cvxpy
+  version: 1.8.1
+  top-level:
+    - cvxpy
+source:
+  url: https://files.pythonhosted.org/packages/source/c/cvxpy/cvxpy-1.8.1.tar.gz
+  sha256: 3fbdb1f81be7237c58742b1618bb9f809eeacf6c131705e2540b87ecef9cf402
+about:
+  home: https://github.com/cvxpy/cvxpy
+  PyPI: https://pypi.org/project/cvxpy
+  summary: A domain-specific language for modeling convex optimization problems
+    in Python.
+  license: Apache License, Version 2.0
+extra:
+  recipe-maintainers:
+    - langestefan
+    - phschiele
+    - PTNobel
