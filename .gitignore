@@ -134,3 +134,4 @@ emsdk/
 ccache/
 pyodide
 packages/.libs/
+uv.lock
