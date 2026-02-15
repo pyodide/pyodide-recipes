@@ -18,7 +18,12 @@ requirements:
     - libgmp
     - libmpfr
     - libmpc
+    - cysignals
+    - pkgconfig
     - gmpy2
+    - passagemath-setup
+    - passagemath-environment
+    - passagemath-conf
   run:
     - cysignals
     - gmpy2
@@ -33,4 +38,5 @@ build:
   script: |
     export SAGE_NUM_THREADS=12
     export SAGE_CONF_FILE=/dev/null
+    export PIP_VERBOSE=1
   unvendor-tests: false
