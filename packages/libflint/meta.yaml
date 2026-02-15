@@ -1,12 +1,12 @@
 package:
   name: libflint
-  version: 3.2.2
+  version: 3.4.0
   tag:
     - library
     - static_library
 source:
-  url: https://github.com/flintlib/flint/releases/download/v3.2.2/flint-3.2.2.tar.gz
-  sha256: 577d7729e4c2e79ca1e894ad2ce34bc73516a92f623d42562694817f888a17eb
+  url: https://github.com/flintlib/flint/releases/download/v3.4.0/flint-3.4.0.tar.gz
+  sha256: 9497679804dead926e3affeb8d4c58739d1c7684d60c2c12827550d28e454a33
 requirements:
   host:
     - libgmp
