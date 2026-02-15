@@ -1,0 +1,12 @@
+package:
+  name: passagemath-environment
+  version: 10.8.1
+  top-level:
+    - sage_environment
+source:
+  url: https://pypi.org/packages/source/p/passagemath-environment/passagemath_environment-10.8.1.tar.gz
+  sha256: 51477339171cdfa88aaae838d77f244f3fbae75293794078153eeffa80fa7d65
+about:
+  PyPI: https://pypi.org/project/passagemath-environment
+  summary: "passagemath: System and software environment"
+  license: GPL-2.0-or-later
