@@ -1,0 +1,27 @@
+package:
+  name: libntl
+  version: 11.6.0
+  tag:
+    - library
+    - static_library
+source:
+  url: https://src.fedoraproject.org/repo/pkgs/ntl/ntl-11.6.0.tar.gz/sha512/7801e8a2b866f40b61af494291e888a0a4065e843d27c3ab38f61e93e76b6b5153906aea58d6cf4e5638f1f50f640f5c69548065c4d76c83c9820573a4852b3a/ntl-11.6.0.tar.gz
+  sha256: bc0ef9aceb075a6a0673ac8d8f47d5f8458c72fe806e4468fbd5d3daff056182
+requirements:
+  host:
+    - libgmp
+
+build:
+  type: static_library
+  script: |
+    cd src
+    emconfigure ./configure \
+        DEF_PREFIX=${WASM_LIBRARY_DIR} \
+        SHARED=off \
+        NTL_GMP_LIP=on NTL_THREADS=off \
+        CXXFLAGS="-fPIC"
+    emmake make -j ${PYODIDE_JOBS:-3}
+    emmake make install
+about:
+  home: https://libntl.org/
+  license: LGPL-2.1
