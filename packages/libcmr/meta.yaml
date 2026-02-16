@@ -1,0 +1,33 @@
+package:
+  name: libcmr
+  version: "1.4"
+  tag:
+    - library
+    - static_library
+    - cmake
+source:
+  url: https://github.com/discopt/cmr/archive/refs/tags/v1.4.tar.gz
+  sha256: 956a6114d7ee2d3176376660ab1221306da9b2f6de985825d8e60c9cbdf41c17
+requirements:
+  host:
+    - libgmp
+  run: []
+about:
+  home: https://github.com/discopt/cmr
+  summary: Combinatorial matrix recognition
+  license: MIT
+build:
+  type: static_library
+  script: |
+    emcmake cmake -DCMAKE_VERBOSE_MAKEFILE=OFF \
+          -DCMAKE_INSTALL_PREFIX=${WASM_LIBRARY_DIR} \
+          -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+          -DGMP_DIR=${WASM_LIBRARY_DIR} \
+          -DBUILD_STATIC_LIBS=ON \
+          -DBUILD_SHARED_LIBS=OFF \
+          .
+    emmake make -j ${PYODIDE_JOBS:-3}
+    emmake make install
+extra:
+  recipe-maintainers:
+    - mkoeppe
