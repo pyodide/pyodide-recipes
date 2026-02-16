@@ -334,11 +334,19 @@ def main() -> None:
         name for name, meta in all_meta.items() if is_cross_build_env(meta)
     )
 
-    # Build the output
+    # Identify library packages (static_library, shared_library)
+    # These don't produce wheels — needs_rebuild() checks build/.packaged token instead
+    library_packages = sorted(
+        name
+        for name, meta in all_meta.items()
+        if get_package_type(meta) in ("static_library", "shared_library")
+    )
+
     build_plan = {
         "toolchain_hash": toolchain_hash,
         "fingerprints": {k: v for k, v in sorted(fingerprints.items())},
         "cross_build_packages": cross_build_packages,
+        "library_packages": library_packages,
     }
 
     output_path = Path(args.output)
@@ -346,8 +354,8 @@ def main() -> None:
     print(f"Build plan written to {output_path}")
     print(f"  Total packages: {len(fingerprints)}")
     print(f"  Cross-build-env (always rebuild): {cross_build_packages}")
+    print(f"  Library packages: {len(library_packages)}")
 
-    # Summary stats
     num_unique_fps = len(set(fingerprints.values()))
     print(f"  Unique fingerprints: {num_unique_fps}")
 

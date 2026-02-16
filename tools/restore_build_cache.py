@@ -65,11 +65,11 @@ def main() -> None:
     build_plan = json.loads(build_plan_path.read_text())
     current_fingerprints: dict[str, str] = build_plan["fingerprints"]
     cross_build_packages: list[str] = build_plan.get("cross_build_packages", [])
+    library_packages: set[str] = set(build_plan.get("library_packages", []))
 
-    # Load cached manifest
     manifest_path = cache_dir / "manifest.json"
     if not manifest_path.exists():
-        print("No cache manifest found — this is a cold start, nothing to restore.")
+        print("No cache manifest found — cold start, nothing to restore.")
         print(f"  Cache dir: {cache_dir}")
         print(f"  Expected manifest at: {manifest_path}")
         return
@@ -77,37 +77,44 @@ def main() -> None:
     cached_manifest = json.loads(manifest_path.read_text())
     cached_fingerprints: dict[str, str] = cached_manifest.get("fingerprints", {})
 
-    # Restore packages
-    restored = 0
+    restored_wheels = 0
+    restored_libraries = 0
     skipped_cross_build = 0
     skipped_stale = 0
     skipped_missing = 0
     skipped_no_fingerprint = 0
 
     for pkg_name, current_fp in sorted(current_fingerprints.items()):
-        # Skip cross-build-env packages — they must always be rebuilt
         if pkg_name in cross_build_packages:
             skipped_cross_build += 1
             continue
 
-        # Check if cache has this package
         cached_fp = cached_fingerprints.get(pkg_name)
         if cached_fp is None:
             skipped_no_fingerprint += 1
             continue
 
-        # Check fingerprint match
         if cached_fp != current_fp:
             skipped_stale += 1
             continue
 
-        # Check if cached artifacts exist
+        if pkg_name in library_packages:
+            # Library packages (static_library/shared_library) don't produce wheels.
+            # needs_rebuild() checks build/.packaged token mtime instead.
+            # Create the token with future mtime so needs_rebuild() returns False.
+            build_dir = packages_dir / pkg_name / "build"
+            build_dir.mkdir(parents=True, exist_ok=True)
+            packaged_token = build_dir / ".packaged"
+            packaged_token.touch()
+            os.utime(packaged_token, (FUTURE_MTIME, FUTURE_MTIME))
+            restored_libraries += 1
+            continue
+
         cached_pkg_dir = cache_dir / pkg_name
         if not cached_pkg_dir.exists():
             skipped_missing += 1
             continue
 
-        # Restore artifacts
         dist_dir = packages_dir / pkg_name / "dist"
         dist_dir.mkdir(parents=True, exist_ok=True)
 
@@ -116,14 +123,12 @@ def main() -> None:
             if cached_file.is_file():
                 dest = dist_dir / cached_file.name
                 shutil.copy2(cached_file, dest)
-                # Apply mtime trick — set to far future
                 os.utime(dest, (FUTURE_MTIME, FUTURE_MTIME))
                 files_restored += 1
 
         if files_restored > 0:
-            restored += 1
+            restored_wheels += 1
 
-    # Also restore .libs/ if cached (for static/shared library packages)
     libs_cache_dir = cache_dir / ".libs"
     if libs_cache_dir.exists():
         libs_dest = packages_dir / ".libs"
@@ -136,12 +141,13 @@ def main() -> None:
                 shutil.copy2(cached_file, dest)
                 os.utime(dest, (FUTURE_MTIME, FUTURE_MTIME))
 
-    # Summary
     total = len(current_fingerprints)
-    will_build = total - restored
+    restored = restored_wheels + restored_libraries
+    will_build = total - restored - skipped_cross_build
     print(f"Cache restore summary:")
     print(f"  Total packages in build plan: {total}")
-    print(f"  Restored from cache: {restored}")
+    print(f"  Restored wheel packages: {restored_wheels}")
+    print(f"  Restored library packages: {restored_libraries}")
     print(f"  Skipped (cross-build-env, always rebuild): {skipped_cross_build}")
     print(f"  Skipped (fingerprint changed): {skipped_stale}")
     print(f"  Skipped (not in cache): {skipped_no_fingerprint}")

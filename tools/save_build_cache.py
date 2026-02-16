@@ -58,43 +58,42 @@ def main() -> None:
 
     build_plan = json.loads(build_plan_path.read_text())
     fingerprints: dict[str, str] = build_plan["fingerprints"]
+    library_packages: set[str] = set(build_plan.get("library_packages", []))
 
-    # Clean and recreate cache directory
     if cache_dir.exists():
         shutil.rmtree(cache_dir)
     cache_dir.mkdir(parents=True)
 
-    cached_count = 0
+    cached_wheels = 0
     skipped_no_dist = 0
     total_size = 0
 
-    for pkg_name, fingerprint in sorted(fingerprints.items()):
-        dist_dir = packages_dir / pkg_name / "dist"
+    for pkg_name in sorted(fingerprints):
+        if pkg_name in library_packages:
+            continue
 
+        dist_dir = packages_dir / pkg_name / "dist"
         if not dist_dir.exists():
             skipped_no_dist += 1
             continue
 
-        # Collect all artifacts from dist/
-        artifacts = list(dist_dir.iterdir())
+        artifacts = [f for f in dist_dir.iterdir() if f.is_file()]
         if not artifacts:
             skipped_no_dist += 1
             continue
 
-        # Copy artifacts to cache
         pkg_cache_dir = cache_dir / pkg_name
         pkg_cache_dir.mkdir(parents=True, exist_ok=True)
 
         for artifact in artifacts:
-            if artifact.is_file():
-                dest = pkg_cache_dir / artifact.name
-                shutil.copy2(artifact, dest)
-                total_size += artifact.stat().st_size
+            dest = pkg_cache_dir / artifact.name
+            shutil.copy2(artifact, dest)
+            total_size += artifact.stat().st_size
 
-        cached_count += 1
+        cached_wheels += 1
 
-    # Also cache .libs/ directory (for static/shared library packages)
     libs_dir = packages_dir / ".libs"
+    libs_size = 0
     if libs_dir.exists():
         libs_cache_dir = cache_dir / ".libs"
         for lib_file in libs_dir.rglob("*"):
@@ -103,21 +102,25 @@ def main() -> None:
                 dest = libs_cache_dir / rel
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(lib_file, dest)
-                total_size += lib_file.stat().st_size
+                libs_size += lib_file.stat().st_size
+    total_size += libs_size
 
-    # Write manifest with fingerprints
     manifest = {
         "fingerprints": fingerprints,
         "toolchain_hash": build_plan.get("toolchain_hash", ""),
         "cross_build_packages": build_plan.get("cross_build_packages", []),
+        "library_packages": sorted(library_packages),
     }
     manifest_path = cache_dir / "manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
 
-    # Summary
     total_size_mb = total_size / (1024 * 1024)
+    libs_size_mb = libs_size / (1024 * 1024)
     print(f"Cache save summary:")
-    print(f"  Packages cached: {cached_count}")
+    print(f"  Wheel packages cached: {cached_wheels}")
+    print(
+        f"  Library packages: {len(library_packages)} (.libs/ = {libs_size_mb:.1f} MB)"
+    )
     print(f"  Packages without dist/: {skipped_no_dist}")
     print(f"  Total cache size: {total_size_mb:.1f} MB")
     print(f"  Cache directory: {cache_dir}")
