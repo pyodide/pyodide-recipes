@@ -1,0 +1,16 @@
+package:
+  name: passagemath-conf
+  version: 10.8.1
+  top-level:
+    - sage
+    - _sage_conf
+source:
+  url: https://pypi.org/packages/source/p/passagemath-conf/passagemath_conf-10.8.1.tar.gz
+  sha256: b7df79c2d7a5f64d23a756cb8eaee2f5f403abfae224e839c8be53f646f2ecb1
+about:
+  PyPI: https://pypi.org/project/passagemath-conf
+  summary: "passagemath: Configuration system"
+  license: GPL-2.0-or-later
+build:
+  script: |
+    export SAGE_CONF_FILE=/dev/null

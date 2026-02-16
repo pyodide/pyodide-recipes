@@ -1,0 +1,16 @@
+package:
+  name: passagemath-setup
+  version: 10.8.1
+  top-level:
+    - sage_setup
+source:
+  url: https://pypi.org/packages/source/p/passagemath-setup/passagemath_setup-10.8.1.tar.gz
+  sha256: f2bfa93c8bcb77b7ae68c8f2b8ef83851248b201e2f0b56efe8c1588f5c8d420
+requirements:
+  run:
+    - setuptools
+    - Jinja2
+about:
+  PyPI: https://pypi.org/project/passagemath-setup
+  summary: "passagemath: Build system of the Sage library"
+  license: GPL-2.0-or-later
