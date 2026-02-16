@@ -250,6 +250,7 @@ jobs:
 
       - name: Parse build results
         id: parse_results
+        if: always()
         env:
           PR_NUMBER: ${{ github.event.number }}
         run: |
@@ -262,16 +263,19 @@ jobs:
           fi
 
           echo ${PR_NUMBER} > result/pr_number
+
       - name: Compress build artifacts
+        if: always()
         run: |
           tar -czvf packages.tar.gz -C repodata .
 
       - name: Copy Pyodide runtime to repodata for testing
         run: |
           ./tools/copy_pyodide_runtime.sh ./repodata
+
       - name: Store the build summary
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
-        if: github.event_name == 'pull_request' && env.SUMMARY_CREATED == 'true'
+        if: always() && github.event_name == 'pull_request' && env.SUMMARY_CREATED == 'true'
         with:
           name: build-result
           path: result/
@@ -279,6 +283,7 @@ jobs:
 
       - name: Store artifacts build
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: always()
         with:
           name: repodata
           path: ./repodata/
@@ -286,6 +291,7 @@ jobs:
 
       - name: Store build logs
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: always()
         with:
           name: build-log
           path: ./build-logs/
