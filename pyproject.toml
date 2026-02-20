@@ -80,5 +80,5 @@ testpaths = [
 asyncio_mode = "strict"
 
 [tool.pyodide.build]
-rust_toolchain = "nightly-2025-12-10"
-default_cross_build_env_url = "https://github.com/pyodide/pyodide-build-environment-nightly/releases/download/20260127/xbuildenv.tar.bz2"
+rust_toolchain = "1.93.0"
+default_cross_build_env_url = "https://github.com/pyodide/pyodide-build-environment-nightly/releases/download/20260201/xbuildenv.tar.bz2"
