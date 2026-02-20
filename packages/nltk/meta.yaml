@@ -9,7 +9,6 @@ source:
 requirements:
   run:
     - regex
-    - sqlite3
 about:
   home: https://www.nltk.org/
   PyPI: https://pypi.org/project/nltk
