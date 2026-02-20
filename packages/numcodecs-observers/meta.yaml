@@ -1,0 +1,22 @@
+package:
+  name: numcodecs-observers
+  version: 0.1.2
+  top-level:
+    - numcodecs_observers
+source:
+  url: https://files.pythonhosted.org/packages/a2/3f/33efa98c8ada32339d4027a0c0adbaca129dcd0b03c9243d8ca2d8883c70/numcodecs_observers-0.1.2-py3-none-any.whl
+  sha256: 956662ce8d31a1312193a43869bf23948122bff42a842eb831db7f60d37c5a9f
+requirements:
+  run:
+    - numcodecs
+    - numcodecs-combinators
+    - numpy
+    - typing-extensions
+about:
+  home: https://github.com/juntyr/numcodecs-observers
+  PyPI: https://pypi.org/project/numcodecs-observers
+  summary: Observe encoding and decoding in the `numcodecs` buffer compression API
+  license: MPL-2.0
+extra:
+  recipe-maintainers:
+    - juntyr

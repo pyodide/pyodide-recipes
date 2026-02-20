@@ -1,0 +1,22 @@
+package:
+  name: numcodecs-combinators
+  version: 0.2.13
+  top-level:
+    - numcodecs_combinators
+source:
+  url: https://files.pythonhosted.org/packages/74/31/9025c0d42432aa65f2b997713485ff38298e1e9036696820c752cbdff960/numcodecs_combinators-0.2.13-py3-none-any.whl
+  sha256: 6aac7ff38eedd153b191059636d9e9ff448e892f1dde0b44dab30d5cde2f4c90
+requirements:
+  run:
+    - leb128
+    - numcodecs
+    - numpy
+    - typing-extensions
+about:
+  home: https://github.com/juntyr/numcodecs-combinators
+  PyPI: https://pypi.org/project/numcodecs-combinators
+  summary: Combinator codecs for the `numcodecs` buffer compression API
+  license: MPL-2.0
+extra:
+  recipe-maintainers:
+    - juntyr
