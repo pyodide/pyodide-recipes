@@ -32,7 +32,7 @@ build:
       linkflags="-fpic $SIDE_MODULE_LDFLAGS" \
       python=$PYMAJOR.$PYMINOR \
       --layout=system -j"${PYODIDE_JOBS:-3}" --prefix=${INSTALL_DIR} \
-      install
+      -d2 install
 
     echo "==============================="
     find $WASM_LIBRARY_DIR
