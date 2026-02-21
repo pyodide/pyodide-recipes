@@ -18,6 +18,10 @@ requirements:
 build:
   script: |
     export INSTALL_DIR=${WASM_LIBRARY_DIR}
+    export NUMPY_INCLUDE_DIR="$HOSTINSTALLDIR/lib/python$PYMAJOR.$PYMINOR/site-packages/numpy/_core/include/"
+    echo '============================================'
+    find $INSTALL_DIR
+    echo '============================================'
     emcmake cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
     -DCMAKE_BUILD_TYPE=Release \
     -DRDK_INSTALL_INTREE=ON \
@@ -46,6 +50,7 @@ build:
     -DPython3_INCLUDE_DIRS=$PYTHONINCLUDE \
     -DPython3_EXECUTABLE=python$PYMAJOR.$PYMINOR \
     -DPython3_LIBRARY=$HOSTINSTALLDIR/lib/python$PYMAJOR.$PYMINOR.a \
+    -DPYTHON3_NUMPY_INCLUDE_DIRS=$NUMPY_INCLUDE_DIR \
     -DCMAKE_INCLUDE_PATH="$WASM_LIBRARY_DIR/include" \
     -DCMAKE_LIBRARY_PATH="$WASM_LIBRARY_DIR/lib"
 
