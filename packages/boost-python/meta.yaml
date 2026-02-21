@@ -29,6 +29,8 @@ build:
       --layout=system -j"${PYODIDE_JOBS:-3}" --prefix=${INSTALL_DIR} \
       install
 
+    false
+
 about:
   home: https://www.boost.org/
   summary: Free peer-reviewed portable C++ source libraries.
