@@ -51,6 +51,45 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def _cleanup_stale_pc_files(libs_dir: Path) -> None:
+    """Remove .pc files whose includedir references non-existent paths.
+
+    Some packages (e.g. healpy) bundle C subprojects that install .pc files
+    to .libs/lib/pkgconfig/ with prefix pointing into a per-package build temp
+    directory. After cache restore, those build temp dirs don't exist, but the
+    stale .pc files cause pkg-config to report libraries as 'found', skipping
+    the source build and causing missing-header errors at compile time.
+
+    Real library packages install with prefix=.libs/ so their paths survive
+    cache restore. Only stale entries (pointing outside .libs/) are removed.
+    """
+    removed = 0
+    for pc_dir in [libs_dir / "lib" / "pkgconfig", libs_dir / "lib64" / "pkgconfig"]:
+        if not pc_dir.is_dir():
+            continue
+        for pc_file in pc_dir.glob("*.pc"):
+            prefix = _parse_pc_variable(pc_file, "prefix")
+            if prefix and not Path(prefix).is_dir():
+                pc_file.unlink()
+                removed += 1
+    if removed:
+        print(f"  Removed {removed} stale .pc file(s) from {libs_dir}")
+
+
+def _parse_pc_variable(pc_file: Path, var_name: str) -> str | None:
+    """Extract a top-level variable assignment from a .pc file.
+
+    Reads lines like 'prefix=/some/path' (not ${...} references).
+    """
+    try:
+        for line in pc_file.read_text().splitlines():
+            line = line.strip()
+            if line.startswith(f"{var_name}="):
+                return line.split("=", 1)[1].strip()
+    except OSError:
+        pass
+    return None
+
 def main() -> None:
     args = parse_args()
     cache_dir = Path(args.cache_dir)
@@ -140,6 +179,12 @@ def main() -> None:
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(cached_file, dest)
                 os.utime(dest, (FUTURE_MTIME, FUTURE_MTIME))
+
+    # Some packages (e.g. healpy) bundle C libraries and install .pc files
+    # to .libs/lib/pkgconfig/ with prefix pointing into their build temp dir.
+    # On rebuild, the build temp is clean but stale .pc files trick pkg-config
+    # into thinking libraries are installed, causing missing header errors.
+    _cleanup_stale_pc_files(packages_dir / ".libs")
 
     total = len(current_fingerprints)
     restored = restored_wheels + restored_libraries
