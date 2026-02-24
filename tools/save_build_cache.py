@@ -51,7 +51,6 @@ def main() -> None:
     cache_dir = Path(args.cache_dir)
     packages_dir = Path(args.packages_dir)
 
-    # Load build plan
     if not build_plan_path.exists():
         print(f"Error: build plan not found at {build_plan_path}", file=sys.stderr)
         sys.exit(1)
@@ -64,12 +63,14 @@ def main() -> None:
         shutil.rmtree(cache_dir)
     cache_dir.mkdir(parents=True)
 
-    cached_wheels = 0
+    cached_count = 0
     skipped_no_dist = 0
+    skipped_library = 0
     total_size = 0
 
     for pkg_name in sorted(fingerprints):
         if pkg_name in library_packages:
+            skipped_library += 1
             continue
 
         dist_dir = packages_dir / pkg_name / "dist"
@@ -90,20 +91,7 @@ def main() -> None:
             shutil.copy2(artifact, dest)
             total_size += artifact.stat().st_size
 
-        cached_wheels += 1
-
-    libs_dir = packages_dir / ".libs"
-    libs_size = 0
-    if libs_dir.exists():
-        libs_cache_dir = cache_dir / ".libs"
-        for lib_file in libs_dir.rglob("*"):
-            if lib_file.is_file():
-                rel = lib_file.relative_to(libs_dir)
-                dest = libs_cache_dir / rel
-                dest.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(lib_file, dest)
-                libs_size += lib_file.stat().st_size
-    total_size += libs_size
+        cached_count += 1
 
     manifest = {
         "fingerprints": fingerprints,
@@ -115,13 +103,10 @@ def main() -> None:
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
 
     total_size_mb = total_size / (1024 * 1024)
-    libs_size_mb = libs_size / (1024 * 1024)
     print(f"Cache save summary:")
-    print(f"  Wheel packages cached: {cached_wheels}")
-    print(
-        f"  Library packages: {len(library_packages)} (.libs/ = {libs_size_mb:.1f} MB)"
-    )
-    print(f"  Packages without dist/: {skipped_no_dist}")
+    print(f"  Wheel packages cached: {cached_count}")
+    print(f"  Skipped (library packages): {skipped_library}")
+    print(f"  Skipped (no dist/): {skipped_no_dist}")
     print(f"  Total cache size: {total_size_mb:.1f} MB")
     print(f"  Cache directory: {cache_dir}")
 
