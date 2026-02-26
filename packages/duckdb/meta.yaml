@@ -5,7 +5,7 @@ package:
     - duckdb
 source:
   url: https://github.com/xlwings/duckdb-pyodide/releases/download/duckdb-v1.4.4-pyodide-0.29.3/duckdb-1.4.4-cp313-cp313-pyodide_2025_0_wasm32.whl
-  sha256: 6d66ae0120d50c311c95a64d48699d0b95c6225b37d329ca3ab7ff01c4113013
+  sha256: 663b03412f0f1f2ce0117a3f7c7234917b53168f048c8c941184c3618a038d4f
 about:
   home: https://github.com/duckdb/duckdb
   PyPI: https://pypi.org/project/duckdb
