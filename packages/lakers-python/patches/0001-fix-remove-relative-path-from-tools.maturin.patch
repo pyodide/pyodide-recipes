@@ -9,7 +9,7 @@ Recent maturin version doesn't path starting with ./
  lakers-python/pyproject.toml | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lpyproject.toml b/pyproject.toml
+diff --git a/pyproject.toml b/pyproject.toml
 index de40484..1a2af19 100644
 --- a/pyproject.toml
 +++ b/pyproject.toml
