@@ -19,6 +19,7 @@ index de40484..1a2af19 100644
  [tool.maturin]
 -include = ["./examples/*"]
 +include = ["examples/*"]
+ manifest-path = "lakers-python/Cargo.toml"
  
  [project]
  name = "lakers-python"
