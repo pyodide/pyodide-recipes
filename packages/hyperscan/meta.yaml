@@ -1,0 +1,13 @@
+package:
+  name: hyperscan
+  version: 0.8.1
+  top-level:
+    - hyperscan
+source:
+  url: https://files.pythonhosted.org/packages/cc/56/6359bfa86a3bfeeecbeeb1ffcfc9484058c8a8ae153c8bda2181c3511e6b/hyperscan-0.8.1.tar.gz
+  sha256: d50bf70b0110817a308bfb1855055dc4d649934857b958498a1791164f512779
+about:
+  home: https://github.com/darvid/python-hyperscan
+  PyPI: https://pypi.org/project/hyperscan
+  summary: Python bindings for Hyperscan, a high-performance regular expression matching library
+  license: MIT
