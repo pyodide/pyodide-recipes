@@ -37,6 +37,11 @@ build:
       --layout=system -j"${PYODIDE_JOBS:-3}" --prefix=${INSTALL_DIR} \
       -d2 install
 
+    # Work around another boost installation issue:
+    # https://github.com/boostorg/boost_install/issues/82
+    sed -i 's/CMAKE_SIZEOF_VOID_P EQUAL 4/CMAKE_SIZEOF_VOID_P EQUAL 8/' \
+      $INSTALL_DIR/lib/cmake/boost_*/libboost_*-variant-*.cmake
+
 about:
   home: https://www.boost.org/
   summary: Free peer-reviewed portable C++ source libraries.

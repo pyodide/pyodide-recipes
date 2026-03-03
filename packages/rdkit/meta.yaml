@@ -37,7 +37,7 @@ build:
     -DRDK_BUILD_INCHI_SUPPORT=ON \
     -DRDK_BUILD_YAEHMOP_SUPPORT=ON \
     -DRDK_BUILD_XYZ2MOL_SUPPORT=ON \
-    -DRDK_BUILD_CAIRO_SUPPORT=ON \
+    -DRDK_BUILD_CAIRO_SUPPORT=OFF \
     -DRDK_BUILD_SWIG_WRAPPERS=OFF \
     -DRDK_SWIG_STATIC=OFF \
     -DRDK_BUILD_THREADSAFE_SSS=ON \
@@ -54,8 +54,8 @@ build:
     -DCMAKE_INCLUDE_PATH="$WASM_LIBRARY_DIR/include" \
     -DCMAKE_LIBRARY_PATH="$WASM_LIBRARY_DIR/lib"
 
-    emmake make -j 2
-    emmake make -j 2 install
+    emmake make -j ${PYODIDE_JOBS:-3}
+    emmake make -j ${PYODIDE_JOBS:-3} install
 
 about:
   home: https://github.com/rdkit/rdkit
