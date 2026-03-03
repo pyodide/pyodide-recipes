@@ -1,6 +1,6 @@
 package:
   name: cryptography
-  version: 46.0.3
+  version: 46.0.5
   tag:
     - rust
   top-level:
