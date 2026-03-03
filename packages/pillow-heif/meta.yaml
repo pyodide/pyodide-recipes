@@ -1,11 +1,11 @@
 package:
   name: pillow-heif
-  version: 1.1.1
+  version: 1.3.0
   top-level:
     - pillow_heif
 source:
-  url: https://files.pythonhosted.org/packages/source/p/pillow_heif/pillow_heif-1.1.1.tar.gz
-  sha256: f60e8c8a8928556104cec4fff39d43caa1da105625bdb53b11ce3c89d09b6bde
+  url: https://files.pythonhosted.org/packages/source/p/pillow_heif/pillow_heif-1.3.0.tar.gz
+  sha256: af8d2bda85e395677d5bb50d7bda3b5655c946cc95b913b5e7222fabacbb467f
 requirements:
   run:
     - cffi
