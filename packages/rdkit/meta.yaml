@@ -22,6 +22,9 @@ build:
     echo '============================================'
     find $INSTALL_DIR
     echo '============================================'
+
+    wget https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz && tar -zxvf eigen-3.4.0.tar.gz
+
     emcmake cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} \
     -DCMAKE_BUILD_TYPE=Release \
     -DRDK_INSTALL_INTREE=ON \
@@ -47,6 +50,10 @@ build:
     -DBoost_LIBRARY_DIR=$WASM_LIBRARY_DIR/lib \
     -DBoost_NO_SYSTEM_PATHS=ON \
     -DRDK_BOOST_PYTHON3_NAME=python$PYMAJOR.$PYMINOR \
+    -DRDK_USE_BOOST_IOSTREAMS=OFF \
+    -DRDK_USE_BOOST_SERIALIZATION=OFF \
+    -DRDK_USE_BOOST_STACKTRACE=OFF \
+    -DEIGEN3_INCLUDE_DIR=$PWD/eigen-3.4.1 \
     -DPython3_INCLUDE_DIRS=$PYTHONINCLUDE \
     -DPython3_EXECUTABLE=python$PYMAJOR.$PYMINOR \
     -DPython3_LIBRARY=$HOSTINSTALLDIR/lib/python$PYMAJOR.$PYMINOR.a \
