@@ -19,9 +19,6 @@ build:
   script: |
     export INSTALL_DIR=${WASM_LIBRARY_DIR}
     export NUMPY_INCLUDE_DIR="$HOSTINSTALLDIR/lib/python$PYMAJOR.$PYMINOR/site-packages/numpy/_core/include/"
-    echo '============================================'
-    find $INSTALL_DIR
-    echo '============================================'
 
     wget https://gitlab.com/libeigen/eigen/-/archive/3.4.1/eigen-3.4.1.tar.gz && tar -zxvf eigen-3.4.1.tar.gz
 
@@ -29,6 +26,7 @@ build:
     -DCMAKE_BUILD_TYPE=Release \
     -DRDK_INSTALL_INTREE=ON \
     -DRDK_INSTALL_STATIC_LIBS=ON \
+    -DRDK_BUILD_STATIC_LIBS_ONLY=ON \
     -DRDK_BUILD_AVALON_SUPPORT=ON \
     -DRDK_BUILD_CAIRO_SUPPORT=OFF \
     -DRDK_BUILD_COORDGEN_SUPPORT=ON \
@@ -46,10 +44,6 @@ build:
     -DRDK_TEST_MULTITHREADED=ON \
     -DRDK_BUILD_CFFI_LIB=ON \
     -DRDK_BUILD_FREETYPE_SUPPORT=OFF \
-    -DBoost_INCLUDE_DIR=$WASM_LIBRARY_DIR/include \
-    -DBoost_LIBRARY_DIR=$WASM_LIBRARY_DIR/lib \
-    -DBoost_NO_SYSTEM_PATHS=ON \
-    -DRDK_BOOST_PYTHON3_NAME=python$PYMAJOR.$PYMINOR \
     -DRDK_USE_BOOST_IOSTREAMS=OFF \
     -DRDK_USE_BOOST_SERIALIZATION=OFF \
     -DRDK_USE_BOOST_STACKTRACE=OFF \
@@ -60,6 +54,11 @@ build:
     -DPython3_LIBRARY=$HOSTINSTALLDIR/lib/python$PYMAJOR.$PYMINOR.a \
     -DCMAKE_INCLUDE_PATH="$WASM_LIBRARY_DIR/include" \
     -DCMAKE_LIBRARY_PATH="$WASM_LIBRARY_DIR/lib"
+
+    #    -DBoost_INCLUDE_DIR=$WASM_LIBRARY_DIR/include \
+    #    -DBoost_LIBRARY_DIR=$WASM_LIBRARY_DIR/lib \
+    #    -DBoost_NO_SYSTEM_PATHS=ON \
+    #    -DRDK_BOOST_PYTHON3_NAME=python$PYMAJOR.$PYMINOR \
 
     emmake make -j ${PYODIDE_JOBS:-3}
     emmake make -j ${PYODIDE_JOBS:-3} install
