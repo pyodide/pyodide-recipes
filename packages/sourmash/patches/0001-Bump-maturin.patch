@@ -14,7 +14,7 @@ index 60af79b6..d357a14b 100644
 @@ -1,6 +1,6 @@
  [build-system]
  requires = [
--    "maturin>=1,<1.10.0",
+-    "maturin>=1,<1.9.0",
 +    "maturin>=1,<1.13.0",
      "cffi",
  ]
