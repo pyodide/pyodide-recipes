@@ -18,7 +18,6 @@ requirements:
     - six
     - stack-data
     - traitlets
-    - sqlite3
     - wcwidth
 about:
   home: https://ipython.org

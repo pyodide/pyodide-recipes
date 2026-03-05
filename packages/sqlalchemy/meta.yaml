@@ -8,7 +8,6 @@ source:
   sha256: 5d2d1fe548def3267b4c70a8568f108d1fed7cbbeccb9cc166e05af2abc25c22
 requirements:
   run:
-    - sqlite3
     - typing-extensions
 about:
   home: https://www.sqlalchemy.org
