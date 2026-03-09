@@ -158,10 +158,6 @@ jobs:
           which python
           ./tools/prepare_pyodide_build.sh
 
-      - name: Install emscripten
-        run: |
-          python tools/install_and_patch_emscripten.py
-
       - name: Set ccache suffix
         run: |
           # This step makes the cache key in the main branch and PRs different.
