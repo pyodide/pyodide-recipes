@@ -225,7 +225,6 @@ jobs:
           export _EMCC_CACHE=1
 
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
-          source emsdk/emsdk_env.sh
           mkdir -p result
           pyodide build-recipes "*" --install --install-dir=./repodata --log-dir=build-logs | tee result/build_output.log
           ccache -s
@@ -239,7 +238,6 @@ jobs:
           export _EMCC_CACHE=1
 
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
-          source emsdk/emsdk_env.sh
           mkdir -p result
           pyodide build-recipes ${STEPS_CALCULATE_RECIPES_PR_OUTPUTS_RECIPES} --install --install-dir=./repodata --log-dir=build-logs | tee result/build_output.log
           ccache -s
