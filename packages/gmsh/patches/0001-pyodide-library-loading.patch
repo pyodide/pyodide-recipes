@@ -1,0 +1,125 @@
+--- a/api/gmsh.py
++++ b/api/gmsh.py
+@@ -42,53 +42,60 @@
+ parentdir1 = os.path.dirname(moduledir)
+ parentdir2 = os.path.dirname(parentdir1)
+
+-if platform.system() == "Windows":
++if platform.system() == "Emscripten":
++    libname = "libgmsh.so"
++elif platform.system() == "Windows":
+     libname = "gmsh-4.15.dll"
+ elif platform.system() == "Darwin":
+     libname = "libgmsh.4.15.dylib"
+ else:
+     libname = "libgmsh.so.4.15"
+
+-# Searching lib in various subfolders
+-libpath = None
+-possible_libpaths = [os.path.join(moduledir, libname),
+-                     os.path.join(moduledir, "lib", libname),
+-                     os.path.join(moduledir, "Lib", libname),
+-                     os.path.join(moduledir, "bin", libname),
+-                     # first parent dir
+-                     os.path.join(parentdir1, libname),
+-                     os.path.join(parentdir1, "lib", libname),
+-                     os.path.join(parentdir1, "Lib", libname),
+-                     os.path.join(parentdir1, "bin", libname),
+-                     # second parent dir
+-                     os.path.join(parentdir2, libname),
+-                     os.path.join(parentdir2, "lib", libname),
+-                     os.path.join(parentdir2, "Lib", libname),
+-                     os.path.join(parentdir2, "bin", libname),
+-                     # for Windows conda-forge
+-                     os.path.join(parentdir2, "Library", "bin", "gmsh.dll")
+-                     ]
+-
+-for libpath_to_look in possible_libpaths:
+-    if os.path.exists(libpath_to_look):
+-        libpath = libpath_to_look
+-        break
+-
+-# if we couldn't find it, use ctype's find_library utility...
+-if not libpath:
+-    if platform.system() == "Windows":
+-        libpath = find_library("gmsh-4.15")
+-        if not libpath:
+-            libpath = find_library("gmsh")
+-    else:
+-        libpath = find_library("gmsh")
++if platform.system() == "Emscripten":
++    # In Pyodide/Emscripten, the shared library is already loaded by the
++    # package manager via dlopen. Just reference it by name.
++    libpath = libname
++else:
++    # Searching lib in various subfolders
++    libpath = None
++    possible_libpaths = [os.path.join(moduledir, libname),
++                         os.path.join(moduledir, "lib", libname),
++                         os.path.join(moduledir, "Lib", libname),
++                         os.path.join(moduledir, "bin", libname),
++                         # first parent dir
++                         os.path.join(parentdir1, libname),
++                         os.path.join(parentdir1, "lib", libname),
++                         os.path.join(parentdir1, "Lib", libname),
++                         os.path.join(parentdir1, "bin", libname),
++                         # second parent dir
++                         os.path.join(parentdir2, libname),
++                         os.path.join(parentdir2, "lib", libname),
++                         os.path.join(parentdir2, "Lib", libname),
++                         os.path.join(parentdir2, "bin", libname),
++                         # for Windows conda-forge
++                         os.path.join(parentdir2, "Library", "bin", "gmsh.dll")
++                         ]
+
+-# ... and print a warning if everything failed
+-if not libpath:
+-    print("Warning: could not find Gmsh shared library " + libname +
+-          " with ctypes.util.find_library() or in the following locations: " +
+-          str(possible_libpaths))
++    for libpath_to_look in possible_libpaths:
++        if os.path.exists(libpath_to_look):
++            libpath = libpath_to_look
++            break
+
++    # if we couldn't find it, use ctype's find_library utility...
++    if not libpath:
++        if platform.system() == "Windows":
++            libpath = find_library("gmsh-4.15")
++            if not libpath:
++                libpath = find_library("gmsh")
++        else:
++            libpath = find_library("gmsh")
++
++    # ... and print a warning if everything failed
++    if not libpath:
++        print("Warning: could not find Gmsh shared library " + libname +
++              " with ctypes.util.find_library() or in the following locations: " +
++              str(possible_libpaths))
++
+ lib = CDLL(libpath)
+
+ try_numpy = True # set this to False to never use numpy
+@@ -292,7 +299,10 @@
+         c_int(bool(run)),
+         byref(ierr))
+     if interruptible == True:
+-        prev_interrupt_handler = signal.signal(signal.SIGINT, signal.SIG_DFL)
++        try:
++            prev_interrupt_handler = signal.signal(signal.SIGINT, signal.SIG_DFL)
++        except (ValueError, OSError):
++            pass
+     if ierr.value != 0:
+         raise Exception(logger.getLastError())
+
+@@ -323,7 +333,10 @@
+     lib.gmshFinalize(
+         byref(ierr))
+     if prev_interrupt_handler is not None:
+-        signal.signal(signal.SIGINT, prev_interrupt_handler)
++        try:
++            signal.signal(signal.SIGINT, prev_interrupt_handler)
++        except (ValueError, OSError):
++            pass
+     if ierr.value != 0:
+         raise Exception(logger.getLastError())

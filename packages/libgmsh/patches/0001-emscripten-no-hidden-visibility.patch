@@ -1,0 +1,15 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 6760c3583..73a480501 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1783,7 +1783,9 @@ if(ENABLE_BUILD_SHARED OR ENABLE_BUILD_DYNAMIC)
+     if(NOT ENABLE_PRIVATE_API)
+       # hide all symbols by default (if not exporting the private API); symbols to
+       # export should be marked with __attribute__ ((visibility("default")))
+-      set_target_properties(shared PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
++      if(NOT CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
++        set_target_properties(shared PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
++      endif()
+     endif()
+     # hide all symbols from static libs linked into the shared Gmsh lib (this is
+     # easier than recompiling all the dependencies with -fvisibility=hidden)

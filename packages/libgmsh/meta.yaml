@@ -1,0 +1,85 @@
+package:
+  name: libgmsh
+  version: 4.15.1
+  tag:
+    - library
+    - shared_library
+source:
+  url: https://gmsh.info/src/gmsh-4.15.1-source.tgz
+  sha256: eba8e4064f6586c8ca880f1cfdf697f4d70f026f398a93b458f247f7e4364fed
+  patches:
+    - patches/0001-emscripten-no-hidden-visibility.patch
+
+requirements:
+  host:
+    - libgmp
+
+build:
+  type: shared_library
+  script: |
+    embuilder build zlib --pic
+
+    mkdir -p build && cd build
+    emcmake cmake .. \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=$WASM_LIBRARY_DIR \
+      -DENABLE_BUILD_SHARED=ON \
+      -DGMSH_RELEASE=1 \
+      \
+      -DCMAKE_C_FLAGS="${SIDE_MODULE_CFLAGS}" \
+      -DCMAKE_CXX_FLAGS="${SIDE_MODULE_CXXFLAGS}" \
+      -DCMAKE_SHARED_LINKER_FLAGS="-sSIDE_MODULE=1 -sWASM_BIGINT" \
+      \
+      -DENABLE_FLTK=OFF \
+      -DENABLE_OCC=OFF \
+      -DENABLE_OCC_CAF=OFF \
+      -DENABLE_OPENMP=OFF \
+      -DENABLE_GRAPHICS=OFF \
+      -DENABLE_OSMESA=OFF \
+      -DENABLE_CAIRO=OFF \
+      -DENABLE_MPEG_ENCODE=OFF \
+      -DENABLE_TESTS=OFF \
+      -DENABLE_TOUCHBAR=OFF \
+      -DENABLE_MED=OFF \
+      -DENABLE_CGNS=OFF \
+      -DENABLE_GETDP=OFF \
+      -DENABLE_MMG=OFF \
+      -DENABLE_GEOMETRYCENTRAL=OFF \
+      -DENABLE_NII2MESH=OFF \
+      -DENABLE_PRIVATE_API=OFF \
+      \
+      -DENABLE_MESH=ON \
+      -DENABLE_SOLVER=ON \
+      -DENABLE_POST=ON \
+      -DENABLE_PARSER=ON \
+      -DENABLE_PLUGINS=ON \
+      -DENABLE_EIGEN=ON \
+      -DENABLE_NETGEN=ON \
+      -DENABLE_METIS=ON \
+      -DENABLE_HXT=ON \
+      -DENABLE_BAMG=ON \
+      -DENABLE_BLOSSOM=ON \
+      -DENABLE_ANN=ON \
+      -DENABLE_ALGLIB=ON \
+      -DENABLE_GMP=ON \
+      -DENABLE_KBIPACK=ON \
+      -DENABLE_ONELAB=ON \
+      \
+      -DGMP_LIB=$WASM_LIBRARY_DIR/lib/libgmp.a \
+      -DGMP_INC=$WASM_LIBRARY_DIR/include \
+      \
+      -DSIZEOF_SIZE_T=4 \
+      -DHAVE_64BIT_SIZE_T=OFF
+
+    emmake make -j ${PYODIDE_JOBS:-16}
+    emmake make install
+
+    cp ${WASM_LIBRARY_DIR}/lib/libgmsh.so ${DISTDIR}
+
+about:
+  home: https://gmsh.info
+  license: GPL-2.0-or-later
+  summary: A three-dimensional finite element mesh generator with built-in CAD engine
+extra:
+  recipe-maintainers:
+    - pepijndevos
