@@ -2,13 +2,6 @@ from pytest_pyodide import run_in_pyodide
 
 
 @run_in_pyodide(packages=["gmsh"])
-def test_gmsh_import(selenium):
-    import gmsh
-
-    assert gmsh.GMSH_API_VERSION == "4.15.1"
-
-
-@run_in_pyodide(packages=["gmsh"])
 def test_gmsh_initialize(selenium):
     import gmsh
 

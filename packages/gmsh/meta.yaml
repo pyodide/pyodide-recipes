@@ -28,6 +28,10 @@ build:
     )
     EOF
 
+test:
+  imports:
+    - gmsh
+
 about:
   home: https://gmsh.info
   PyPI: https://pypi.org/project/gmsh
