@@ -158,10 +158,6 @@ jobs:
           which python
           ./tools/prepare_pyodide_build.sh
 
-      - name: Install emscripten
-        run: |
-          python tools/install_and_patch_emscripten.py
-
       - name: Set ccache suffix
         run: |
           # This step makes the cache key in the main branch and PRs different.
@@ -229,7 +225,6 @@ jobs:
           export _EMCC_CACHE=1
 
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
-          source emsdk/emsdk_env.sh
           mkdir -p result
           pyodide build-recipes "*" --install --install-dir=./repodata --log-dir=build-logs | tee result/build_output.log
           ccache -s
@@ -243,7 +238,6 @@ jobs:
           export _EMCC_CACHE=1
 
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
-          source emsdk/emsdk_env.sh
           mkdir -p result
           pyodide build-recipes ${STEPS_CALCULATE_RECIPES_PR_OUTPUTS_RECIPES} --install --install-dir=./repodata --log-dir=build-logs | tee result/build_output.log
           ccache -s

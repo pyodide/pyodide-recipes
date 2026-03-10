@@ -40,16 +40,9 @@ If you are using conda, you can create a new environment with the following comm
 ```bash
 conda env create -f environment.yml
 conda activate pyodide-env
-```
-
-After activating the environment, you can install the necessary tools and dependencies with the following command:
-
-```bash
 ./tools/prepare_pyodide_build.sh
-python tools/install_and_patch_emscripten.py
 ```
 
-This will install the `pyodide-build` and `emscripten` tools in the current environment.
 You can then build the packages with the following command:
 
 ```bash
