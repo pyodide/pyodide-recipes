@@ -1,7 +1,7 @@
 from pytest_pyodide import run_in_pyodide
 
 
-@run_in_pyodide(packages=["safetensors"])
+@run_in_pyodide(packages=["safetensors", "numpy"])
 def test_safetensors(selenium):
     import numpy as np
     from safetensors.numpy import save, load
