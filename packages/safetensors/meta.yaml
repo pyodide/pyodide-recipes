@@ -12,6 +12,8 @@ requirements:
   executable:
     - rustup
     - cargo
+  run:
+    - numpy
 about:
   home: https://github.com/huggingface/safetensors
   PyPI: https://pypi.org/project/safetensors
