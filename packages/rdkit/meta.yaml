@@ -15,8 +15,7 @@ source:
 
 requirements:
   host:
-    - libboost-python
-    - libzlib
+    - librdkit
     - numpy
   run:
     - librdkit
@@ -26,137 +25,26 @@ build:
   script: |
     set -e
 
-    # ========================
-    # 1. Setup
-    # ========================
-    NUMPY_INC="$HOSTINSTALLDIR/lib/python$PYMAJOR.$PYMINOR/site-packages/numpy/_core/include/"
-
-    # Download Eigen3 headers (header-only)
-    if [ ! -d "eigen-3.4.0" ]; then
-        wget -q https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz
-        tar xf eigen-3.4.0.tar.gz
-    fi
-
-    # Dummy libpython — side modules don't link against it, but CMake's FindPython3 needs it
-    emar rcs /tmp/libpython${PYMAJOR}.${PYMINOR}.a
-
-    # Patch CMakeLists.txt for Emscripten support
-    sed -i 's/OR RDK_BUILD_MINIMAL_LIB)/OR EMSCRIPTEN OR RDK_BUILD_MINIMAL_LIB)/' CMakeLists.txt
+    STAGING=${WASM_LIBRARY_DIR}/share/rdkit
 
     # Set version in pyproject.toml
     sed -i "s/^version = .*/version = \"${PKG_VERSION}\"/" pyproject.toml
 
     # ========================
-    # 2. CMake configure
+    # 1. Relink wrappers from staged .o files
     # ========================
-    mkdir -p build && cd build
-
-    emcmake cmake \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DRDK_BUILD_PYTHON_WRAPPERS=ON \
-        -DRDK_BUILD_MINIMAL_LIB=OFF \
-        -DRDK_BUILD_CPP_TESTS=OFF \
-        -DRDK_BUILD_INCHI_SUPPORT=ON \
-        -DRDK_USE_BOOST_SERIALIZATION=ON \
-        -DRDK_USE_BOOST_IOSTREAMS=ON \
-        -DRDK_OPTIMIZE_POPCNT=OFF \
-        -DRDK_BUILD_THREADSAFE_SSS=OFF \
-        -DRDK_BUILD_DESCRIPTORS3D=ON \
-        -DRDK_TEST_MULTITHREADED=OFF \
-        -DRDK_BUILD_CHEMDRAW_SUPPORT=ON \
-        -DRDK_BUILD_MAEPARSER_SUPPORT=ON \
-        -DRDK_BUILD_COORDGEN_SUPPORT=ON \
-        -DRDK_BUILD_SLN_SUPPORT=ON \
-        -DRDK_BUILD_CAIRO_SUPPORT=OFF \
-        -DRDK_BUILD_QT_SUPPORT=OFF \
-        -DRDK_BUILD_PGSQL=OFF \
-        -DRDK_BUILD_SWIG_WRAPPERS=OFF \
-        -DRDK_BUILD_FREETYPE_SUPPORT=OFF \
-        -DRDK_BUILD_AVALON_SUPPORT=ON \
-        -DRDK_BUILD_YAEHMOP_SUPPORT=OFF \
-        -DRDK_BUILD_XYZ2MOL_SUPPORT=ON \
-        -DRDK_INSTALL_INTREE=ON \
-        -DRDK_INSTALL_STATIC_LIBS=ON \
-        -DRDK_BUILD_STATIC_LIBS_ONLY=ON \
-        -DBoost_USE_STATIC_LIBS=ON \
-        -DCMAKE_PREFIX_PATH="${WASM_LIBRARY_DIR}" \
-        -DCMAKE_FIND_ROOT_PATH="${WASM_LIBRARY_DIR}" \
-        -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=BOTH \
-        -DBoost_INCLUDE_DIR=${WASM_LIBRARY_DIR}/include \
-        -DCMAKE_INCLUDE_PATH="${WASM_LIBRARY_DIR}/include" \
-        -DCMAKE_LIBRARY_PATH="${WASM_LIBRARY_DIR}/lib" \
-        -DZLIB_INCLUDE_DIR=${WASM_LIBRARY_DIR}/include \
-        -DZLIB_LIBRARY=${WASM_LIBRARY_DIR}/lib/libz.a \
-        -DEIGEN3_INCLUDE_DIR=$PWD/../eigen-3.4.0 \
-        -DPython3_INCLUDE_DIR=${PYTHONINCLUDE} \
-        -DPython3_LIBRARY=/tmp/libpython${PYMAJOR}.${PYMINOR}.a \
-        -DPython3_NumPy_INCLUDE_DIR=${NUMPY_INC} \
-        -DPython3_EXECUTABLE=$(which python${PYMAJOR}.${PYMINOR}) \
-        -DCMAKE_CXX_FLAGS="-fwasm-exceptions -O2 -DNDEBUG -fPIC -std=c++20" \
-        -DCMAKE_C_FLAGS="-fwasm-exceptions -O2 -DNDEBUG -fPIC" \
-        ..
-
-    # ========================
-    # 3. Build
-    # ========================
-    # Use -k to keep going past wrapper MODULE link failures (expected in
-    # cross-compilation — we relink all wrappers ourselves in step 4).
-    # The important outputs are the static .a libraries and .o object files.
-    emmake make -k -j ${PYODIDE_JOBS:-3} || true
-    cd ..
-
-    # ========================
-    # 4. Relink static archives into WASM side modules
-    # ========================
-    # Strategy: one core .so with ALL C++ code (loaded by Pyodide with
-    # {global: true} via the librdkit shared_library package), then thin
-    # wrapper .so per Python extension module.
-
-    # 4a. Collect all static libraries for the core
-    find build/lib build/External -name '*.a' 2>/dev/null | sort > /tmp/all_libs.txt
-    for lib in ${WASM_LIBRARY_DIR}/lib/libboost_python*.a \
-               ${WASM_LIBRARY_DIR}/lib/libboost_numpy*.a \
-               ${WASM_LIBRARY_DIR}/lib/libboost_system*.a \
-               ${WASM_LIBRARY_DIR}/lib/libboost_serialization*.a \
-               ${WASM_LIBRARY_DIR}/lib/libboost_iostreams*.a; do
-        [ -f "$lib" ] && echo "$lib" >> /tmp/all_libs.txt
-    done
-    echo "${WASM_LIBRARY_DIR}/lib/libz.a" >> /tmp/all_libs.txt
-    echo "Core libraries: $(wc -l < /tmp/all_libs.txt)"
-
-    WHOLE_ARGS=""
-    while read -r lib; do
-        WHOLE_ARGS="$WHOLE_ARGS -Wl,--whole-archive $lib -Wl,--no-whole-archive"
-    done < /tmp/all_libs.txt
-
-    em++ -fwasm-exceptions -sSIDE_MODULE=1 -O2 -shared \
-        -Wl,--no-gc-sections -Wl,--export-all \
-        $WHOLE_ARGS \
-        -o build/librdkit_core.so
-    ls -lh build/librdkit_core.so
-
-    # Stage core .so for the librdkit shared_library recipe to package.
-    # NOT included in the wheel — Pyodide loads it asynchronously with
-    # {global: true} via the librdkit dynlib package, avoiding Chrome's
-    # 8MB synchronous WebAssembly.Compile limit.
-    cp build/librdkit_core.so ${WASM_LIBRARY_DIR}/lib/
-
-    # 4b. Relink each Python wrapper as a thin .so and place it in the
-    # correct package directory. The output path is derived from cmake's
-    # build rules (LIBRARY_OUTPUT_DIRECTORY), so new/renamed modules are
-    # handled automatically without hardcoded mappings.
     WRAPPER_COUNT=0
-    for wrap_dir in $(find build -path '*/Wrap/CMakeFiles/*.dir' -type d 2>/dev/null); do
-        modname=$(basename "$wrap_dir" .dir)
-        obj_files=$(find "$wrap_dir" -name '*.o' 2>/dev/null)
+    for wrapper_dir in ${STAGING}/wrappers/*/; do
+        modname=$(basename "$wrapper_dir")
+        obj_files=$(find "$wrapper_dir" -name '*.o' 2>/dev/null)
         if [ -z "$obj_files" ]; then
             echo "SKIP: $modname (no .o files)"
             continue
         fi
-        build_make="$wrap_dir/build.make"
-        dest_path=$(grep -oP "rdkit/[^ ]*${modname}\.so" "$build_make" 2>/dev/null | head -1)
+        # Derive the correct output path from cmake's build.make
+        dest_path=$(grep -oP "rdkit/[^ ]*${modname}\.so" "$wrapper_dir/build.make" 2>/dev/null | head -1)
         if [ -z "$dest_path" ]; then
-            echo "SKIP: $modname (no output path found in cmake)"
+            echo "SKIP: $modname (no output path found)"
             continue
         fi
         mkdir -p "$(dirname "$dest_path")"
@@ -169,10 +57,13 @@ build:
     echo "Total wrapper .so files: $WRAPPER_COUNT"
 
     # ========================
-    # 5. Assemble Python package
+    # 2. Assemble Python package
     # ========================
+    # Overlay cmake-generated Python files (e.g. inchi.py) from staging
+    cp -rn ${STAGING}/python/* rdkit/ 2>/dev/null || true
+
     # Copy Data directory into package
-    cp -r Data rdkit/Data
+    cp -r ${STAGING}/Data rdkit/Data
 
     # Rename .so -> .so.wasm (prevents micropip from auto-loading before
     # core is ready — the core is loaded by Pyodide via the librdkit
