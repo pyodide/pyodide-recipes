@@ -1,9 +1,10 @@
-"""Patch rdkit/__init__.py to auto-load .so.wasm files on emscripten.
+"""Patch rdkit/__init__.py for emscripten/Pyodide support.
 
-This makes 'micropip.install()' + 'import rdkit' just work:
-1. .so files are renamed to .so.wasm so micropip doesn't auto-load them
-2. __init__.py loads librdkit_core.so.wasm with {global: true} on first import
-3. A custom import finder loads wrapper .so.wasm via ExtensionFileLoader
+The librdkit_core.so shared library is loaded by Pyodide with {global: true}
+via the librdkit shared_library package (asynchronously during loadPackage).
+This patch only needs to:
+1. Set RDBASE for RDConfig.py path resolution
+2. Register a custom MetaPathFinder to load .so.wasm wrapper modules
 """
 
 init_path = "rdkit/__init__.py"
@@ -18,12 +19,6 @@ if _sys.platform == 'emscripten':
 
     # Set RDBASE so RDConfig.py finds Data/, Docs/, etc. relative to this package
     _os.environ['RDBASE'] = _os.path.dirname(__file__)
-
-    from pyodide_js._module import loadDynamicLibrary as _ldl
-    import js as _js
-    _core = _os.path.join(_os.path.dirname(__file__), 'librdkit_core.so.wasm')
-    _ldl(_core, _js.JSON.parse('{"global": true}'))
-    del _ldl, _js, _core
 
     class _RDKitExtensionFinder(importlib.abc.MetaPathFinder):
         def find_spec(self, fullname, path, target=None):

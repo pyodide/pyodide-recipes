@@ -19,6 +19,7 @@ requirements:
     - libzlib
     - numpy
   run:
+    - librdkit
     - numpy
 
 build:
@@ -90,7 +91,7 @@ build:
         -DPython3_INCLUDE_DIR=${PYTHONINCLUDE} \
         -DPython3_LIBRARY=/tmp/libpython${PYMAJOR}.${PYMINOR}.a \
         -DPython3_NumPy_INCLUDE_DIR=${NUMPY_INC} \
-        -DPython3_EXECUTABLE=python${PYMAJOR}.${PYMINOR} \
+        -DPython3_EXECUTABLE=$(which python${PYMAJOR}.${PYMINOR}) \
         -DCMAKE_CXX_FLAGS="-fwasm-exceptions -O2 -DNDEBUG -fPIC -std=c++20" \
         -DCMAKE_C_FLAGS="-fwasm-exceptions -O2 -DNDEBUG -fPIC" \
         ..
@@ -107,12 +108,11 @@ build:
     # ========================
     # 4. Relink static archives into WASM side modules
     # ========================
-    # CMake produces .a archives (Emscripten default for MODULE targets).
-    # Strategy: one core .so with ALL C++ code (loaded with {global: true}),
-    # then thin wrapper .so per Python extension module.
+    # Strategy: one core .so with ALL C++ code (loaded by Pyodide with
+    # {global: true} via the librdkit shared_library package), then thin
+    # wrapper .so per Python extension module.
 
     # 4a. Collect all static libraries for the core
-    # Search build/lib/ plus External/ for bundled deps like expat
     find build/lib build/External -name '*.a' 2>/dev/null | sort > /tmp/all_libs.txt
     for lib in ${WASM_LIBRARY_DIR}/lib/libboost_python*.a \
                ${WASM_LIBRARY_DIR}/lib/libboost_numpy*.a \
@@ -124,7 +124,6 @@ build:
     echo "${WASM_LIBRARY_DIR}/lib/libz.a" >> /tmp/all_libs.txt
     echo "Core libraries: $(wc -l < /tmp/all_libs.txt)"
 
-    # Link all archives into one core side module
     WHOLE_ARGS=""
     while read -r lib; do
         WHOLE_ARGS="$WHOLE_ARGS -Wl,--whole-archive $lib -Wl,--no-whole-archive"
@@ -135,6 +134,12 @@ build:
         $WHOLE_ARGS \
         -o build/librdkit_core.so
     ls -lh build/librdkit_core.so
+
+    # Stage core .so for the librdkit shared_library recipe to package.
+    # NOT included in the wheel — Pyodide loads it asynchronously with
+    # {global: true} via the librdkit dynlib package, avoiding Chrome's
+    # 8MB synchronous WebAssembly.Compile limit.
+    cp build/librdkit_core.so ${WASM_LIBRARY_DIR}/lib/
 
     # 4b. Relink each Python wrapper as a thin .so and place it in the
     # correct package directory. The output path is derived from cmake's
@@ -148,7 +153,6 @@ build:
             echo "SKIP: $modname (no .o files)"
             continue
         fi
-        # Derive the correct output path from cmake's build.make
         build_make="$wrap_dir/build.make"
         dest_path=$(grep -oP "rdkit/[^ ]*${modname}\.so" "$build_make" 2>/dev/null | head -1)
         if [ -z "$dest_path" ]; then
@@ -167,16 +171,15 @@ build:
     # ========================
     # 5. Assemble Python package
     # ========================
-    # Copy core .so into rdkit package
-    cp build/librdkit_core.so rdkit/
-
     # Copy Data directory into package
     cp -r Data rdkit/Data
 
-    # Rename .so -> .so.wasm (prevents micropip from auto-loading before core is ready)
+    # Rename .so -> .so.wasm (prevents micropip from auto-loading before
+    # core is ready — the core is loaded by Pyodide via the librdkit
+    # shared_library package with {global: true})
     find rdkit -name "*.so" -exec sh -c 'mv "$1" "$1.wasm"' _ {} \;
 
-    # Patch __init__.py to load core and register custom import finder
+    # Patch __init__.py to set RDBASE and register custom import finder
     python3 patch_init.py
 
     echo "=== Package contents ==="

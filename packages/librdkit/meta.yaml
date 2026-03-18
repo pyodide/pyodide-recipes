@@ -1,0 +1,26 @@
+package:
+  name: librdkit
+  version: 2025.9.6
+  tag:
+    - library
+    - shared_library
+
+source:
+  url: https://github.com/rdkit/rdkit/archive/refs/tags/Release_2025_09_6.tar.gz
+  sha256: 57b92e8f47d9dbd559bd808d5cf6c48a628bc36118bc35b832a35e2ca8a0c7a1
+  extract_dir: rdkit-Release_2025_09_6
+
+requirements:
+  host:
+    - rdkit
+
+build:
+  type: shared_library
+  script: |
+    cp ${WASM_LIBRARY_DIR}/lib/librdkit_core.so ${DISTDIR}
+    ls -lh ${DISTDIR}/librdkit_core.so
+
+about:
+  home: https://github.com/rdkit/rdkit
+  summary: RDKit core C++ libraries as a WASM side module
+  license: BSD-3-Clause
