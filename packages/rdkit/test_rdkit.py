@@ -450,18 +450,18 @@ def test_coordgen_2d_coords(selenium):
 
 @pytest.mark.driver_timeout(60)
 @run_in_pyodide(packages=["rdkit"])
-def test_chemdraw_cdxml(selenium):
+def test_chemdraw(selenium):
     from rdkit import Chem
-    from rdkit.Chem import rdChemDraw
+    from rdkit.Chem import AllChem, rdChemDraw
 
-    # Write a molecule to CDXML and read it back
+    # Generate 2D coords (needed for ChemDraw output)
     mol = Chem.MolFromSmiles("c1ccccc1O")
-    Chem.AssignStereochemistry(mol)
-    cdxml = rdChemDraw.MolToCDXML(mol)
-    assert "<CDXML" in cdxml
-    assert "</CDXML>" in cdxml
+    AllChem.Compute2DCoords(mol)
 
-    # Roundtrip: CDXML -> mol
-    mols = rdChemDraw.MolsFromCDXML(cdxml)
+    # Write to ChemDraw format and read back
+    cdx = rdChemDraw.MolToChemDrawBlock(mol)
+    assert len(cdx) > 0
+
+    mols = rdChemDraw.MolsFromChemDrawBlock(cdx)
     assert len(mols) >= 1
     assert mols[0].GetNumAtoms() == mol.GetNumAtoms()
