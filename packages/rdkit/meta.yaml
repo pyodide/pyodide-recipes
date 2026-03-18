@@ -50,6 +50,7 @@ build:
         mkdir -p "$(dirname "$dest_path")"
         em++ -fwasm-exceptions -sSIDE_MODULE=1 -O2 -shared \
             $obj_files \
+            -L${WASM_LIBRARY_DIR}/lib -lrdkit_core \
             -o "$dest_path"
         echo "LINKED: $modname -> $dest_path"
         WRAPPER_COUNT=$((WRAPPER_COUNT + 1))

@@ -122,9 +122,13 @@ build:
         -o build/librdkit_core.so
     ls -lh build/librdkit_core.so
 
-    # Copy core .so to $DISTDIR — Pyodide loads shared_library packages
-    # asynchronously with {global: true}, avoiding Chrome's 8MB sync limit
+    # Copy core .so to $DISTDIR (Pyodide loads shared_library packages
+    # asynchronously, avoiding Chrome's 8MB sync WebAssembly.Compile limit)
     cp build/librdkit_core.so ${DISTDIR}
+
+    # Also install to $WASM_LIBRARY_DIR/lib/ so the rdkit recipe can link
+    # wrapper .so modules against it (proper dynamic linking, no RTLD_GLOBAL)
+    cp build/librdkit_core.so ${WASM_LIBRARY_DIR}/lib/
 
     # ========================
     # 5. Stage build artifacts for the rdkit Python package recipe
