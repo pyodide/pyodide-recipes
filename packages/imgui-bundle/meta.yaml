@@ -1,11 +1,11 @@
 package:
   name: imgui-bundle
-  version: 1.92.600
+  version: 1.92.601
   top-level:
     - imgui_bundle
 source:
-  url: https://github.com/pthom/imgui_bundle/releases/download/v1.92.600/imgui_bundle-1.92.600-cp313-cp313-pyodide_2025_0_wasm32.whl
-  sha256: fb25175086432040f7f42199b9d6b3679016c610156d4fd80af1cc5898cdc7a4
+  url: https://github.com/pthom/imgui_bundle/releases/download/v1.92.601/imgui_bundle-1.92.601-cp313-cp313-pyodide_2025_0_wasm32.whl
+  sha256: 6df918f3af424ceab037cd8f69c7e79d7d27eda5af11870ffa29cb7e01fac23b
 requirements:
   run:
     - pydantic
