@@ -427,3 +427,41 @@ def test_data_dir_and_chemical_features(selenium):
     AllChem.EmbedMolecule(aspirin, randomSeed=42)
     feats = feat_factory.GetFeaturesForMol(aspirin)
     assert len(feats) > 0
+
+
+@pytest.mark.driver_timeout(60)
+@run_in_pyodide(packages=["rdkit"])
+def test_coordgen_2d_coords(selenium):
+    from rdkit import Chem
+    from rdkit.Chem import rdCoordGen, AllChem
+
+    mol = Chem.MolFromSmiles("c1ccc2c(c1)cc1ccc3cccc4ccc2c1c34")  # pyrene
+    rdCoordGen.AddCoords(mol)
+    conf = mol.GetConformer()
+    assert conf.GetNumAtoms() == mol.GetNumAtoms()
+
+    # Verify coordinates are non-degenerate (not all at origin)
+    positions = [conf.GetAtomPosition(i) for i in range(mol.GetNumAtoms())]
+    xs = [p.x for p in positions]
+    ys = [p.y for p in positions]
+    assert max(xs) - min(xs) > 0.1
+    assert max(ys) - min(ys) > 0.1
+
+
+@pytest.mark.driver_timeout(60)
+@run_in_pyodide(packages=["rdkit"])
+def test_chemdraw_cdxml(selenium):
+    from rdkit import Chem
+    from rdkit.Chem import rdChemDraw
+
+    # Write a molecule to CDXML and read it back
+    mol = Chem.MolFromSmiles("c1ccccc1O")
+    Chem.AssignStereochemistry(mol)
+    cdxml = rdChemDraw.MolToCDXML(mol)
+    assert "<CDXML" in cdxml
+    assert "</CDXML>" in cdxml
+
+    # Roundtrip: CDXML -> mol
+    mols = rdChemDraw.MolsFromCDXML(cdxml)
+    assert len(mols) >= 1
+    assert mols[0].GetNumAtoms() == mol.GetNumAtoms()

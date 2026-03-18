@@ -62,9 +62,9 @@ build:
         -DRDK_BUILD_THREADSAFE_SSS=OFF \
         -DRDK_BUILD_DESCRIPTORS3D=ON \
         -DRDK_TEST_MULTITHREADED=OFF \
-        -DRDK_BUILD_CHEMDRAW_SUPPORT=OFF \
+        -DRDK_BUILD_CHEMDRAW_SUPPORT=ON \
         -DRDK_BUILD_MAEPARSER_SUPPORT=ON \
-        -DRDK_BUILD_COORDGEN_SUPPORT=OFF \
+        -DRDK_BUILD_COORDGEN_SUPPORT=ON \
         -DRDK_BUILD_SLN_SUPPORT=ON \
         -DRDK_BUILD_CAIRO_SUPPORT=OFF \
         -DRDK_BUILD_QT_SUPPORT=OFF \
@@ -112,7 +112,8 @@ build:
     # then thin wrapper .so per Python extension module.
 
     # 4a. Collect all static libraries for the core
-    find build/lib -name '*.a' | sort > /tmp/all_libs.txt
+    # Search build/lib/ plus External/ for bundled deps like expat
+    find build/lib build/External -name '*.a' 2>/dev/null | sort > /tmp/all_libs.txt
     for lib in ${WASM_LIBRARY_DIR}/lib/libboost_python*.a \
                ${WASM_LIBRARY_DIR}/lib/libboost_numpy*.a \
                ${WASM_LIBRARY_DIR}/lib/libboost_system*.a \
