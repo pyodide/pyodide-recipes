@@ -11,7 +11,7 @@ build:
   type: shared_library
   script: |
     mkdir -p build;
-
+    echo hi
     cd build \
         && emcmake cmake ../ \
         -DCMAKE_INSTALL_PREFIX=${WASM_LIBRARY_DIR} \
