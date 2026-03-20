@@ -4,7 +4,7 @@ Collections of package recipes for Pyodide
 
 ## Adding a new package
 
-> Note: Use Python 3.13 or upper to run the following commands.
+> Note: Use Python 3.14 or upper to run the following commands.
 
 To add a new package, create a package recipe in the `packages` directory.
 
