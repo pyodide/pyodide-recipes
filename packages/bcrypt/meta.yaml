@@ -1,6 +1,7 @@
 package:
   name: bcrypt
   version: 4.3.0
+  _disabled: true  # update pyo3 to support 3.14
   tag:
     - rust
   top-level:
