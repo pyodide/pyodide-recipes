@@ -10,6 +10,7 @@ source:
 requirements:
   run:  
     - setuptools
+    - sklearn
     - numpy
 about:
   home: http://github.com/scikit-learn-contrib/hdbscan
