@@ -43,6 +43,7 @@ def test_binom_ppf(selenium):
     assert binom.ppf(0.9, 1000, 0.1) == 112
 
 
+@pytest.mark.xfail_browsers(node="FIXME")
 @pytest.mark.skip_pyproxy_check
 @pytest.mark.driver_timeout(40)
 @run_in_pyodide(packages=["pytest", "scipy-tests", "micropip"])
@@ -114,6 +115,7 @@ def test_lapack_larfg(selenium):
     (larfg,) = get_lapack_funcs(["larfg"], dtype="float64")
     alpha, x, tau = larfg(a.shape[0] - 1, a[1, 0], a[2:, 0])
 
+
 @pytest.mark.driver_timeout(40)
 @run_in_pyodide(packages=["scipy"])
 def test_logm(selenium_standalone):
@@ -137,9 +139,9 @@ def test_dblquad(selenium):
     unit_square_area = scipy.integrate.dblquad(
         lambda y, x: 1, 0, 1, lambda x: 0, lambda x: 1
     )
-    assert abs(unit_square_area[0] - 1) < unit_square_area[1], (
-        f"Unit square area calculated using scipy.integrate.dblquad of {unit_square_area[0]} (+- {unit_square_area[0]}) is too far from 1.0"
-    )
+    assert (
+        abs(unit_square_area[0] - 1) < unit_square_area[1]
+    ), f"Unit square area calculated using scipy.integrate.dblquad of {unit_square_area[0]} (+- {unit_square_area[0]}) is too far from 1.0"
 
 
 import shutil

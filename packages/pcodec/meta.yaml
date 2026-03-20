@@ -12,8 +12,6 @@ requirements:
   executable:
     - rustup
     - cargo
-  constraint:
-    - maturin < 2.0
   run:
     - numpy
 test:

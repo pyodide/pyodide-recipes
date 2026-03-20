@@ -1,18 +1,16 @@
 package:
   name: nh3
-  version: 0.2.21
+  version: 0.3.3
   tag:
     - rust
   top-level:
     - nh3
 source:
-  url: https://files.pythonhosted.org/packages/37/30/2f81466f250eb7f591d4d193930df661c8c23e9056bdc78e365b646054d8/nh3-0.2.21.tar.gz
-  sha256: 4990e7ee6a55490dbf00d61a6f476c9a3258e31e711e13713b2ea7d6616f670e
+  url: https://files.pythonhosted.org/packages/source/n/nh3/nh3-0.3.3.tar.gz
+  sha256: 185ed41b88c910b9ca8edc89ca3b4be688a12cb9de129d84befa2f74a0039fee
 requirements:
   executable:
     - rustup
-  constraint:
-    - maturin < 1.8
 about:
   home: https://nh3.readthedocs.io
   PyPI: https://pypi.org/project/nh3

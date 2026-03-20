@@ -10,8 +10,6 @@ source:
 requirements:
   host:
     - setuptools
-  run:
-    - ssl
 about:
   home: http://logbook.pocoo.org/
   PyPI: https://pypi.org/project/logbook

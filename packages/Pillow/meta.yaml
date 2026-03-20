@@ -1,11 +1,11 @@
 package:
   name: Pillow
-  version: 11.3.0
+  version: 12.1.1
   top-level:
     - PIL
 source:
-  sha256: 3828ee7586cd0b2091b6209e5ad53e20d0649bbe87164a459d0676e035e8f523
-  url: https://files.pythonhosted.org/packages/source/p/pillow/pillow-11.3.0.tar.gz
+  sha256: 9ad8fa5937ab05218e2b6a4cff30295ad35afd2f83ac592e68c0d871bb0fdbc4
+  url: https://files.pythonhosted.org/packages/source/p/pillow/pillow-12.1.1.tar.gz
 build:
   # RELOCATABLE flag is required because if affects how emscripten build ports.
   cflags: |
