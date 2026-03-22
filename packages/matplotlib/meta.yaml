@@ -33,7 +33,9 @@ build:
     -fwasm-exceptions
   ldflags: |
     -fwasm-exceptions
-  script: export SETUPTOOLS_SCM_PRETEND_VERSION=$PKG_VERSION
+  script: |
+    embuilder build freetype-legacysjlj --pic
+    export SETUPTOOLS_SCM_PRETEND_VERSION=$PKG_VERSION
   post: |
     rm -rf matplotlib/backends/qt_editor
     # mpl.css and mpl.js are used by the patched webagg backend, so do not delete them.

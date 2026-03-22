@@ -1,6 +1,7 @@
 package:
   name: river
   version: 0.23.0
+  _disabled: true # 0.23.0 not yet compatible with Python 3.14
   tag:
     - rust
   top-level:

@@ -9,6 +9,7 @@ source:
   sha256: 676cf4976810edab32187edf5a8a716af95047b9038c96d27d3be44f1331950f
 
 build:
+  vendor-sharedlib: false  # done by the package itself
   exports: requested
   backend-flags: |
     cmake.define.CMAKE_MODULE_LINKER_FLAGS=-Wl,-rpath=\$ORIGIN

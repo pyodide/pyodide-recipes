@@ -53,7 +53,9 @@ build:
     # Copy XSPICE code model libraries to ngspice/*.cm
     mkdir -p ${DISTDIR}/ngspice
     cp ${WASM_LIBRARY_DIR}/lib/ngspice/*.cm ${DISTDIR}/ngspice/
-
+requirements:
+  executable:
+    - yacc
 about:
   home: http://ngspice.sourceforge.net
   license: BSD-3-Clause

@@ -27,14 +27,7 @@ build:
     jpeg2000=False
     imagequant=False
   script: |
-    embuilder build --pic libjpeg zlib freetype libpng
-    # We need longjmp variant of libfreetype (libfreetype-legacyslsj.a) to be installed
-    # to the /pic directory, but emscripten seems to only build the non-pic version of the library.
-    # embuilder does not support setting the SUPPORT_LONGJMP=wasm flag, so we need to build the library manually here.
-    # TODO: upstream emscripten to support building the longjmp variant of libfreetype and remove this workaround.
-    touch dummy.c
-    emcc dummy.c -s MAIN_MODULE=1 -s USE_FREETYPE=1 -sSUPPORT_LONGJMP=wasm -o dummy.wasm
-    rm -f dummy.c dummy.o dummy.wasm
+    embuilder build --pic libjpeg zlib freetype-legacysjlj libpng
     
     # Pillow parses compiler flags to set the include, library dirs
     # https://github.com/python-pillow/Pillow/blob/339bc5db93bd95decf65a59fab273f300db6594d/setup.py#L486

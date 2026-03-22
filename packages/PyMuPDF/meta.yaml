@@ -9,6 +9,7 @@ source:
     https://files.pythonhosted.org/packages/source/p/pymupdf/pymupdf-1.26.3.tar.gz
   sha256: b7d2c3ffa9870e1e4416d18862f5ccd356af5fe337b4511093bbbce2ca73b7e5
 build:
+  vendor-sharedlib: false  # done by the package itself
   exports: whole_archive
   ldflags: |
     -Wl,-rpath,$ORIGIN/../PyMuPDF.libs

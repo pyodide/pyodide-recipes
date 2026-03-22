@@ -1,6 +1,7 @@
 package:
   name: healpy
   version: 1.19.0
+  _disabled: true  # subprocess.CalledProcessError: Command '('pkg-config', '--cflags-only-I', 'healpix_cxx >= 3.83.0')' returned non-zero exit status 1.
   top-level:
     - healpy
 source:
