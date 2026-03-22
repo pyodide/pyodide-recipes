@@ -28,7 +28,7 @@ build:
   ldflags: |
     -fwasm-exceptions
   script: |
-    export CXXFLAGS="$CXXFLAGS -sRELOCATABLE=1"
+    export CXXFLAGS="$CXXFLAGS"
 about:
   home: https://github.com/healpy/healpy
   PyPI: https://pypi.org/project/healpy
