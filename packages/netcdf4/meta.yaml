@@ -1,7 +1,6 @@
 package:
   name: netcdf4
   version: 1.7.2
-  _disabled: true  # wasm-ld: error: unknown argument: --enable-new-dtags
   top-level:
     - netCDF4
 source:
