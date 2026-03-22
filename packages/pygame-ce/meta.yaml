@@ -1,6 +1,7 @@
 package:
   name: pygame-ce
   version: 2.5.6.dev2
+  _disabled: true  # TODO: fix ports link
   top-level:
     - pygame
 source:
@@ -16,6 +17,9 @@ build:
     emcc dummy_src_for_port.c -sSUPPORT_LONGJMP="wasm" -fpic "--use-port=sdl2_image:formats=bmp,gif,jpg,lbm,pcx,png,pnm,qoi,svg,tga,xcf,xpm,xv"
 
     embuilder --pic build sdl2 libhtml5 sdl2_ttf 'sdl2_mixer:formats=ogg,mp3,mod,mid'
+
+    # remove -sRELOCATABLE=1 flag baked in the meson.build file
+    sed -i 's/-sRELOCATABLE=1//' meson.build
 about:
   home: https://pyga.me
   PyPI: https://pypi.org/project/pygame-ce
