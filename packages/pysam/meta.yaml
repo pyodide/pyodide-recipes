@@ -1,7 +1,6 @@
 package:
   name: pysam
   version: 0.23.0
-  _disabled: true  # `crc_braid_table`; recompile with -fPIC 
   top-level:
     - pysam
 source:
@@ -17,6 +16,7 @@ requirements:
   constraint:
     - cython < 3.1.0
 build:
+  vendor-sharedlib: false # done by the package itself
   cflags: |
     -I$(WASM_LIBRARY_DIR)/include
     -fPIC

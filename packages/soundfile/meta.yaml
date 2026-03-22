@@ -1,7 +1,6 @@
 package:
   name: soundfile
   version: 0.12.1
-  _disabled: true  # libmpg123.a(format.c.o): relocation R_WASM_MEMORY_ADDR_SLEB cannot be used against symbol `.L.str.2`; recompile with -fPIC
   top-level:
     - soundfile
 requirements:

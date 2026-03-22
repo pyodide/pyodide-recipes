@@ -1,7 +1,6 @@
 package:
   name: libproj
   version: 9.6.2
-  _disabled: true  # wasm-ld: error: unable to find library -ljpeg  
   tag:
     - library
     - shared_library

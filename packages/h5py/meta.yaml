@@ -1,7 +1,6 @@
 package:
   name: h5py
   version: 3.13.0
-  _disabled: true  # wasm-ld: error: unknown argument: --enable-new-dtags
   top-level:
     - h5py
 source:
