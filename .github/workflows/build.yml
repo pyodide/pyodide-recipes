@@ -227,7 +227,6 @@ jobs:
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
           mkdir -p result
           pyodide xbuildenv install-emscripten
-          ./tools/patch_emscripten.sh
           pyodide build-recipes "*" --install --install-dir=./repodata --log-dir=build-logs | tee result/build_output.log
           ccache -s
 
