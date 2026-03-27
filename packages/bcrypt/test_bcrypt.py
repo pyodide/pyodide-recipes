@@ -240,6 +240,7 @@ def test_gensalt_2a_prefix(selenium):
     assert salt.startswith(b"$2a$12$")
 
 
+@pytest.mark.xfail(reason="https://github.com/pyca/bcrypt/issues/1079")
 @pytest.mark.parametrize(("password", "salt", "hashed"), _test_vectors)
 @run_in_pyodide(packages=["bcrypt"])
 def test_hashpw_new(selenium, password, salt, hashed):
@@ -248,6 +249,7 @@ def test_hashpw_new(selenium, password, salt, hashed):
     assert bcrypt.hashpw(password, salt) == hashed
 
 
+@pytest.mark.xfail(reason="https://github.com/pyca/bcrypt/issues/1079")
 @pytest.mark.parametrize(("password", "salt", "hashed"), _test_vectors)
 @run_in_pyodide(packages=["bcrypt"])
 def test_checkpw(selenium, password, salt, hashed):
@@ -256,6 +258,7 @@ def test_checkpw(selenium, password, salt, hashed):
     assert bcrypt.checkpw(password, hashed) is True
 
 
+@pytest.mark.xfail(reason="https://github.com/pyca/bcrypt/issues/1079")
 @pytest.mark.parametrize(("password", "salt", "hashed"), _test_vectors)
 @run_in_pyodide(packages=["bcrypt"])
 def test_hashpw_existing(selenium, password, salt, hashed):
@@ -572,6 +575,7 @@ def test_invalid_params(selenium, password, salt, desired_key_bytes, rounds, err
         bcrypt.kdf(password, salt, desired_key_bytes, rounds)
 
 
+@pytest.mark.xfail(reason="https://github.com/pyca/bcrypt/issues/1079")
 @run_in_pyodide(packages=["bcrypt"])
 def test_2a_wraparound_bug(selenium):
     import bcrypt

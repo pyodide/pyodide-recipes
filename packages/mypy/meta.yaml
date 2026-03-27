@@ -1,6 +1,7 @@
 package:
   name: mypy
   version: 1.19.1
+  _disabled: true  # librt needed
   top-level:
     - mypyc
     - mypy
