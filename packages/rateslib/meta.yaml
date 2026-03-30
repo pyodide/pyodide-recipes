@@ -1,13 +1,13 @@
 package:
   name: rateslib
-  version: 2.6.0
+  version: 2.7.0
   tag:
     - rust
   top-level:
     - rateslib
 source:
-  url: https://files.pythonhosted.org/packages/20/7a/8fa1427e7350e9679141b364d2bb03f4fb03d03b829f57cf3ee4645dbbc9/rateslib-2.6.0.tar.gz
-  sha256: c779ae348a96963b2a470e69c46c019c392190b34c90ba7cedd441d4a3d4f40a
+  url: https://files.pythonhosted.org/packages/22/9d/032eb3ee109e997a280351516781d17014a8e35061ad6626c6a6ac14bd3f/rateslib-2.7.0.tar.gz
+  sha256: 30f7d81a479af0da821d7ee7f1c4a4de4f7643a526ba0568357d8a564f2a2099
 requirements:
   run:
     - numpy
@@ -16,7 +16,7 @@ requirements:
   executable:
     - rustup
 about:
-  home: https://rateslib.com/py/en/2.6.x/
+  home: https://rateslib.com/py/en/2.7.x/
   PyPI: https://pypi.org/project/rateslib
   summary: A fixed income library for trading interest rates
   license: LicenseRef-Rateslib-Dual
