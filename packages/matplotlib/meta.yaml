@@ -15,11 +15,12 @@ source:
     - patches/0002-Hardcode-font-cache-path.patch
     - patches/0003-WebAgg-backend.patch
     - patches/0004-Fix-32bit-casting.patch
-  extras:
-    - - extras/setup.cfg
-      - ./mplsetup.cfg
+    - patches/0005-Use-system-freetype.patch
 
 build:
+  backend-flags: |
+    setup-args=-DrcParams-backend=webagg
+    setup-args=-Dsystem-freetype=true
   cflags: |
     -s USE_FREETYPE=1
     -s USE_LIBPNG=1
@@ -27,12 +28,19 @@ build:
     -fwasm-exceptions
     -fno-lto
   cxxflags: |
+    -fno-lto
     -std=c++17
     -fwasm-exceptions
   ldflags: |
+    -fno-lto
+    -lfreetype-legacysjlj
+    -s USE_FREETYPE=1
     -fwasm-exceptions
   script: |
     embuilder build freetype-legacysjlj --pic
+    # matplotlib locates freetype using pkg-config, so we need to set PKG_CONFIG_PATH to point to the directory containing the .pc file for freetype.
+    export PKG_CONFIG_PATH=$(em-config CACHE)/sysroot/lib/pkgconfig
+    echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH"
     export SETUPTOOLS_SCM_PRETEND_VERSION=$PKG_VERSION
   post: |
     rm -rf matplotlib/backends/qt_editor

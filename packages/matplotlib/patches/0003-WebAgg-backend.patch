@@ -24,8 +24,8 @@ fail and this patch file requires modifying, do the following:
 ---
  lib/matplotlib/backends/backend_webagg.py     | 281 +++---------------
  .../backends/backend_webagg_core.py           |  85 +++---
- lib/matplotlib/backends/web_backend/js/mpl.js |  75 +++--
- 3 files changed, 137 insertions(+), 304 deletions(-)
+ lib/matplotlib/backends/web_backend/js/mpl.js |  76 +++--
+ 3 files changed, 138 insertions(+), 304 deletions(-)
 
 diff --git a/lib/matplotlib/backends/backend_webagg.py b/lib/matplotlib/backends/backend_webagg.py
 index e4808e8d0d..5911664ece 100644
@@ -522,7 +522,7 @@ index 12906827a4..ac13edaa89 100644
              return output.getvalue()
  
 diff --git a/lib/matplotlib/backends/web_backend/js/mpl.js b/lib/matplotlib/backends/web_backend/js/mpl.js
-index 303260773a..3761c4fe7a 100644
+index 303260773a..dcde90cae0 100644
 --- a/lib/matplotlib/backends/web_backend/js/mpl.js
 +++ b/lib/matplotlib/backends/web_backend/js/mpl.js
 @@ -2,19 +2,54 @@
@@ -592,7 +592,15 @@ index 303260773a..3761c4fe7a 100644
  };
  
  mpl.figure = function (figure_id, websocket, ondownload, parent_element) {
-@@ -86,7 +121,6 @@ mpl.figure = function (figure_id, websocket, ondownload, parent_element) {
+@@ -51,6 +86,7 @@ mpl.figure = function (figure_id, websocket, ondownload, parent_element) {
+ 
+     parent_element.appendChild(this.root);
+ 
++    this._toolbar_images = [];
+     this._init_header(this);
+     this._init_canvas(this);
+     this._init_toolbar(this);
+@@ -86,7 +122,6 @@ mpl.figure = function (figure_id, websocket, ondownload, parent_element) {
  
      this.ws.onmessage = this._make_on_message_function(this);
  
@@ -600,7 +608,7 @@ index 303260773a..3761c4fe7a 100644
  };
  
  mpl.figure.prototype._init_header = function () {
-@@ -390,9 +424,11 @@ mpl.figure.prototype._init_toolbar = function () {
+@@ -390,9 +425,11 @@ mpl.figure.prototype._init_toolbar = function () {
          button.addEventListener('click', on_click_closure(method_name));
          button.addEventListener('mouseover', on_mouseover_closure(tooltip));
  
@@ -615,7 +623,7 @@ index 303260773a..3761c4fe7a 100644
          icon_img.alt = tooltip;
          button.appendChild(icon_img);
  
-@@ -431,20 +467,20 @@ mpl.figure.prototype.request_resize = function (x_pixels, y_pixels) {
+@@ -431,20 +468,20 @@ mpl.figure.prototype.request_resize = function (x_pixels, y_pixels) {
  mpl.figure.prototype.send_message = function (type, properties) {
      properties['type'] = type;
      properties['figure_id'] = this.id;
@@ -639,7 +647,7 @@ index 303260773a..3761c4fe7a 100644
  };
  
  mpl.figure.prototype.handle_resize = function (fig, msg) {
-@@ -526,7 +562,6 @@ mpl.figure.prototype.handle_navigate_mode = function (fig, msg) {
+@@ -526,7 +563,6 @@ mpl.figure.prototype.handle_navigate_mode = function (fig, msg) {
  
  mpl.figure.prototype.updated_canvas_event = function () {
      // Called whenever the canvas gets updated.
@@ -647,6 +655,6 @@ index 303260773a..3761c4fe7a 100644
  };
  
  // A function to construct a web socket function for onmessage handling.
---
+-- 
 2.43.0
 
