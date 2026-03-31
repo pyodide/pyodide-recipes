@@ -1,0 +1,32 @@
+From 74d814f7fc11fa0a5899130e4419df48ee2c9d6b Mon Sep 17 00:00:00 2001
+From: ryanking13 <def6488@gmail.com>
+Date: Tue, 31 Mar 2026 19:13:53 +0900
+Subject: [PATCH 1/1] Fix 32bit casting
+
+---
+ src/_backend_agg_wrapper.cpp | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/_backend_agg_wrapper.cpp b/src/_backend_agg_wrapper.cpp
+index 269e2aaa9e..2bad7f4d0b 100644
+--- a/src/_backend_agg_wrapper.cpp
++++ b/src/_backend_agg_wrapper.cpp
+@@ -250,12 +250,12 @@ PYBIND11_MODULE(_backend_agg, m, py::mod_gil_not_used())
+ 
+         .def_buffer([](RendererAgg *renderer) -> py::buffer_info {
+             std::vector<py::ssize_t> shape {
+-                renderer->get_height(),
+-                renderer->get_width(),
++                static_cast<py::ssize_t>(renderer->get_height()),
++                static_cast<py::ssize_t>(renderer->get_width()),
+                 4
+             };
+             std::vector<py::ssize_t> strides {
+-                renderer->get_width() * 4,
++                static_cast<py::ssize_t>(renderer->get_width() * 4),
+                 4,
+                 1
+             };
+-- 
+2.43.0
+
