@@ -1,7 +1,6 @@
 package:
   name: cramjam
   version: 2.11.0
-  _disabled: true  # TypeError: exceptions must derive from BaseException
   tag:
     - rust
   top-level:
