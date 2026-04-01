@@ -28,8 +28,6 @@ build:
     -fwasm-exceptions
   ldflags: |
     -fwasm-exceptions
-  script: |
-    export CXXFLAGS="$CXXFLAGS"
 about:
   home: https://github.com/healpy/healpy
   PyPI: https://pypi.org/project/healpy
