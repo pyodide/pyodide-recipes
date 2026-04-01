@@ -24,6 +24,7 @@ if "CI" in os.environ:
 
 XFAIL_PACKAGES: dict[str, str] = {
     "soupsieve": "Importing soupsieve without installing beautifulsoup4 fails.",
+    "coolprop": "slow",
 }
 
 
