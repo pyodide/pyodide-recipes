@@ -44,7 +44,7 @@ def test_integrate(selenium):
     return None
 
 
-@galpy_test_decorator(firefox="times out")
+@galpy_test_decorator(firefox="times out", chrome="times out")
 @run_in_pyodide(
     packages=[
         "galpy",

@@ -27,7 +27,7 @@ build:
     jpeg2000=False
     imagequant=False
   script: |
-    embuilder build --pic libjpeg zlib freetype-legacysjlj libpng
+    embuilder build --pic libjpeg zlib freetype-legacysjlj libpng freetype
     
     # Pillow parses compiler flags to set the include, library dirs
     # https://github.com/python-pillow/Pillow/blob/339bc5db93bd95decf65a59fab273f300db6594d/setup.py#L486
