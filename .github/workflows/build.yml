@@ -381,7 +381,7 @@ jobs:
 
       - name: Surface failing tests
         if: always()
-        uses: pmeier/pytest-results-action@20b595761ba9bf89e115e875f8bc863f913bc8ad # v0.7.2
+        uses: pmeier/pytest-results-action@0841ca7226ab155943837380769373a5dd14d7ed # v0.8.0
         with:
           path: test-results-${{ matrix.test-config.runtime }}.xml
           summary: true  # Always display overall test statistics summary
