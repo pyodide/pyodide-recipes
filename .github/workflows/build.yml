@@ -103,7 +103,7 @@ jobs:
           which ccache
 
       - name: Cache conda
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           path: ~/conda_pkgs_dir
           key:
@@ -125,7 +125,7 @@ jobs:
 
       - name: Cache Conda env
         id: conda-cache
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           path: ${{ env.CONDA }}/envs
           key:
@@ -168,7 +168,7 @@ jobs:
           fi
 
       - name: Cache ccache
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ env.CCACHE_DIR }}-${{ env.CCACHE_CACHE_NUMBER }}-${{ env.EMSCRIPTEN_VERSION }}-${{ runner.os }}${{ env.CCACHE_SUFFIX }}
@@ -319,7 +319,7 @@ jobs:
           persist-credentials: false
 
       - name: Cache conda
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           path: ~/conda_pkgs_dir
           key:
@@ -341,7 +341,7 @@ jobs:
 
       - name: Cache Conda env
         id: conda-cache
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           path: ${{ env.CONDA }}/envs
           key:
@@ -413,7 +413,7 @@ jobs:
           persist-credentials: false
 
       - name: Cache conda
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           path: ~/conda_pkgs_dir
           key:
@@ -434,7 +434,7 @@ jobs:
 
       - name: Cache Conda env
         id: conda-cache
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           path: ${{ env.CONDA }}/envs
           key:
