@@ -28,6 +28,7 @@ build:
   ldflags: |
     -fwasm-exceptions
   script: |
+    export CFLAGS="$CFLAGS -fPIC"
     export CXXFLAGS="$CXXFLAGS -fPIC"
 about:
   home: https://github.com/healpy/healpy
