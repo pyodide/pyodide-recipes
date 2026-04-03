@@ -1,12 +1,12 @@
 package:
   name: swiglpk
-  version: 5.0.12
+  version: 5.0.13
   top-level:
     - swiglpk
 
 source:
-  sha256: 86d1be00f24ad59b9e179d3d5132f270535d57be7f209f70f8a6a8b001a65c98
-  url: https://files.pythonhosted.org/packages/30/6c/9150c5b248eed3a491e5c58642182635956c33b6e03974fcf122f2b0c562/swiglpk-5.0.12.tar.gz
+  sha256: 23050101f01ae1de162a68943e49f139dd586eed327324fece57647ec0c52212
+  url: https://files.pythonhosted.org/packages/source/s/swiglpk/swiglpk-5.0.13.tar.gz
 
 build:
   script: |

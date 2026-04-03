@@ -1,11 +1,11 @@
 package:
   name: pkgconfig
-  version: 1.5.5
+  version: 1.6.0
   top-level:
     - pkgconfig
 source:
-  url: https://files.pythonhosted.org/packages/32/af/89487c7bbf433f4079044f3dc32f9a9f887597fe04614a37a292e373e16b/pkgconfig-1.5.5-py3-none-any.whl
-  sha256: d20023bbeb42ee6d428a0fac6e0904631f545985a10cdd71a20aa58bc47a4209
+  url: https://files.pythonhosted.org/packages/py3/p/pkgconfig/pkgconfig-1.6.0-py3-none-any.whl
+  sha256: 98e71754855e9563838d952a160eb577edabb57782e49853edb5381927e6bea1
 about:
   home: https://github.com/matze/pkgconfig
   PyPI: https://pypi.org/project/pkgconfig

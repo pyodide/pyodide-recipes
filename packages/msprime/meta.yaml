@@ -1,11 +1,11 @@
 package:
   name: msprime
-  version: 1.4.0
+  version: 1.4.1
   top-level:
     - msprime
 source:
-  url: https://files.pythonhosted.org/packages/source/m/msprime/msprime-1.4.0.tar.gz
-  sha256: 6a409765db3a5d40dcac024a3ae8966698b45050f13fe8e823c8124f750883bf
+  url: https://files.pythonhosted.org/packages/source/m/msprime/msprime-1.4.1.tar.gz
+  sha256: 68a7208eaea30ca473365287c833078f654af1e186b24fc0105e7717c93bb967
 build:
   script: |
     export LIBGSL_INCLUDE_PATH=$(pkg-config --cflags-only-I --dont-define-prefix gsl)
@@ -27,7 +27,6 @@ requirements:
 about:
   home: https://tskit.dev/msprime
   PyPI: https://pypi.org/project/msprime
-  summary:
-    Simulate genealogical trees and genomic sequence data using population
-    genetic models
+  summary: Simulate genealogical trees and genomic sequence data using
+    population genetic models
   license: GPL-3.0+

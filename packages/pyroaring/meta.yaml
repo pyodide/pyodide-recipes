@@ -1,18 +1,17 @@
 package:
   name: pyroaring
-  version: 1.0.3
+  version: 1.0.4
   top-level:
     - pyroaring
 
 source:
-  url: https://files.pythonhosted.org/packages/source/p/pyroaring/pyroaring-1.0.3.tar.gz
-  sha256: cd7392d1c010c9e41c11c62cd0610c8852e7e9698b1f7f6c2fcdefe50e7ef6da
+  url: https://files.pythonhosted.org/packages/source/p/pyroaring/pyroaring-1.0.4.tar.gz
+  sha256: 99d4217bdfeedc91b82efcec940175a9f9a9137c6476faf7ce5d9c9dd889c8e6
 
 about:
   home: https://github.com/Ezibenroc/PyRoaringBitMap
   PyPI: https://pypi.org/project/pyroaring
-  summary:
-    Library for handling efficiently sorted integer sets.
+  summary: Library for handling efficiently sorted integer sets.
   license: MIT
 
 extra:

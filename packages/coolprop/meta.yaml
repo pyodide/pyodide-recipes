@@ -5,10 +5,9 @@ package:
     - CoolProp
 
 source:
-  url: https://sourceforge.net/projects/coolprop/files/CoolProp/7.2.0/source/CoolProp_sources.zip
-  sha256: 2bd601b5e06b8765ab77fa121e2b0f4087b249c721ddb8745fd3e65952329689
+  url: https://files.pythonhosted.org/packages/source/c/coolprop/coolprop-7.2.0.tar.gz
+  sha256: b1e205d67e7f4f38e26d2ed0abb815e7a0f643b069407c238f3d1b3631791b75
   extract_dir: source
-
 
 build:
   cflags: -fwasm-exceptions -DCOOLPROP_NO_INCBIN

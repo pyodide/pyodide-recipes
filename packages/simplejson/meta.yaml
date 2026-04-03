@@ -1,17 +1,16 @@
 package:
   name: simplejson
-  version: 3.20.1
+  version: 3.20.2
   top-level:
     - simplejson
 
 source:
-  url: https://files.pythonhosted.org/packages/af/92/51b417685abd96b31308b61b9acce7ec50d8e1de8fbc39a7fd4962c60689/simplejson-3.20.1.tar.gz
-  sha256: e64139b4ec4f1f24c142ff7dcafe55a22b811a74d86d66560c8815687143037d
+  url: https://files.pythonhosted.org/packages/source/s/simplejson/simplejson-3.20.2.tar.gz
+  sha256: 5fe7a6ce14d1c300d80d08695b7f7e633de6cd72c80644021874d985b3393649
 
 about:
   home: https://github.com/simplejson/simplejson
   PyPI: https://pypi.org/project/simplejson
-  summary:
-    A simple, fast, complete, correct and extensible JSON encoder and decoder
-    for Python 3.3+
+  summary: A simple, fast, complete, correct and extensible JSON encoder and
+    decoder for Python 3.3+
   license: MIT

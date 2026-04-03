@@ -1,11 +1,11 @@
 package:
   name: h3
-  version: 4.2.2
+  version: 4.4.2
   top-level:
     - h3
 source:
-  url: https://files.pythonhosted.org/packages/25/2a/dac23698122456ce12345e0a1408c23bc389eaffab5eb7689b8e080d9dfb/h3-4.2.2.tar.gz
-  sha256: 5cc78d546b5c732f480a842e3e436c393fe37fe59b063fe9cb5589206b7c4c7e
+  url: https://files.pythonhosted.org/packages/source/h/h3/h3-4.4.2.tar.gz
+  sha256: b25ab9f339e40b10dcb5e2e6988d07672e780a4950d79c25380d308cdf14f82f
 about:
   home: https://uber.github.io/h3-py/
   PyPI: https://pypi.org/project/h3

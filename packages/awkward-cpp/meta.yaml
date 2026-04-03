@@ -1,15 +1,15 @@
 package:
   name: awkward-cpp
-  version: "47"
+  version: "52"
   top-level:
     - awkward_cpp
 
 source:
-  url: https://files.pythonhosted.org/packages/78/e3/5a255643d0ffdd1b2c8e53c4e0376a073f0547b85daa18f20cefa14bd90f/awkward_cpp-47.tar.gz
-  sha256: 676cf4976810edab32187edf5a8a716af95047b9038c96d27d3be44f1331950f
+  url: https://files.pythonhosted.org/packages/source/a/awkward_cpp/awkward_cpp-52.tar.gz
+  sha256: ef141eb20544df261b973c986cfae57be329022061be86817506add676597275
 
 build:
-  vendor-sharedlib: false  # done by the package itself
+  vendor-sharedlib: false # done by the package itself
   exports: requested
   backend-flags: |
     cmake.define.CMAKE_MODULE_LINKER_FLAGS=-Wl,-rpath=\$ORIGIN

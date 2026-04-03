@@ -1,11 +1,11 @@
 package:
   name: pplpy
-  version: 0.8.10
+  version: 0.9.0
   top-level:
     - ppl
 source:
-  url: https://files.pythonhosted.org/packages/92/d0/664f5ee65a8d9d071c2cdbfc8e42e0476b5b8c5ceefaa5fc9c2e1cd6fa5e/pplpy-0.8.10.tar.gz
-  sha256: d42a216c82914dcf4d7c000debc98bb336b8f83e026ba5d952cccd9f8074effd
+  url: https://files.pythonhosted.org/packages/source/p/pplpy/pplpy-0.9.0.tar.gz
+  sha256: 8289c50d680ce3f9eacac666cb4cdbbd8a711959e7cc7cf06f7fdb4035d0cc5d
 requirements:
   host:
     - libgmp

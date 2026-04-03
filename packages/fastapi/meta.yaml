@@ -1,11 +1,11 @@
 package:
   name: fastapi
-  version: 0.116.1
+  version: 0.135.3
   top-level:
     - fastapi
 source:
-  url: https://files.pythonhosted.org/packages/py3/f/fastapi/fastapi-0.116.1-py3-none-any.whl
-  sha256: c46ac7c312df840f0c9e220f7964bada936781bc4e2e6eb71f1c4d7553786565
+  url: https://files.pythonhosted.org/packages/py3/f/fastapi/fastapi-0.135.3-py3-none-any.whl
+  sha256: 9b0f590c813acd13d0ab43dd8494138eb58e484bfac405db1f3187cfc5810d98
 requirements:
   run:
     - httpx
@@ -16,9 +16,8 @@ requirements:
 about:
   home: https://github.com/fastapi/fastapi/
   PyPI: https://pypi.org/project/fastapi
-  summary:
-    FastAPI framework, high performance, easy to learn, fast to code, ready
-    for production
+  summary: FastAPI framework, high performance, easy to learn, fast to code,
+    ready for production
   license: MIT
 extra:
   recipe-maintainers:

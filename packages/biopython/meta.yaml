@@ -1,12 +1,12 @@
 package:
   name: biopython
-  version: "1.85"
+  version: "1.87"
   top-level:
     - Bio
     - BioSQL
 source:
-  sha256: 5dafab74059de4e78f49f6b5684eddae6e7ce46f09cfa059c1d1339e8b1ea0a6
-  url: https://files.pythonhosted.org/packages/db/ca/1d5fab0fedaf5c2f376d9746d447cdce04241c433602c3861693361ce54c/biopython-1.85.tar.gz
+  sha256: 8456c803459b679a9712422e5a7fd9809f2f089bf69bb085f3b077946ac9bdbf
+  url: https://files.pythonhosted.org/packages/source/b/biopython/biopython-1.87.tar.gz
 requirements:
   run:
     - numpy

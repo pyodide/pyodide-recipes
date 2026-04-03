@@ -1,11 +1,11 @@
 package:
   name: propcache
-  version: 0.3.0
+  version: 0.4.1
   top-level:
     - propcache
 source:
-  url: https://files.pythonhosted.org/packages/py3/p/propcache/propcache-0.3.0-py3-none-any.whl
-  sha256: 67dda3c7325691c2081510e92c561f465ba61b975f481735aefdfc845d2cd043
+  url: https://files.pythonhosted.org/packages/py3/p/propcache/propcache-0.4.1-py3-none-any.whl
+  sha256: af2a6052aeb6cf17d3e46ee169099044fd8224cbaf75c76a2ef596e8163e2237
 about:
   home: https://github.com/aio-libs/propcache
   PyPI: https://pypi.org/project/propcache

@@ -1,6 +1,6 @@
 package:
   name: sympy
-  version: "1.13.3"
+  version: 1.14.0
   top-level:
     - isympy
     - sympy
@@ -8,8 +8,8 @@ requirements:
   run:
     - mpmath
 source:
-  sha256: 54612cf55a62755ee71824ce692986f23c88ffa77207b30c1368eda4a7060f73
-  url: https://files.pythonhosted.org/packages/99/ff/c87e0622b1dadea79d2fb0b25ade9ed98954c9033722eb707053d310d4f3/sympy-1.13.3-py3-none-any.whl
+  sha256: e091cc3e99d2141a0ba2847328f5479b05d94a6635cb96148ccb3f34671bd8f5
+  url: https://files.pythonhosted.org/packages/py3/s/sympy/sympy-1.14.0-py3-none-any.whl
 about:
   home: https://sympy.org
   PyPI: https://pypi.org/project/sympy

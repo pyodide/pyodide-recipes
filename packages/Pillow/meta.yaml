@@ -1,11 +1,11 @@
 package:
   name: Pillow
-  version: 12.1.1
+  version: 12.2.0
   top-level:
     - PIL
 source:
-  sha256: 9ad8fa5937ab05218e2b6a4cff30295ad35afd2f83ac592e68c0d871bb0fdbc4
-  url: https://files.pythonhosted.org/packages/source/p/pillow/pillow-12.1.1.tar.gz
+  sha256: a830b1a40919539d07806aa58e1b114df53ddd43213d9c8b75847eee6c0182b5
+  url: https://files.pythonhosted.org/packages/source/p/pillow/pillow-12.2.0.tar.gz
 build:
   cflags: |
     -s USE_ZLIB=1
@@ -28,7 +28,7 @@ build:
     imagequant=False
   script: |
     embuilder build --pic libjpeg zlib freetype-legacysjlj libpng freetype
-    
+
     # Pillow parses compiler flags to set the include, library dirs
     # https://github.com/python-pillow/Pillow/blob/339bc5db93bd95decf65a59fab273f300db6594d/setup.py#L486
     export EMSCRIPTEN_LIBRARY_PATH=$(em-config CACHE)/sysroot/lib/wasm32-emscripten/pic/

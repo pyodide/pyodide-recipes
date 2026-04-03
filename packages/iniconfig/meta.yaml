@@ -1,11 +1,11 @@
 package:
   name: iniconfig
-  version: 2.1.0
+  version: 2.3.0
   top-level:
     - iniconfig
 source:
-  url: https://files.pythonhosted.org/packages/2c/e1/e6716421ea10d38022b952c159d5161ca1193197fb744506875fbb87ea7b/iniconfig-2.1.0-py3-none-any.whl
-  sha256: 9deba5723312380e77435581c6bf4935c94cbfab9b1ed33ef8d238ea168eb760
+  url: https://files.pythonhosted.org/packages/py3/i/iniconfig/iniconfig-2.3.0-py3-none-any.whl
+  sha256: f631c04d2c48c52b84d0d0549c99ff3859c98df65b3101406327ecc7d53fbf12
 about:
   home: http://github.com/RonnyPfannschmidt/iniconfig
   PyPI: https://pypi.org/project/iniconfig
