@@ -1,11 +1,11 @@
 package:
   name: tree-sitter
-  version: 0.25.2
+  version: 0.23.2
   top-level:
     - tree_sitter
 source:
-  url: https://files.pythonhosted.org/packages/66/7c/0350cfc47faadc0d3cf7d8237a4e34032b3014ddf4a12ded9933e1648b55/tree-sitter-0.25.2.tar.gz
-  sha256: fe43c158555da46723b28b52e058ad444195afd1db3ca7720c59a254544e9c20
+  url: https://files.pythonhosted.org/packages/0f/50/fd5fafa42b884f741b28d9e6fd366c3f34e15d2ed3aa9633b34e388379e2/tree-sitter-0.23.2.tar.gz
+  sha256: 66bae8dd47f1fed7bdef816115146d3a41c39b5c482d7bad36d9ba1def088450
 about:
   home: https://tree-sitter.github.io/tree-sitter
   PyPI: https://pypi.org/project/tree-sitter
