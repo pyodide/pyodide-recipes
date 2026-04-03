@@ -3,7 +3,6 @@ package:
   version: 82.0.1
   top-level:
     - _distutils_hack
-    - pkg_resources
     - setuptools
 source:
   url: https://files.pythonhosted.org/packages/py3/s/setuptools/setuptools-82.0.1-py3-none-any.whl
