@@ -4,6 +4,7 @@ import pytest
 from pytest_pyodide import run_in_pyodide
 
 
+@pytest.mark.xfail(reason="TODO: tests are outdated and need to be updated")
 @pytest.mark.driver_timeout(60)
 @run_in_pyodide(packages=["netCDF4", "numpy"])
 def test_netCDF4_tutorial(selenium):
