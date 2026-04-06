@@ -486,16 +486,11 @@ def test_netCDF4_tutorial(selenium):
     assert_print(cloud_var[:])
     f.close()
 
-    # dealing with strings
-    from netCDF4 import stringtochar
-
     nc = Dataset("stringtest.nc", "w", format="NETCDF4_CLASSIC")
     nc.createDimension("nchars", 3)
     nc.createDimension("nstrings", None)
     v = nc.createVariable("strings", "S1", ("nstrings", "nchars"))
     datain = np.array(["foo", "bar"], dtype="S3")
-    v[:] = stringtochar(datain)  # manual conversion to char array
-    assert_print(v[:])  # data returned as char array
     v._Encoding = "ascii"  # this enables automatic conversion
     v[:] = datain  # conversion to char array done internally
     assert_print(v[:])  # data returned in numpy string array

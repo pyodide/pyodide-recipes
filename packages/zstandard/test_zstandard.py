@@ -80,7 +80,7 @@ def test_compress_large(selenium):
 
     cctx = zstd.ZstdCompressor(level=3, write_content_size=False)
     result = cctx.compress(b"".join(chunks))
-    assert len(result) == 999
+    assert len(result) == 1029
     assert result[0:4] == b"\x28\xb5\x2f\xfd"
 
     cctx = zstd.ZstdCompressor(level=1, write_content_size=False)

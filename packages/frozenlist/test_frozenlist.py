@@ -16,7 +16,7 @@ def test_iface(selenium):
 
     from frozenlist import FrozenList
 
-    SKIP_METHODS = {"__abstractmethods__", "__slots__"}
+    SKIP_METHODS = {"__abstractmethods__", "__slots__", "__annotate_func__"}
     for name in set(dir(MutableSequence)) - SKIP_METHODS:
         if name.startswith("_") and not name.endswith("_"):
             continue
