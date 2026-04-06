@@ -33,6 +33,7 @@ build:
   script: |
     export CFLAGS="$CFLAGS -fPIC"
     export CXXFLAGS="$CXXFLAGS -fPIC"
+    export LDFLAGS="$LDFLAGS -fPIC"
 about:
   home: https://github.com/healpy/healpy
   PyPI: https://pypi.org/project/healpy
