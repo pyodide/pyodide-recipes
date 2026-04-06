@@ -19,7 +19,7 @@ def test_scikit_learn(selenium_module_scope):
 
                 rng = np.random.RandomState(42)
                 X = rng.rand(100, 20)
-                y = rng.randint(5, size=100)
+                y = rng.randint(2, size=100)
 
                 estimator = LogisticRegression(solver='liblinear')
                 estimator.fit(X, y)
