@@ -29,6 +29,7 @@ build:
     -fPIC
   ldflags: |
     -fwasm-exceptions
+    -fPIC
   script: |
     export CFLAGS="$CFLAGS -fPIC"
     export CXXFLAGS="$CXXFLAGS -fPIC"
