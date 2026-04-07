@@ -19,6 +19,9 @@ build:
 requirements:
   executable:
     - rustup
+test:
+  imports:
+    - jsonschema_rs
 about:
   home: https://github.com/Stranger6667/jsonschema
   PyPI: https://pypi.org/project/jsonschema-rs/0.45.0
