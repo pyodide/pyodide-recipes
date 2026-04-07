@@ -11,7 +11,7 @@ about:
   PyPI: https://pypi.org/project/platformdirs
   summary: A small Python package for determining appropriate platform-specific
     dirs, e.g. a `user data dir`.
-  license:
+  license: MIT
 extra:
   recipe-maintainers:
     - FrancescAlted
