@@ -1,13 +1,13 @@
 package:
   name: rateslib
-  version: 2.7.0
+  version: 2.7.1
   tag:
     - rust
   top-level:
     - rateslib
 source:
-  url: https://files.pythonhosted.org/packages/22/9d/032eb3ee109e997a280351516781d17014a8e35061ad6626c6a6ac14bd3f/rateslib-2.7.0.tar.gz
-  sha256: 30f7d81a479af0da821d7ee7f1c4a4de4f7643a526ba0568357d8a564f2a2099
+  url: https://files.pythonhosted.org/packages/c0/7a/67e4cae285dfaf41d5027cf79771eb7fc18d6b2971a2800895c9c2238a25/rateslib-2.7.1.tar.gz
+  sha256: b4007e57c29581aa6f7c235cda06754d0afedde4817336032cd88a5c1b7a72d8
 requirements:
   run:
     - numpy
