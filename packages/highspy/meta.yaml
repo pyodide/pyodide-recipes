@@ -12,10 +12,10 @@ requirements:
   constraint:
     - pybind11 < 3
 about:
-  home:
+  home: https://github.com/ERGO-Code/HiGHS
   PyPI: https://pypi.org/project/highspy
   summary: A thin set of pybind11 wrappers to HiGHS
-  license:
+  license: MIT
 extra:
   recipe-maintainers:
     - airen1986
