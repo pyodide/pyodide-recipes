@@ -23,18 +23,12 @@ build:
   cflags: |
     -I$(WASM_LIBRARY_DIR)/include
     -fwasm-exceptions
-    -fPIC
   cxxflags: |
     -fwasm-exceptions
-    -fPIC
   ldflags: |
     -fwasm-exceptions
-    -fPIC
   script: |
-    export EMCC_DEBUG=1
-    export CFLAGS="$CFLAGS -fPIC"
-    export CXXFLAGS="$CXXFLAGS -fPIC"
-    export LDFLAGS="$LDFLAGS -fPIC"
+    export CXXFLAGS="$CXXFLAGS -sSIDE_MODULE=1"
 about:
   home: https://github.com/healpy/healpy
   PyPI: https://pypi.org/project/healpy
