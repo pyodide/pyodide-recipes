@@ -1,12 +1,11 @@
 package:
   name: duckdb
-  version: 1.5.0
-  _disabled: true  # update to 2026_0
+  version: 1.5.1
   top-level:
     - duckdb
 source:
-  url: https://github.com/xlwings/duckdb-pyodide/releases/download/duckdb-v1.5.0-pyodide-0.29.3/duckdb-1.5.0-cp313-cp313-pyodide_2025_0_wasm32.whl
-  sha256: ee14bd19e6d9a390bb2803f119d4eff06a88a8e4b52ebf6c947c9dac67f6ba11
+  url: https://github.com/xlwings/duckdb-pyodide/releases/download/duckdb-v1.5.1-pyodide-314.0.0a1/duckdb-1.5.1-cp314-cp314-pyemscripten_2026_0_wasm32.whl
+  sha256: 86cc849c4cc14acc151baa1c587f07a79d5f28efb3e826052a4ee493208a77f4
 about:
   home: https://github.com/duckdb/duckdb
   PyPI: https://pypi.org/project/duckdb
