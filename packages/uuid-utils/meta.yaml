@@ -1,0 +1,24 @@
+package:
+  name: uuid-utils
+  version: 0.14.1
+  tag:
+    - rust
+  top-level:
+    - uuid_utils
+source:
+  url: https://files.pythonhosted.org/packages/source/u/uuid_utils/uuid_utils-0.14.1.tar.gz
+  sha256: 9bfc95f64af80ccf129c604fb6b8ca66c6f256451e32bc4570f760e4309c9b69
+requirements:
+  executable:
+    - rustup
+test:
+  imports:
+    - uuid_utils
+about:
+  home: https://github.com/aminalaee/uuid-utils
+  PyPI: https://pypi.org/project/uuid-utils
+  summary: Fast, drop-in replacement for Python's uuid module, powered by Rust.
+  license: BSD-3-Clause
+extra:
+  recipe-maintainers:
+    - aminalaee
