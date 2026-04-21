@@ -1,0 +1,27 @@
+From 1fc28617992cdc74b5f1f607c6d0fc15bab6fdb0 Mon Sep 17 00:00:00 2001
+From: Hood Chatham <roberthoodchatham@gmail.com>
+Date: Tue, 21 Apr 2026 16:23:04 -0700
+Subject: [PATCH] Add backwards compatibility for wheels with pyodide tag
+
+instead of newer pyemscripten
+---
+ src/packaging/tags.py | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/packaging/tags.py b/src/packaging/tags.py
+index 7f71e39..5c414a8 100644
+--- a/src/packaging/tags.py
++++ b/src/packaging/tags.py
+@@ -749,6 +749,9 @@ def _linux_platforms(is_32bit: bool = _32_BIT_INTERPRETER) -> Iterator[str]:
+ 
+ 
+ def _emscripten_platforms() -> Iterator[str]:
++    pyodide_abi_version = sysconfig.get_config_var("PYODIDE_ABI_VERSION")
++    if pyodide_abi_version:
++        yield f"pyodide_{pyodide_abi_version}_wasm32"
+     pyemscripten_abi_version = sysconfig.get_config_var("PYEMSCRIPTEN_ABI_VERSION")
+     if pyemscripten_abi_version:
+         yield f"pyemscripten_{pyemscripten_abi_version}_wasm32"
+-- 
+2.43.0
+
