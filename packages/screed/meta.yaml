@@ -2,7 +2,6 @@ package:
   name: screed
   version: 1.2.0
   top-level:
-    - bigtests
     - screed
 source:
   url: https://files.pythonhosted.org/packages/f4/5f/578ead50879d1f524e4c25c54b3b9f09e1fcda0477267fe82b3aa154dab3/screed-1.2.0.tar.gz
