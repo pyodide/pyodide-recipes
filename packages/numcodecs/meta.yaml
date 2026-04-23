@@ -18,6 +18,7 @@ requirements:
     - numpy
   run:
     - deprecated
+    - lzma
     - numpy
 about:
   home: https://github.com/zarr-developers/numcodecs
