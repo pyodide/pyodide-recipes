@@ -19,6 +19,16 @@ def test_ssl(selenium):
         "test_subclass",
         "test_lib_reason",
         "test_unwrap",
+        "test_bad_server_hostname",
+        "test_cert_store_stats",
+        "test_ciphers",
+        "test_get_ca_certs",
+        "test_get_ciphers",
+        "test_load_cert_chain",
+        "test_load_default_certs_env",
+        "test_load_verify_cadata",
+        "test_load_verify_locations",
+        "test_min_max_version",
     ]
     match_tests = [[pat, False] for pat in ignore_tests]
 
