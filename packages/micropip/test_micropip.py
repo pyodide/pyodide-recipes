@@ -44,12 +44,10 @@ def selenium_standalone_micropip(selenium_standalone):
     yield selenium_standalone
 
 
-@pytest.mark.xfail_browsers(node="flaky in CI because of network calls")
 def test_install_simple(selenium_standalone_micropip):
     selenium = selenium_standalone_micropip
-    assert (
-        selenium.run_js(
-            """
+    assert selenium.run_js(
+        """
             return await pyodide.runPythonAsync(`
                 import os
                 import micropip
@@ -62,12 +60,9 @@ def test_install_simple(selenium_standalone_micropip):
                 to_js(stemmer.stemWords('go going goes gone'.split()))
             `);
             """
-        )
-        == ["go", "go", "goe", "gone"]
-    )
+    ) == ["go", "go", "goe", "gone"]
 
 
-@pytest.mark.xfail_browsers(node="flaky in CI because of network calls")
 def test_install_custom_url(selenium_standalone_micropip, httpserver):
     selenium = selenium_standalone_micropip
 
@@ -105,7 +100,6 @@ def test_install_file_protocol_node(selenium_standalone_micropip):
     )
 
 
-@pytest.mark.xfail_browsers(node="flaky in CI because of network calls")
 def test_install_different_version(selenium_standalone_micropip):
     selenium = selenium_standalone_micropip
     selenium.run_js(
@@ -128,7 +122,6 @@ def test_install_different_version(selenium_standalone_micropip):
     )
 
 
-@pytest.mark.xfail_browsers(node="flaky in CI because of network calls")
 def test_install_different_version2(selenium_standalone_micropip):
     selenium = selenium_standalone_micropip
     selenium.run_js(
@@ -172,7 +165,6 @@ def test_list_load_package_from_url(selenium_standalone_micropip, httpserver):
     )
 
 
-@pytest.mark.xfail_browsers(node="flaky in CI because of network calls")
 def test_emfs(selenium_standalone_micropip, httpserver):
     httpserver.expect_oneshot_request(f"/{SNOWBALL_WHEEL.name}").respond_with_data(
         SNOWBALL_WHEEL.read_bytes(),
