@@ -1,7 +1,7 @@
 package:
   name: gensim
   version: 4.3.3
-  # No support for Python 3.13
+  # No support for Python 3.14
   _disabled: true
   top-level:
     - gensim

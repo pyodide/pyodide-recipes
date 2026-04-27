@@ -1,14 +1,14 @@
 package:
   name: wordcloud
-  version: 1.9.4
+  version: 1.9.6
   top-level:
     - wordcloud
 requirements:
   run:
     - matplotlib
 source:
-  url: https://files.pythonhosted.org/packages/03/a1/0530b9001b05dcd13de21c2d4d821db5365dade5180242179fbc39372c57/wordcloud-1.9.4.tar.gz
-  sha256: b273d8a5ded97d3ead904046b49464dcb71119ee79df875072a4c105cadd347a
+  url: https://files.pythonhosted.org/packages/source/w/wordcloud/wordcloud-1.9.6.tar.gz
+  sha256: df17c468ff903bd0aba4f87c6540745d13a4931220dd4937cb363ad85a4771b9
 about:
   home: https://github.com/amueller/word_cloud
   PyPI: https://pypi.org/project/wordcloud

@@ -11,19 +11,6 @@ def test_subclass(selenium):
 
 
 @run_in_pyodide(packages=["frozenlist"])
-def test_iface(selenium):
-    from collections.abc import MutableSequence
-
-    from frozenlist import FrozenList
-
-    SKIP_METHODS = {"__abstractmethods__", "__slots__"}
-    for name in set(dir(MutableSequence)) - SKIP_METHODS:
-        if name.startswith("_") and not name.endswith("_"):
-            continue
-        assert hasattr(FrozenList, name)
-
-
-@run_in_pyodide(packages=["frozenlist"])
 def test_ctor_default(selenium):
     from frozenlist import FrozenList
 

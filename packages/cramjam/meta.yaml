@@ -1,13 +1,14 @@
 package:
   name: cramjam
-  version: 2.10.0rc1
+  version: 2.11.0
+  _disabled: true  # TypeError: exceptions must derive from BaseException
   tag:
     - rust
   top-level:
     - cramjam
 source:
-  url: https://files.pythonhosted.org/packages/source/c/cramjam/cramjam-2.10.0rc1.tar.gz
-  sha256: 85679d2d2d8c43d4c4917eec6a39f145c417c0cc95faada7b5d964ff5c365da6
+  url: https://files.pythonhosted.org/packages/source/c/cramjam/cramjam-2.11.0.tar.gz
+  sha256: 5c82500ed91605c2d9781380b378397012e25127e89d64f460fea6aeac4389b4
 about:
   home: ""
   PyPI: https://pypi.org/project/cramjam

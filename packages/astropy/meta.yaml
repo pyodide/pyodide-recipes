@@ -1,11 +1,11 @@
 package:
   name: astropy
-  version: 7.0.1
+  version: 7.2.0
   top-level:
     - astropy
 source:
-  url: https://files.pythonhosted.org/packages/45/12/a1c582b3f9df5e2680eae0ed82c8057ae06d6130a1f7a5c0770fa899737e/astropy-7.0.1.tar.gz
-  sha256: 392feeb443b2437cd4c2e0641a65e0f15ba791e148e9b1e5ed7de7dfcb38e460
+  url: https://files.pythonhosted.org/packages/source/a/astropy/astropy-7.2.0.tar.gz
+  sha256: ae48bc26b1feaeb603cd94bd1fa1aa39137a115fe931b7f13787ab420e8c3070
 build:
   # The test module is imported from the top level `__init__.py`
   # so it cannot be unvendored

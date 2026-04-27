@@ -1,11 +1,11 @@
 package:
   name: ndindex
-  version: 1.9.2
+  version: 1.10.1
   top-level:
     - ndindex
 source:
-  url: https://files.pythonhosted.org/packages/source/n/ndindex/ndindex-1.9.2.tar.gz
-  sha256: b8658a06e52d6c47445c2ec11d292e1d52c3af259214c8b52e3a1aab733daa72
+  url: https://files.pythonhosted.org/packages/source/n/ndindex/ndindex-1.10.1.tar.gz
+  sha256: 0f6113c1f031248f8818cbee1aa92aa3c9472b7701debcce9fddebcd2f610f11
 about:
   home: https://quansight-labs.github.io/ndindex/
   PyPI: https://pypi.org/project/ndindex

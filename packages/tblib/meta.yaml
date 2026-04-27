@@ -1,6 +1,6 @@
 package:
   name: tblib
-  version: 3.0.0
+  version: 3.2.2
   top-level:
     - tblib
   tag:
@@ -8,8 +8,8 @@ package:
     - core
     - min-scipy-stack
 source:
-  url: https://files.pythonhosted.org/packages/9b/87/ce70db7cae60e67851eb94e1a2127d4abb573d3866d2efd302ceb0d4d2a5/tblib-3.0.0-py3-none-any.whl
-  sha256: 80a6c77e59b55e83911e1e607c649836a69c103963c5f28a46cbeef44acf8129
+  url: https://files.pythonhosted.org/packages/py3/t/tblib/tblib-3.2.2-py3-none-any.whl
+  sha256: 26bdccf339bcce6a88b2b5432c988b266ebbe63a4e593f6b578b1d2e723d2b76
 about:
   home: https://github.com/ionelmc/python-tblib
   PyPI: https://pypi.org/project/tblib

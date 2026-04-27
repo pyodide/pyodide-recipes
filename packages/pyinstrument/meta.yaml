@@ -1,11 +1,11 @@
 package:
   name: pyinstrument
-  version: 5.0.1
+  version: 5.1.2
   top-level:
     - pyinstrument
 source:
-  url: https://files.pythonhosted.org/packages/64/6e/85c2722e40cab4fd9df6bbe68a0d032e237cf8cfada71e5f067e4e433214/pyinstrument-5.0.1.tar.gz
-  sha256: f4fd0754d02959c113a4b1ebed02f4627b6e2c138719ddf43244fd95f201c8c9
+  url: https://files.pythonhosted.org/packages/source/p/pyinstrument/pyinstrument-5.1.2.tar.gz
+  sha256: af149d672da9493fa37334a1cc68f7b80c3e6cb9fd99b9e426c447db5c650bf0
 about:
   home: https://github.com/joerick/pyinstrument
   PyPI: https://pypi.org/project/pyinstrument

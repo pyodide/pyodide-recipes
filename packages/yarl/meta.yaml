@@ -1,11 +1,11 @@
 package:
   name: yarl
-  version: 1.18.3
+  version: 1.23.0
   top-level:
     - yarl
 source:
-  url: https://files.pythonhosted.org/packages/b7/9d/4b94a8e6d2b51b599516a5cb88e5bc99b4d8d4583e468057eaa29d5f0918/yarl-1.18.3.tar.gz
-  sha256: ac1801c45cbf77b6c99242eeff4fffb5e4e73a800b5c4ad4fc0be5def634d2e1
+  url: https://files.pythonhosted.org/packages/source/y/yarl/yarl-1.23.0.tar.gz
+  sha256: 53b1ea6ca88ebd4420379c330aea57e258408dd0df9af0992e5de2078dc9f5d5
 requirements:
   run:
     - multidict

@@ -1,11 +1,11 @@
 package:
   name: jsonschema_specifications
-  version: 2024.10.1
+  version: 2025.9.1
   top-level:
     - jsonschema_specifications
 source:
-  url: https://files.pythonhosted.org/packages/d1/0f/8910b19ac0670a0f80ce1008e5e751c4a57e14d2c4c13a482aa6079fa9d6/jsonschema_specifications-2024.10.1-py3-none-any.whl
-  sha256: a09a0680616357d9a0ecf05c12ad234479f549239d0f5b55f3deea67475da9bf
+  url: https://files.pythonhosted.org/packages/py3/j/jsonschema_specifications/jsonschema_specifications-2025.9.1-py3-none-any.whl
+  sha256: 98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe
 requirements:
   run:
     - referencing

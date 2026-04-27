@@ -1,11 +1,11 @@
 package:
   name: cobs
-  version: 1.2.1
+  version: 1.2.2
   top-level:
     - cobs
 source:
-  url: https://files.pythonhosted.org/packages/source/c/cobs/cobs-1.2.1.tar.gz
-  sha256: 2af7f8791cde1ae7c6b936f5d0c35fe29feb10de25f79c15b0af0d6729783cc0
+  url: https://files.pythonhosted.org/packages/source/c/cobs/cobs-1.2.2.tar.gz
+  sha256: dbdd5e32111d72786f83d0c269215dcd6ac629b1ac1962c6878221f3b2ca98da
 about:
   home: ""
   PyPI: https://pypi.org/project/cobs

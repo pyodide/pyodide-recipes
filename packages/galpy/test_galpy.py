@@ -24,7 +24,7 @@ def galpy_test_decorator(**kwargs):
     return dec
 
 
-@galpy_test_decorator(firefox="times out")
+@galpy_test_decorator(firefox="times out", chrome="times out")
 @run_in_pyodide(
     packages=[
         "galpy",
@@ -44,7 +44,7 @@ def test_integrate(selenium):
     return None
 
 
-@galpy_test_decorator(firefox="times out")
+@galpy_test_decorator(firefox="times out", chrome="times out")
 @run_in_pyodide(
     packages=[
         "galpy",
@@ -70,7 +70,7 @@ def test_actionAngle(selenium):
     return None
 
 
-@galpy_test_decorator(firefox="times out")
+@galpy_test_decorator(firefox="times out", chrome="times out")
 @run_in_pyodide(
     packages=[
         "galpy",

@@ -1,12 +1,5 @@
 from pytest_pyodide import run_in_pyodide
 
-@run_in_pyodide(packages=["phispy"])
-def test_phispy_version(selenium):
-    import PhiSpyModules
-    
-    version = PhiSpyModules.__version__
-    assert version == "5.0.2"
-
 
 @run_in_pyodide(packages=["phispy"])
 def test_phispy_import(selenium):

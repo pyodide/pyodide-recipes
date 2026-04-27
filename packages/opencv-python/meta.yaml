@@ -31,9 +31,7 @@ requirements:
     # Please update your setuptools to v70.1 or later.
     - wheel < 0.46.1
 build:
-  # RELOCATABLE flag is required because if affects how emscripten build ports.
   cxxflags: |
-    -s RELOCATABLE=1
     -s USE_ZLIB=1
     -s USE_LIBJPEG=1
     -s USE_LIBPNG=1

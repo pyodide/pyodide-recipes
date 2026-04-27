@@ -1,5 +1,5 @@
 [tool.mypy]
-python_version = "3.13"
+python_version = "3.14"
 show_error_codes = true
 warn_unreachable = true
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
@@ -81,4 +81,4 @@ asyncio_mode = "strict"
 
 [tool.pyodide.build]
 rust_toolchain = "1.93.0"
-default_cross_build_env_url = "https://github.com/pyodide/pyodide-build-environment-nightly/releases/download/20260220/xbuildenv.tar.bz2"
+default_cross_build_env_url = "https://github.com/pyodide/pyodide-build-environment-nightly/releases/download/20260324_314_alpha/xbuildenv.tar.bz2"

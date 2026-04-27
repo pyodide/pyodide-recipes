@@ -1,11 +1,11 @@
 package:
   name: bilby.cython
-  version: 0.5.3
+  version: 0.5.4
   top-level:
     - bilby_cython
 source:
-  url: https://files.pythonhosted.org/packages/source/b/bilby_cython/bilby_cython-0.5.3.tar.gz
-  sha256: 44400b2abc6fa592b13d69f33460cb156d6edb48a783f5539ee0a21e1d0a3508
+  url: https://files.pythonhosted.org/packages/source/b/bilby_cython/bilby_cython-0.5.4.tar.gz
+  sha256: 34af013f232187f25308cbf25f096e8c2be1662da78c421b85ecceba4fb5358d
 requirements:
   host:
     - numpy

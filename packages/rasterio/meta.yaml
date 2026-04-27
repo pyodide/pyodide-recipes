@@ -1,11 +1,11 @@
 package:
   name: rasterio
-  version: 1.4.3
+  version: 1.5.0
   top-level:
     - rasterio
 source:
-  url: https://files.pythonhosted.org/packages/de/19/ab4326e419b543da623ce4191f68e3f36a4d9adc64f3df5c78f044d8d9ca/rasterio-1.4.3.tar.gz
-  sha256: 201f05dbc7c4739dacb2c78a1cf4e09c0b7265b0a4d16ccbd1753ce4f2af350a
+  url: https://files.pythonhosted.org/packages/source/r/rasterio/rasterio-1.5.0.tar.gz
+  sha256: 1e0ea56b02eea4989b36edf8e58a5a3ef40e1b7edcb04def2603accd5ab3ee7b
 requirements:
   host:
     - numpy

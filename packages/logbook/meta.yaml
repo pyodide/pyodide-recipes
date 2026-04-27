@@ -1,15 +1,17 @@
 package:
   name: logbook
-  version: 1.8.0
+  version: 1.9.2
   top-level:
     - logbook
 source:
-  url: https://files.pythonhosted.org/packages/c3/a2/fafcc4ce7bad34093150e14f9ed179aa53e3e60a5c46e840547bdae26674/logbook-1.8.0.tar.gz
-  sha256: 487fa41539787bfa21a51fabd7f3ae8ae7f9e6679bb3e241d0f5f18a2fc37e9c
+  url: https://files.pythonhosted.org/packages/source/l/logbook/logbook-1.9.2.tar.gz
+  sha256: 0538cabfd8e8a02b8185fb7a2be20b3965d225fbd7f4a5726b007d8e26b39ee0
 
 requirements:
   host:
     - setuptools
+  run:
+    - typing-extensions
 about:
   home: http://logbook.pocoo.org/
   PyPI: https://pypi.org/project/logbook

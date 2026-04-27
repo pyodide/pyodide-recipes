@@ -1,13 +1,14 @@
 package:
   name: river
-  version: 0.22.0
+  version: 0.23.0
+  _disabled: true # 0.23.0 not yet compatible with Python 3.14
   tag:
     - rust
   top-level:
     - river
 source:
-  url: https://files.pythonhosted.org/packages/31/23/4e4d1c99e38767c0afb4d6bcbe9a36157bf365578320d1b3356054e1fc79/river-0.22.0.tar.gz
-  sha256: 8b06840e0d832dbd1064145e56e3f75492402716f5eb733753da3099194a3a68
+  url: https://files.pythonhosted.org/packages/source/r/river/river-0.23.0.tar.gz
+  sha256: f174cb8e5984be1a193827faf8e09a03ceb110a055290628accc72ec987390f1
 requirements:
   executable:
     - rustup

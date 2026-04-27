@@ -1,0 +1,24 @@
+package:
+  name: safetensors
+  version: 0.7.0
+  tag:
+    - rust
+  top-level:
+    - safetensors
+source:
+  url: https://files.pythonhosted.org/packages/source/s/safetensors/safetensors-0.7.0.tar.gz
+  sha256: 07663963b67e8bd9f0b8ad15bb9163606cd27cc5a1b96235a50d8369803b96b0
+requirements:
+  executable:
+    - rustup
+    - cargo
+  run:
+    - numpy
+about:
+  home: https://github.com/huggingface/safetensors
+  PyPI: https://pypi.org/project/safetensors
+  summary: Simple, safe way to store and distribute tensors
+  license: Apache-2.0
+extra:
+  recipe-maintainers:
+    - bartbroere

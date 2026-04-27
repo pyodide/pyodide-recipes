@@ -1,11 +1,11 @@
 package:
   name: openai
-  version: 1.68.2
+  version: 2.30.0
   top-level:
     - openai
 source:
-  url: https://files.pythonhosted.org/packages/py3/o/openai/openai-1.68.2-py3-none-any.whl
-  sha256: 24484cb5c9a33b58576fdc5acf0e5f92603024a4e39d0b99793dfa1eb14c2b36
+  url: https://files.pythonhosted.org/packages/py3/o/openai/openai-2.30.0-py3-none-any.whl
+  sha256: 9a5ae616888eb2748ec5e0c5b955a51592e0b201a11f4262db920f2a78c5231d
 requirements:
   run:
     - httpx

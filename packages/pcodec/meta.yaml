@@ -1,13 +1,13 @@
 package:
   name: pcodec
-  version: 0.3.3
+  version: 1.0.1
   tag:
     - rust
   top-level:
     - pcodec
 source:
-  url: https://files.pythonhosted.org/packages/source/p/pcodec/pcodec-0.3.3.tar.gz
-  sha256: 759505b08db98a28ef8964b23044cc73b137df133d5b07225a6c8ee9540286bf
+  url: https://files.pythonhosted.org/packages/source/p/pcodec/pcodec-1.0.1.tar.gz
+  sha256: 559112623ae9ffb42f9f3fdffb5b0cb27d5c363b104994e66a6c0f1093e2de83
 requirements:
   executable:
     - rustup

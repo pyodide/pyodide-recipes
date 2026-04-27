@@ -1,0 +1,16 @@
+package:
+  name: librt
+  version: 0.8.1
+  top-level:
+    - librt
+source:
+  url: https://files.pythonhosted.org/packages/source/l/librt/librt-0.8.1.tar.gz
+  sha256: be46a14693955b3bd96014ccbdb8339ee8c9346fbe11c1b78901b55125f14c73
+about:
+  home: https://github.com/python/mypy/tree/master/mypyc/lib-rt
+  PyPI: https://pypi.org/project/librt
+  summary: Mypyc runtime library
+  license: MIT
+extra:
+  recipe-maintainers:
+    - ryanking13

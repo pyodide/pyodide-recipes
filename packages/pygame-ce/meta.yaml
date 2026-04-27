@@ -1,11 +1,11 @@
 package:
   name: pygame-ce
-  version: 2.5.6.dev2
+  version: 2.5.7
   top-level:
     - pygame
 source:
-  url: https://files.pythonhosted.org/packages/ab/98/911c3287c42a774a48271758990cd7d57cce148866f4126a41314223ab98/pygame_ce-2.5.6.dev2.tar.gz
-  sha256: a1303cd212a3e92253712293480f2b7741fd7ac6e29981c5ff1ded1d554d030c
+  url: https://files.pythonhosted.org/packages/source/p/pygame_ce/pygame_ce-2.5.7.tar.gz
+  sha256: 86beb797cd73c141299a29b56f7df2b0543fbdc81d428022458329ff694aaa51
 build:
   script: |
     # formats should be the same as the cibuildwheel config in pygame-ce
@@ -13,9 +13,12 @@ build:
 
     # workaround to build wasm-exception-enabled port of sdl2_image (See: https://github.com/pygame-community/pygame-ce/pull/3588#issuecomment-3352072309)
     touch dummy_src_for_port.c
-    emcc dummy_src_for_port.c -sSUPPORT_LONGJMP="wasm" -sRELOCATABLE=1 -fpic "--use-port=sdl2_image:formats=bmp,gif,jpg,lbm,pcx,png,pnm,qoi,svg,tga,xcf,xpm,xv"
+    emcc dummy_src_for_port.c -sSUPPORT_LONGJMP="wasm" -sSIDE_MODULE=1 -fPIC "--use-port=sdl2_image:formats=bmp,gif,jpg,lbm,pcx,png,pnm,qoi,svg,tga,xcf,xpm,xv"
 
     embuilder --pic build sdl2 libhtml5 sdl2_ttf 'sdl2_mixer:formats=ogg,mp3,mod,mid'
+
+    # remove -sRELOCATABLE=1 flag baked in the meson.build file
+    sed -i 's/-sRELOCATABLE=1//' meson.build
 about:
   home: https://pyga.me
   PyPI: https://pypi.org/project/pygame-ce

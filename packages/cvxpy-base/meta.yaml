@@ -1,11 +1,11 @@
 package:
   name: cvxpy-base
-  version: 1.8.1
+  version: 1.8.2
   top-level:
     - cvxpy
 source:
-  url: https://files.pythonhosted.org/packages/source/c/cvxpy_base/cvxpy_base-1.8.1.tar.gz
-  sha256: a72d22d27fbc9a814705daba63635f3259f17d05c49115b2e229dffa723f2bb9
+  url: https://files.pythonhosted.org/packages/source/c/cvxpy_base/cvxpy_base-1.8.2.tar.gz
+  sha256: 795d39c226207796d190cf6aece24a452748519b4d7bc4edd3bfbb22cd5c6cb5
 requirements:
   run:
     # Dependencies that are needed to run the package
@@ -15,9 +15,8 @@ requirements:
 about:
   home: https://github.com/cvxpy/cvxpy
   PyPI: https://pypi.org/project/cvxpy-base
-  summary:
-    A domain-specific language for modeling convex optimization problems in
-    Python.
+  summary: A domain-specific language for modeling convex optimization problems
+    in Python.
   license: Apache-2.0
 extra:
   recipe-maintainers:

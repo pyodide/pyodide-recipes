@@ -1,13 +1,13 @@
 package:
   name: phispy
-  version: "5.0.2"
+  version: 5.0.6
   top-level:
     - PhiSpyModules
     - PhiSpyRepeatFinder
 
 source:
-  url: https://files.pythonhosted.org/packages/d4/6b/cbc4b6be7755c7a1ffd58e51e878a57713f00829d340a46e894061477fc0/phispy-5.0.2.tar.gz
-  sha256: a9233471ccf50e6e58ecc83c589be2cfa04e728cc81e57cea296d23dc85d397c
+  url: https://files.pythonhosted.org/packages/source/p/phispy/phispy-5.0.6.tar.gz
+  sha256: 0a10a92a58ee0051f869d25f3ce7343101be7b810e3e3aa47df30ea10513af25
 
 build:
   cxxflags: -fwasm-exceptions

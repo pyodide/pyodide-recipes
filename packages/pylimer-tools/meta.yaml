@@ -1,6 +1,7 @@
 package:
   name: pylimer-tools
   version: 0.3.13
+  _disabled: true  # update to 2026_0
   top-level:
     - pylimer_tools
 

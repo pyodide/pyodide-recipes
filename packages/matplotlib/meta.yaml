@@ -1,8 +1,6 @@
 package:
   name: matplotlib
-  version: 3.8.4
-  # Need to update patches
-  pinned: true
+  version: 3.10.8
   tag:
     - min-scipy-stack
   top-level:
@@ -10,32 +8,40 @@ package:
     - mpl_toolkits
     - matplotlib
 source:
-  url: https://files.pythonhosted.org/packages/38/4f/8487737a74d8be4ab5fbe6019b0fae305c1604cf7209500969b879b5f462/matplotlib-3.8.4.tar.gz
-  sha256: 8aac397d5e9ec158960e31c381c5ffc52ddd52bd9a47717e2a694038167dffea
+  url: https://files.pythonhosted.org/packages/source/m/matplotlib/matplotlib-3.10.8.tar.gz
+  sha256: 2299372c19d56bcd35cf05a2738308758d32b9eaed2371898d8f5bd33f084aa3
   patches:
-    - patches/0001-Disable-macOS-X-backend.patch
-    - patches/0002-Disable-timer.patch
-    - patches/0003-Hardcode-font-cache-path.patch
-    - patches/0004-WebAgg-backend.patch
-  extras:
-    - - extras/setup.cfg
-      - ./mplsetup.cfg
+    - patches/0001-Disable-timer.patch
+    - patches/0002-Hardcode-font-cache-path.patch
+    - patches/0003-WebAgg-backend.patch
+    - patches/0004-Fix-32bit-casting.patch
+    - patches/0005-Use-system-freetype.patch
 
 build:
-  # RELOCATABLE flag is required because if affects how emscripten build ports.
+  backend-flags: |
+    setup-args=-DrcParams-backend=webagg
+    setup-args=-Dsystem-freetype=true
   cflags: |
-    -s RELOCATABLE=1
     -s USE_FREETYPE=1
     -s USE_LIBPNG=1
     -s USE_ZLIB=1
     -fwasm-exceptions
     -fno-lto
   cxxflags: |
-    -std=c++14
+    -fno-lto
+    -std=c++17
     -fwasm-exceptions
   ldflags: |
+    -fno-lto
+    -lfreetype-legacysjlj
+    -s USE_FREETYPE=1
     -fwasm-exceptions
-  script: export SETUPTOOLS_SCM_PRETEND_VERSION=$PKG_VERSION
+  script: |
+    embuilder build freetype-legacysjlj --pic
+    # matplotlib locates freetype using pkg-config, so we need to set PKG_CONFIG_PATH to point to the directory containing the .pc file for freetype.
+    export PKG_CONFIG_PATH=$(em-config CACHE)/sysroot/lib/pkgconfig
+    echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH"
+    export SETUPTOOLS_SCM_PRETEND_VERSION=$PKG_VERSION
   post: |
     rm -rf matplotlib/backends/qt_editor
     # mpl.css and mpl.js are used by the patched webagg backend, so do not delete them.

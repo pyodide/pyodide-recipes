@@ -1,13 +1,13 @@
 package:
   name: orjson
-  version: 3.11.7
+  version: 3.11.8
   tag:
     - rust
   top-level:
     - orjson
 source:
-  url: https://files.pythonhosted.org/packages/source/o/orjson/orjson-3.11.7.tar.gz
-  sha256: 9b1a67243945819ce55d24a30b59d6a168e86220452d2c96f4d1f093e71c0c49
+  url: https://files.pythonhosted.org/packages/source/o/orjson/orjson-3.11.8.tar.gz
+  sha256: 96163d9cdc5a202703e9ad1b9ae757d5f0ca62f4fa0cc93d1f27b0e180cc404e
 requirements:
   executable:
     - rustup
