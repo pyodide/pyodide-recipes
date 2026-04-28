@@ -9,10 +9,14 @@ assignees: ""
 <!--
 Important Note:
 
-Opening a new package request doesn't mean that Pyodide maintainers will look into it immediately.
-In most cases, the maintainer will have no idea about the package you're asking for, and you're probably the most knowledgeable person about it.
-Therefore, a way to speed up your progress is to read the documentation, try building the package yourself, and report any issues you encounter.
+With the acceptance of PEP 783 (https://peps.python.org/pep-0783/), package maintainers can now
+build and publish Pyodide-compatible wheels directly to PyPI. Before requesting a new recipe here,
+please consider contacting the package maintainers and asking them to publish Emscripten/Pyodide
+wheels from their own repository. This is the preferred approach going forward.
 
+For more details, see:
+- Pyodide docs on building packages: https://pyodide-build.readthedocs.io/en/latest/
+- cibuildwheel Pyodide support: https://cibuildwheel.pypa.io/en/stable/options/#platform
 -->
 
 ## 🐍 Package Request
@@ -24,4 +28,5 @@ Therefore, a way to speed up your progress is to read the documentation, try bui
 ## Checklists
 
 - [ ] I have tried to install the package using `micropip.install(...)` and encountered the issue.
-- [ ] I have read the [documentation](https://pyodide.org/en/stable/development/building-packages-from-source.html) and tried building the package myself.
+- [ ] I have considered contacting the package maintainers to publish Pyodide wheels upstream (see [PEP 783](https://peps.python.org/pep-0783/)).
+- [ ] I have read the [documentation](https://pyodide-build.readthedocs.io/en/latest/) and tried building the package myself.

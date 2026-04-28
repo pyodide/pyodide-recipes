@@ -4,6 +4,18 @@ Collections of package recipes for Pyodide
 
 ## Adding a new package
 
+> [!NOTE]
+> With the acceptance of [PEP 783](https://peps.python.org/pep-0783/), package maintainers can now
+> build and publish Pyodide-compatible wheels (using the `pyemscripten` platform tag) directly to
+> PyPI. **We encourage package maintainers to build and publish wheels from their own repositories**
+> rather than adding recipes here.
+>
+> For guidance, see the [Pyodide documentation on building packages](https://pyodide-build.readthedocs.io/en/latest/)
+> and [cibuildwheel's Pyodide support](https://cibuildwheel.pypa.io/en/stable/options/#platform).
+>
+> If you need a package that doesn't yet publish Pyodide wheels, consider reaching out to the
+> package maintainers first.
+
 > Note: Use Python 3.14 or upper to run the following commands.
 
 To add a new package, create a package recipe in the `packages` directory.
