@@ -7,6 +7,10 @@ package:
 source:
   url: https://files.pythonhosted.org/packages/88/fb/0dedd2e7b596d9a7a2b59e3c54e85f8640c88a5806e11783785b4fa58861/screed-1.1.3.tar.gz
   sha256: 37e81697c7dba95a053554e5b5a86aff329705e1cf5dfc5e7b8da586dee072b8
+requirements:
+  constraint:
+    # pkg_resources is removed
+    - setuptools < 82
 about:
   home: https://github.com/dib-lab/screed
   PyPI: https://pypi.org/project/screed
