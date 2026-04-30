@@ -5,7 +5,7 @@ package:
     - rust
 source:
   url: https://github.com/kitao/pyxel/archive/refs/tags/v1.9.10.tar.gz
-  sha256: a784221be6f32fd57bdc6a1a8f30e8f68c78f83d8c84790beaf6ec2be062982f
+  sha256: a5bda19aeae4a16f551aa33ac8406072ebb4d5a15e9f5552a18abe3e7db81663
 build:
   script: |
     embuilder build sdl2 --pic
