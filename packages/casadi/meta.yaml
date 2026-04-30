@@ -10,6 +10,7 @@ requirements:
   run:
     - numpy
 build:
+  vendor-sharedlib: false # done by the package itself
   exports: whole_archive
   # These libs are built when building Pyodide main module, but might not be available when building out-of-tree
   script: |
