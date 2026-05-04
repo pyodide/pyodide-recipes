@@ -1,25 +1,24 @@
 package:
   name: pyxel
-  version: 1.9.10
+  version: 2.6.1
+  _disabled: true  # update to 2026 ABI
   tag:
     - rust
 source:
-  url: https://github.com/kitao/pyxel/archive/refs/tags/v1.9.10.tar.gz
-  sha256: a5bda19aeae4a16f551aa33ac8406072ebb4d5a15e9f5552a18abe3e7db81663
-build:
-  script: |
-    embuilder build sdl2 --pic
-    export RUSTFLAGS="\
-      $RUSTFLAGS \
-      -C link-arg=-sUSE_SDL=2 \
-      -C link-arg=-lSDL2 \
-    "
+  url: https://github.com/kitao/pyxel/raw/refs/tags/v2.6.1/wasm/pyxel-2.6.1-cp38-abi3-emscripten_4_0_9_wasm32.whl
+  sha256: 2dd73c5c03e9dcc60d1ae3ae07cc16d0e9f35a1a1e3aad8f3c5e9352e9496b73
+# build:
+#   script: |
+#     embuilder build sdl2 --pic
+#     export RUSTFLAGS="\
+#       $RUSTFLAGS \
+#       -C link-arg=-sUSE_SDL=2 \
+#       -C link-arg=-lSDL2 \
+#     "
 
 requirements:
   executable:
     - rustup
-  constraint:
-    - maturin < 1.8
 test:
   imports:
     - pyxel
