@@ -3,6 +3,7 @@ channels:
   - conda-forge
 dependencies:
   - python=3.13.2
+  - pip
   - nodejs=20
   - ccache
   - f2c
