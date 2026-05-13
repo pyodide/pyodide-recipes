@@ -10,6 +10,7 @@ source:
   patches:
    - patches/autoload_timezones.patch
 build:
+  vendor-sharedlib: false
   script: |
     # move things around so that the top level folder is the python folder
     # with the pyproject.toml, so pyodide build works
