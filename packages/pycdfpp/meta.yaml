@@ -1,6 +1,7 @@
 package:
   name: pycdfpp
   version: 0.9.0
+  _disabled: true  # Remove when upstream pycdfpp release wasm wheels on PyPI
   top-level:
     - pycdfpp
 source:
