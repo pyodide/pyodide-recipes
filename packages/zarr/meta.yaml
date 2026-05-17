@@ -4,8 +4,12 @@ package:
   top-level:
     - zarr
 source:
-  sha256: 4ac0a09d66875d398ab53c95fd4bddca2f3d757a04454831fc2d54bfbafcb7e5
-  url: https://files.pythonhosted.org/packages/0f/27/9969116e77d0ce3996c58630678fa20ff094a1599018ef24006c1df480c0/zarr-3.0.5.tar.gz
+  sha256: 71565b738a0e7e8ed226f0516eba8c6bb53440ad7669a8c48ebb3534a161d035
+  url: https://files.pythonhosted.org/packages/source/z/zarr/zarr-3.2.1.tar.gz
+  patches:
+    - 0001-Add-WASM-compatible-sync-for-Pyodide.patch
+    - 0002-Set-threading.max_workers-1-on-WASM-in-config.patch
+    - 0003-Fix-exclusive-atomic-writes-on-Emscripten.patch
 requirements:
   run:
     - numpy
