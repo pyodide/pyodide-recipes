@@ -1,5 +1,8 @@
 from pytest_pyodide import run_in_pyodide
+import pytest
+from conftest import requires_jspi
 
+pytestmark = requires_jspi
 
 @run_in_pyodide(packages=["numpy", "zarr"])
 def test_zarr_basic(selenium):
