@@ -1,9 +1,6 @@
 package:
   name: zarr
-  version: 2.18.3
-  # zarr 3.x uses threading
-  _disabled: true
-  pinned: true
+  version: 3.2.1
   top-level:
     - zarr
 source:
@@ -18,5 +15,5 @@ requirements:
 about:
   home: https://github.com/zarr-developers/zarr-python
   PyPI: https://pypi.org/project/zarr
-  summary: An implementation of chunked, compressed, N-dimensional arrays for Python.
+  summary: An implementation of chunked, compressed, N-dimensional arrays for Python
   license: MIT
