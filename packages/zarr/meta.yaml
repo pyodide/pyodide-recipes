@@ -9,8 +9,10 @@ source:
 requirements:
   run:
     - numpy
-    - asciitree
+    - packaging
     - numcodecs
+    - google-crc32c
+    - donfig
     - typing-extensions
 about:
   home: https://github.com/zarr-developers/zarr-python
