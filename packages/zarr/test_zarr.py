@@ -46,7 +46,8 @@ def test_zarr_numcodecs_v3(selenium):
 
     # test numcodecs codec as a zarr v3 bytes-to-bytes compressor
     data = np.arange(256, dtype="uint16").reshape(16, 16)
-    z = zarr.array(data, chunks=(16, 16), compressors=[GZip(level=1)])
+    z = zarr.create_array({}, shape=data.shape, chunks=(16, 16), dtype=data.dtype, compressors=[GZip(level=1)])
+    z[:] = data
     np.testing.assert_array_equal(z[:], data)
 
 
