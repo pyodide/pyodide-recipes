@@ -42,13 +42,13 @@ def test_zarr_blosc_compressor(selenium):
 def test_zarr_numcodecs_v3(selenium):
     import numpy as np
     import zarr
-    from numcodecs import GZip
+    from zarr.codecs.numcodecs import GZip
 
     # test numcodecs codec as a zarr v3 bytes-to-bytes compressor
-    data = np.arange(256, dtype="uint16").reshape(16, 16)
-    z = zarr.create_array({}, shape=data.shape, chunks=(16, 16), dtype=data.dtype, compressors=[GZip(level=1)])
-    z[:] = data
-    np.testing.assert_array_equal(z[:], data)
+    data = np.arange(0, 256, dtype="uint16").reshape((16, 16))
+    z = zarr.create_array({}, shape=data.shape, chunks=(16, 16), dtype=data.dtype, fill_value=0, compressors=[GZip()])
+    z[:, :] = data.copy()
+    np.testing.assert_array_equal(z[:, :], data)
 
 
 @run_in_pyodide(packages=["numpy", "zarr"])
