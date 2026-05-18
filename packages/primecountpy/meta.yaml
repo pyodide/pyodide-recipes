@@ -1,12 +1,12 @@
 package:
   name: primecountpy
-  version: 0.1.1
+  version: 0.2.1
   top-level:
     - primecountpy
 source:
   # Cannot use tar.gz from PyPI becuase of https://github.com/dimpase/primecountpy/issues/20
-  url: https://github.com/dimpase/primecountpy/releases/download/v0.1.1/primecountpy-0.1.1.tar.gz
-  sha256: bed77c4d519092ae4489a3a8dfc2ab68e18aeec6c88dea5bb5fac6cffc0f5b20
+  url: https://files.pythonhosted.org/packages/source/p/primecountpy/primecountpy-0.2.1.tar.gz
+  sha256: 888706ab65cc089fb983de4639360dddc728baa4d9877a7ad8b116f645650b39
 about:
   home: https://github.com/dimpase/primecountpy
   PyPI: https://pypi.org/project/primecountpy
@@ -18,9 +18,6 @@ requirements:
     - libprimesieve
   run:
     - cysignals
-  constraint:
-    # ImportError: cysignals.signals does not export expected C function _do_raise_exception
-    - cysignals < 1.12.6
 build:
   cxxflags: |
     -std=c++17
