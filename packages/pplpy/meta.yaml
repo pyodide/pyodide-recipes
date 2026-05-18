@@ -1,5 +1,6 @@
 package:
   name: pplpy
+  _disabled: true # TODO: update to make it work with python 314
   version: 0.8.10
   top-level:
     - ppl
