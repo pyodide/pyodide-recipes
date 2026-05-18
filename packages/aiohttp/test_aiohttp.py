@@ -22,6 +22,7 @@ async def aiohttp_test_helper(selenium, patch, base_url, lock_data):
             assert body == expected
 
 
+@pytest.mark.xfail_browsers(node="Not available")
 def test_aiohttp(selenium):
     patch = (Path(__file__).parent / "aiohttp_patch.py").read_text()
     dist_dir = cast(str, pytest.pyodide_dist_dir)  # type:ignore[attr-defined]

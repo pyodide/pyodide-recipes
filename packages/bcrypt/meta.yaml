@@ -1,13 +1,13 @@
 package:
   name: bcrypt
-  version: 4.3.0
+  version: 5.0.0
   tag:
     - rust
   top-level:
     - bcrypt
 source:
-  url: https://files.pythonhosted.org/packages/bb/5d/6d7433e0f3cd46ce0b43cd65e1db465ea024dbb8216fb2404e919c2ad77b/bcrypt-4.3.0.tar.gz
-  sha256: 3a3fd2204178b6d2adcf09cb4f6426ffef54762577a7c9b54c159008cb288c18
+  url: https://files.pythonhosted.org/packages/source/b/bcrypt/bcrypt-5.0.0.tar.gz
+  sha256: f748f7c2d6fd375cc93d3fba7ef4a9e3a092421b8dbf34d8d4dc06be9492dfdd
 requirements:
   executable:
     - rustup

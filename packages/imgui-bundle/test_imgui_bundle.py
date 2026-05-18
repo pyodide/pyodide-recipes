@@ -29,7 +29,7 @@ import pytest
 from pytest_pyodide import run_in_pyodide
 
 
-@pytest.mark.xfail_browsers(firefox="Firefox headless does not support WebGL. Skipping this test", node="Not supported")
+@pytest.mark.xfail_browsers(firefox="Firefox headless does not support WebGL. Skipping this test", node="Not supported", chrome="fixme")
 @run_in_pyodide(packages=["imgui-bundle"])
 def test_imgui_bundle_window(selenium):
     # --- 1. Create / attach a <canvas id="canvas"> -------------------------

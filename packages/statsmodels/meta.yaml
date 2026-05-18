@@ -1,11 +1,11 @@
 package:
   name: statsmodels
-  version: 0.14.4
+  version: 0.14.6
   top-level:
     - statsmodels
 source:
-  url: https://files.pythonhosted.org/packages/1f/3b/963a015dd8ea17e10c7b0e2f14d7c4daec903baf60a017e756b57953a4bf/statsmodels-0.14.4.tar.gz
-  sha256: 5d69e0f39060dc72c067f9bb6e8033b6dccdb0bae101d76a7ef0bcc94e898b67
+  url: https://files.pythonhosted.org/packages/source/s/statsmodels/statsmodels-0.14.6.tar.gz
+  sha256: 4d17873d3e607d398b85126cd4ed7aad89e4e9d89fc744cdab1af3189a996c2a
 
 build:
   ldflags: |

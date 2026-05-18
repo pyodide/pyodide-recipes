@@ -183,9 +183,7 @@ def test_runpythonasync_numpy(selenium):
         """
     )
     for i in range(5):
-        assert selenium.run_js(
-            f"return pyodide.globals.get('x').toJs()[{i}] == 0"
-        )
+        assert selenium.run_js(f"return pyodide.globals.get('x').toJs()[{i}] == 0")
 
 
 @pytest.mark.xfail_browsers(

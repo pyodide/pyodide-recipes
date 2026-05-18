@@ -1,11 +1,11 @@
 package:
   name: multidict
-  version: 6.5.0
+  version: 6.7.1
   top-level:
     - multidict
 source:
-  url: https://files.pythonhosted.org/packages/46/b5/59f27b4ce9951a4bce56b88ba5ff5159486797ab18863f2b4c1c5e8465bd/multidict-6.5.0.tar.gz
-  sha256: 942bd8002492ba819426a8d7aefde3189c1b87099cdf18aaaefefcf7f3f7b6d2
+  url: https://files.pythonhosted.org/packages/source/m/multidict/multidict-6.7.1.tar.gz
+  sha256: ec6652a1bee61c53a3e5776b6049172c53b6aaba34f18c9ad04f82712bac623d
 about:
   home: https://github.com/aio-libs/multidict
   PyPI: https://pypi.org/project/multidict

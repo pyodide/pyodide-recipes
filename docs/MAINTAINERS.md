@@ -3,11 +3,11 @@
 ## How packages are built and tested in CI
 
 When a PR is opened, the GHA workflow will build submitted packages and run tests on them.
-It only builds the packages that have been modified in the PR, and their dependenciesto reduce the build time.
+It only builds the packages that have been modified in the PR, and their dependencies to reduce the build time.
 See [tools/calc_diff.py](../tools/calc_diff.py) for the logic used to determine which packages to build.
 
 When the PR is merged, the GHA workflow will build all packages in the repository and run tests on them.
-Optionally, you can trigger a full build by adding the `[full build]` in the PR title.
+Optionally, you can trigger a full build by adding the "full build" label to the PR.
 
 The packages are always built with the tip-of-tree commit of Pyodide, fetching it directly from the CDN.
 This is to ensure that the packages in this repository are always compatible with the latest version of Pyodide.
@@ -40,16 +40,9 @@ If you are using conda, you can create a new environment with the following comm
 ```bash
 conda env create -f environment.yml
 conda activate pyodide-env
-```
-
-After activating the environment, you can install the necessary tools and dependencies with the following command:
-
-```bash
 ./tools/prepare_pyodide_build.sh
-python tools/install_and_patch_emscripten.py
 ```
 
-This will install the `pyodide-build` and `emscripten` tools in the current environment.
 You can then build the packages with the following command:
 
 ```bash

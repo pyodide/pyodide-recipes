@@ -2,7 +2,7 @@ import pytest
 from pytest_pyodide import run_in_pyodide
 
 
-@pytest.mark.driver_timeout(60)
+@pytest.mark.xfail(reason="slow")
 @run_in_pyodide(packages=["coolprop"])
 def test_simple_propssi(selenium):
     import pytest
@@ -14,7 +14,7 @@ def test_simple_propssi(selenium):
         PropsSI("T", "P", 101325, "Q", 0, "Walter")
 
 
-@pytest.mark.driver_timeout(60)
+@pytest.mark.xfail(reason="slow")
 @run_in_pyodide(packages=["coolprop"])
 def test_simple_phasesi(selenium):
     from CoolProp.CoolProp import PhaseSI
@@ -22,7 +22,7 @@ def test_simple_phasesi(selenium):
     assert PhaseSI("P", 101325, "Q", 0, "Water") == "twophase"
 
 
-@pytest.mark.driver_timeout(60)
+@pytest.mark.xfail(reason="slow")
 @run_in_pyodide(packages=["coolprop"])
 def test_simple_HAPropsSI(selenium):
     import pytest

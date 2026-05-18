@@ -14,10 +14,13 @@ about:
   license: GPL-3.0
 requirements:
   host:
-    - primecount
-    - primesieve
+    - libprimecount
+    - libprimesieve
   run:
     - cysignals
+  constraint:
+    # ImportError: cysignals.signals does not export expected C function _do_raise_exception
+    - cysignals < 1.12.6
 build:
   cxxflags: |
     -std=c++17

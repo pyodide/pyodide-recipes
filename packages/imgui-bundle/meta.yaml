@@ -1,27 +1,22 @@
 package:
   name: imgui-bundle
-  version: 1.92.0
+  version: 1.92.601
+  _disabled: true  # update to 2026_0
   top-level:
     - imgui_bundle
-
 source:
-  url: https://github.com/pthom/imgui_bundle/releases/download/v1.92.0/srcs-full-v1.92.0.tar.gz
-  sha256: 359336ca8edeef3e1313652be86d4a3aacb28962f4906926ca0db3817c27fcdb
-
-build:
-  # imgui-bundle needs to link with relocatable versions of SDL2 and html5.
-  # By default, emscripten builds the non-relocatable version of these libraries,
-  # so we need to trigger the build of the relocatable (-fPIC) versions.
-  # See https://github.com/pyodide/pyodide/issues/5248 for more explanations.
-  script: |
-    embuilder build sdl2 libhtml5 --pic
-
+  url: https://github.com/pthom/imgui_bundle/releases/download/v1.92.601/imgui_bundle-1.92.601-cp313-cp313-pyodide_2025_0_wasm32.whl
+  sha256: 6df918f3af424ceab037cd8f69c7e79d7d27eda5af11870ffa29cb7e01fac23b
 requirements:
   run:
     - pydantic
     - munch
     - numpy
-
 extra:
   recipe-maintainers:
     - pthom
+about:
+  home: http://pthom.github.io/imgui_bundle/
+  PyPI: https://pypi.org/project/imgui-bundle/
+  summary: "Dear ImGui Bundle: From expressive code to powerful GUIs in no time. A fast, feature-rich, cross-platform toolkit for C++ and Python."
+  license: MIT

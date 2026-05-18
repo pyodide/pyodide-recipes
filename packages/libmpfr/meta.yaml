@@ -5,7 +5,7 @@ package:
     - library
     - static_library
 source:
-  url: https://ftp.gnu.org/gnu/mpfr/mpfr-4.2.1.tar.xz
+  url: https://github.com/ryanking13/lib-mirror/releases/download/1.0.0/mpfr-4.2.1.tar.xz
   sha256: 277807353a6726978996945af13e52829e3abd7a9a5b7fb2793894e18f1fcbb2
 
 requirements:

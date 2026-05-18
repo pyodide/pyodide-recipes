@@ -1,0 +1,32 @@
+package:
+  name: libprimecount
+  version: "7.18"
+  tag:
+    - library
+    - static_library
+    - cmake
+source:
+  url: https://github.com/kimwalisch/primecount/archive/refs/tags/v7.18.tar.gz
+  sha256: 9d8a0127cc4dd9319006b5db6c6f9844532dab9da9c2d410d1e244902463a399
+requirements:
+  host:
+    - libprimesieve
+  run: []
+about:
+  home: https://github.com/kimwalisch/primecount
+  summary: Fast prime counting function implementations
+  license: BSD-2-Clause
+build:
+  type: static_library
+  script: |
+    emcmake cmake -DCMAKE_VERBOSE_MAKEFILE=OFF \
+          -DCMAKE_INSTALL_PREFIX=${WASM_LIBRARY_DIR} \
+          -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+          -DBUILD_STATIC_LIBS=ON \
+          -DBUILD_SHARED_LIBS=OFF \
+          .
+    emmake make -j ${PYODIDE_JOBS:-3}
+    emmake make install
+extra:
+  recipe-maintainers:
+    - mkoeppe

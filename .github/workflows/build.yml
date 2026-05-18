@@ -39,7 +39,7 @@ jobs:
     outputs:
       test-scipy: ${{ steps.check-build-trigger.outputs.trigger }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
           submodules: recursive
@@ -82,7 +82,7 @@ jobs:
       run:
         shell: bash -l {0}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
           submodules: recursive
@@ -103,7 +103,7 @@ jobs:
           which ccache
 
       - name: Cache conda
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: ~/conda_pkgs_dir
           key:
@@ -111,7 +111,7 @@ jobs:
             hashFiles('environment.yml') }}
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3.2.0
+        uses: conda-incubator/setup-miniconda@fc2d68f6413eb2d87b895e92f8584b5b94a10167 # v3.3.0
         with:
           miniforge-variant: Miniforge3
           miniforge-version: latest
@@ -125,7 +125,7 @@ jobs:
 
       - name: Cache Conda env
         id: conda-cache
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: ${{ env.CONDA }}/envs
           key:
@@ -158,10 +158,6 @@ jobs:
           which python
           ./tools/prepare_pyodide_build.sh
 
-      - name: Install emscripten
-        run: |
-          python tools/install_and_patch_emscripten.py
-
       - name: Set ccache suffix
         run: |
           # This step makes the cache key in the main branch and PRs different.
@@ -172,7 +168,7 @@ jobs:
           fi
 
       - name: Cache ccache
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ env.CCACHE_DIR }}-${{ env.CCACHE_CACHE_NUMBER }}-${{ env.EMSCRIPTEN_VERSION }}-${{ runner.os }}${{ env.CCACHE_SUFFIX }}
@@ -226,19 +222,18 @@ jobs:
           fi
 
       - name: Build recipes (full)
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || contains(github.event.pull_request.title, '[full build]')
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || contains(github.event.pull_request.labels.*.name, 'full build')
         run: |
           ccache -z
           export _EMCC_CACHE=1
 
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
-          source emsdk/emsdk_env.sh
           mkdir -p result
           pyodide build-recipes "*" --install --install-dir=./repodata --log-dir=build-logs | tee result/build_output.log
           ccache -s
 
       - name: Build recipes (changed only)
-        if: github.event_name == 'pull_request' && !contains(github.event.pull_request.title, '[full build]')
+        if: github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'full build')
         env:
           STEPS_CALCULATE_RECIPES_PR_OUTPUTS_RECIPES: ${{ steps.calculate_recipes_pr.outputs.recipes }}
         run: |
@@ -246,7 +241,6 @@ jobs:
           export _EMCC_CACHE=1
 
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
-          source emsdk/emsdk_env.sh
           mkdir -p result
           pyodide build-recipes ${STEPS_CALCULATE_RECIPES_PR_OUTPUTS_RECIPES} --install --install-dir=./repodata --log-dir=build-logs | tee result/build_output.log
           ccache -s
@@ -273,7 +267,7 @@ jobs:
         run: |
           ./tools/copy_pyodide_runtime.sh ./repodata
       - name: Store the build summary
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: github.event_name == 'pull_request' && env.SUMMARY_CREATED == 'true'
         with:
           name: build-result
@@ -281,21 +275,21 @@ jobs:
           retention-days: 7
 
       - name: Store artifacts build
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: repodata
           path: ./repodata/
           retention-days: 7
-      
+
       - name: Store build logs
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: build-log
           path: ./build-logs/
           retention-days: 7
 
       - name: Release
-        uses: softprops/action-gh-release@72f2c25fcb47643c292f7107632f7a47c1df5cd8 # v2.3.2
+        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
         if: startsWith(github.ref, 'refs/tags/')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -317,17 +311,18 @@ jobs:
         test-config: [
           {runner: selenium, runtime: chrome, runtime-version: 134 },
           {runner: selenium, runtime: firefox, runtime-version: "136.0" },
+          {runner: selenium, runtime: node, runtime-version: "24" },
         ]
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
           submodules: recursive
           persist-credentials: false
 
       - name: Cache conda
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: ~/conda_pkgs_dir
           key:
@@ -335,7 +330,7 @@ jobs:
             hashFiles('environment.yml') }}
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3.2.0
+        uses: conda-incubator/setup-miniconda@fc2d68f6413eb2d87b895e92f8584b5b94a10167 # v3.3.0
         with:
           miniforge-variant: Miniforge3
           miniforge-version: latest
@@ -349,7 +344,7 @@ jobs:
 
       - name: Cache Conda env
         id: conda-cache
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: ${{ env.CONDA }}/envs
           key:
@@ -367,7 +362,7 @@ jobs:
           browser-version: ${{ matrix.test-config.runtime-version }}
 
       - name: Download build artifact
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: repodata
           path: ./dist/
@@ -384,7 +379,25 @@ jobs:
             -n $(nproc) \
             --runner=${{ matrix.test-config.runner }} \
             --rt ${{ matrix.test-config.runtime }} \
+            --junitxml=test-results-${{ matrix.test-config.runtime }}.xml \
             packages
+
+      - name: Surface failing tests
+        if: always()
+        uses: pmeier/pytest-results-action@fdc7f18d9934e38aca411ca9557e6577bd25ca9c # v0.9.0
+        with:
+          path: test-results-${{ matrix.test-config.runtime }}.xml
+          summary: true  # Always display overall test statistics summary
+          display-options: fE  # Show detailed list only for failed (f) and error (E) tests
+          fail-on-empty: true
+          title: "Test Results - ${{ matrix.test-config.runtime }}"
+
+      - name: Upload test results XML
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: test-results-${{ matrix.test-config.runtime }}
+          path: test-results-${{ matrix.test-config.runtime }}.xml
+        if: always()
 
   # This job runs the SciPy tests with Node.js based on the
   # above checks; separate from the main test job.
@@ -396,21 +409,21 @@ jobs:
     needs: [build, check-scipy-test-trigger]
     if: needs.check-scipy-test-trigger.outputs.test-scipy == 'true'
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
           submodules: recursive
           persist-credentials: false
 
       - name: Cache conda
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: ~/conda_pkgs_dir
           key:
             ${{ runner.os }}-conda-${{ env.CONDA_CACHE_NUMBER }}-${{ hashFiles('environment.yml') }}
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3.2.0
+        uses: conda-incubator/setup-miniconda@fc2d68f6413eb2d87b895e92f8584b5b94a10167 # v3.3.0
         with:
           miniforge-variant: Miniforge3
           miniforge-version: latest
@@ -424,7 +437,7 @@ jobs:
 
       - name: Cache Conda env
         id: conda-cache
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: ${{ env.CONDA }}/envs
           key:
@@ -436,13 +449,13 @@ jobs:
         if: steps.conda-cache.outputs.cache-hit != 'true'
 
       - name: Download build artifact
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: repodata
           path: ./dist/
 
       - name: Set up Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
           node-version: "24"
 
@@ -496,7 +509,8 @@ jobs:
           cd packages/scipy
           pytest -vra --pyargs scipy
 
-  release:
+
+  release: # deploy to pyodide channel
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -505,14 +519,14 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
     environment: deploy
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
           submodules: recursive
           persist-credentials: false
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3.2.0
+        uses: conda-incubator/setup-miniconda@fc2d68f6413eb2d87b895e92f8584b5b94a10167 # v3.3.0
         with:
           miniforge-variant: Miniforge3
           miniforge-version: latest
@@ -521,7 +535,7 @@ jobs:
           channels: conda-forge
 
       - name: Download build artifact
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: repodata
           path: ./repodata/
@@ -533,4 +547,43 @@ jobs:
       - name: Upload wheels
         run: |
           # Anaconda denies packages with long descriptions, so set summary to null
-          anaconda -t ${{ secrets.ANACONDA_API_TOKEN }} upload --force ./repodata/*.whl --summary=" " --description=" "
+          anaconda -t ${{ secrets.ANACONDA_API_TOKEN }} upload --skip-existing ./repodata/*.whl --summary=" " --description=" "
+
+  release-nightly:  # deploys to pyodide-nightly channel
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
+    needs: [build]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment: deploy-nightly
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Setup Mambaforge
+        uses: conda-incubator/setup-miniconda@fc2d68f6413eb2d87b895e92f8584b5b94a10167 # v3.3.0
+        with:
+          miniforge-variant: Miniforge3
+          miniforge-version: latest
+          activate-environment: pyodide-env
+          conda-remove-defaults: true
+          channels: conda-forge
+
+      - name: Download build artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: repodata
+          path: ./repodata/
+
+      - name: Install anaconda-client
+        run: |
+          mamba install -c defaults anaconda-client -y
+
+      - name: Upload wheels
+        run: |
+          # Anaconda denies packages with long descriptions, so set summary to null
+          anaconda -t ${{ secrets.ANACONDA_API_TOKEN }} upload --skip-existing ./repodata/*.whl --summary=" " --description=" "

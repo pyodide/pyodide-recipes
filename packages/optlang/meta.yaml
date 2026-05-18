@@ -1,11 +1,11 @@
 package:
   name: optlang
-  version: 1.8.3
+  version: 1.9.0
   top-level:
     - optlang
 source:
-  sha256: b81f4e873f0c1d0d907410add63aea427762d911245eb04a4a1126da5fedb595
-  url: https://files.pythonhosted.org/packages/52/18/8215ef740dd5b5d982de9c4cd352c99ce92c40c208245a2e8909bea7c0d6/optlang-1.8.3-py2.py3-none-any.whl
+  sha256: 74aaf820dcbead6fdd09e3f1a73a5271ad7d167966e96ff526fbf4320bb13d79
+  url: https://files.pythonhosted.org/packages/py2.py3/o/optlang/optlang-1.9.0-py2.py3-none-any.whl
 requirements:
   run:
     - sympy
@@ -19,7 +19,6 @@ test:
 about:
   home: https://github.com/opencobra/optlang
   PyPI: https://pypi.org/project/optlang
-  summary:
-    Formulate optimization problems using sympy expressions and solve them
-    using interfaces to third-party optimization software (e.g. GLPK).
+  summary: Formulate optimization problems using sympy expressions and solve
+    them using interfaces to third-party optimization software (e.g. GLPK).
   license: Apache-2.0

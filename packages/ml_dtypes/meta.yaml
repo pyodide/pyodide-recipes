@@ -1,0 +1,20 @@
+package:
+  name: ml_dtypes
+  version: 0.5.4
+  top-level:
+    - ml_dtypes
+source:
+  url: https://files.pythonhosted.org/packages/source/m/ml_dtypes/ml_dtypes-0.5.4.tar.gz
+  sha256: 8ab06a50fb9bf9666dd0fe5dfb4676fa2b0ac0f31ecff72a6c3af8e22c063453
+requirements:
+  run:
+    - numpy
+about:
+  home: https://github.com/jax-ml/ml_dtypes
+  PyPI: https://pypi.org/project/ml_dtypes
+  summary: ml_dtypes is a stand-alone implementation of several NumPy dtype
+    extensions used in machine learning.
+  license: Apache-2.0
+extra:
+  recipe-maintainers:
+    - justinchuby

@@ -43,6 +43,7 @@ def test_binom_ppf(selenium):
     assert binom.ppf(0.9, 1000, 0.1) == 112
 
 
+@pytest.mark.xfail_browsers(node="Can't fetch metadata for 'hypothesis'")
 @pytest.mark.skip_pyproxy_check
 @pytest.mark.driver_timeout(40)
 @run_in_pyodide(packages=["pytest", "scipy-tests", "micropip"])
@@ -113,6 +114,8 @@ def test_lapack_larfg(selenium):
 
     (larfg,) = get_lapack_funcs(["larfg"], dtype="float64")
     alpha, x, tau = larfg(a.shape[0] - 1, a[1, 0], a[2:, 0])
+    return (alpha, x, tau) is not None
+
 
 @pytest.mark.driver_timeout(40)
 @run_in_pyodide(packages=["scipy"])

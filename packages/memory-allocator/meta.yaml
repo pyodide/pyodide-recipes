@@ -1,11 +1,11 @@
 package:
   name: memory-allocator
-  version: 0.1.4
+  version: 0.2.0
   top-level:
     - memory_allocator
 source:
-  url: https://files.pythonhosted.org/packages/3c/2b/76131d23cb1fa30d1ba0e1ee00fd65c541ab68a45f69127cb016d5d7c72c/memory_allocator-0.1.4.tar.gz
-  sha256: d609216b03031967e2b45a804b12ff9029578f4ec019fde42cf6aed6ca09efe4
+  url: https://files.pythonhosted.org/packages/source/m/memory_allocator/memory_allocator-0.2.0.tar.gz
+  sha256: 675d3c91019db98c97441de73d5c648821e5ae813f3f54cd09863d474b48fe26
 about:
   home: https://github.com/sagemath/memory_allocator
   PyPI: https://pypi.org/project/memory_allocator

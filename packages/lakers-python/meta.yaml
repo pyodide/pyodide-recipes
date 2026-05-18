@@ -1,18 +1,16 @@
 package:
   name: lakers-python
-  version: 0.5.0
+  version: 0.6.2
   tag:
     - rust
   top-level:
     - lakers
 source:
-  url: https://files.pythonhosted.org/packages/7e/06/49defc46cb7cffd46daf06538bbd4f6dcf4da511036fbb73ea856a02def4/lakers_python-0.5.0.tar.gz
-  sha256: 19059fde5572409f061c3dfcaa12f1634572ff3622b45f81853d05bb67a37bc5
+  url: https://files.pythonhosted.org/packages/8c/09/942939302f2e2473f4f601a90c53426db5dac4a9ae22f5bf9340a9fe3fb7/lakers_python-0.6.2.tar.gz
+  sha256: bc4dbe014161e4023a95affa93b9f3648f218acb6b1d99a5bc98dd7f676c5d56
 requirements:
   executable:
     - rustup
-  constraint:
-    - maturin < 1.8
 about:
   home: https://github.com/openwsn-berkeley/lakers/
   PyPI: https://pypi.org/project/lakers-python/

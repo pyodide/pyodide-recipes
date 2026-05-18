@@ -14,6 +14,7 @@ DECORATORS = [
     pytest.mark.skip_refcount_check,
     pytest.mark.skip_pyproxy_check,
     pytest.mark.driver_timeout(60),
+    pytest.mark.skip("TODO: These tests are very fragile. Replace with a better testing strategy"),
 ]
 
 

@@ -1,11 +1,11 @@
 package:
   name: ewah_bool_utils
-  version: 1.2.2
+  version: 1.3.0
   top-level:
     - ewah_bool_utils
 source:
-  url: https://files.pythonhosted.org/packages/71/43/241d0b16eaaf9d6383fba0256455cfddc62d9f33301650bc31fa40077e30/ewah_bool_utils-1.2.2.tar.gz
-  sha256: eb901f46caef189de3a0c1f5ca06287cfaba7976ddf76fa1c1f3bce1b60b7ac3
+  url: https://files.pythonhosted.org/packages/source/e/ewah_bool_utils/ewah_bool_utils-1.3.0.tar.gz
+  sha256: 5768183dc723149bc8e9d6181d93bf69825f643034622cc275d919afb5f84668
 requirements:
   run:
     - numpy

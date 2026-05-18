@@ -1,17 +1,16 @@
 package:
   name: pandas
-  version: 2.3.0
+  version: 3.0.2
   tag:
     - min-scipy-stack
   top-level:
     - pandas
 source:
-  url: https://files.pythonhosted.org/packages/source/p/pandas/pandas-2.3.0.tar.gz
-  sha256: 34600ab34ebf1131a7613a260a61dbe8b62c188ec0ea4c296da7c9a06b004133
+  url: https://files.pythonhosted.org/packages/source/p/pandas/pandas-3.0.2.tar.gz
+  sha256: f4753e73e34c8d83221ba58f232433fca2748be8b18dbca02d242ed153945043
 build:
-  cflags:
-    -Werror=implicit-function-declaration -Werror=mismatched-parameter-types
-    -Werror=mismatched-return-types -Oz
+  cflags: -Werror=implicit-function-declaration
+    -Werror=mismatched-parameter-types -Werror=mismatched-return-types -Oz
   ldflags: --Wl,--fatal-warnings -Oz
 requirements:
   host:
@@ -23,5 +22,6 @@ requirements:
 about:
   home: https://pandas.pydata.org
   PyPI: https://pypi.org/project/pandas
-  summary: Powerful data structures for data analysis, time series, and statistics
+  summary: Powerful data structures for data analysis, time series, and
+    statistics
   license: BSD-3-Clause

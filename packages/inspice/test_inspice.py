@@ -3,9 +3,12 @@ from pytest_pyodide import run_in_pyodide
 
 @run_in_pyodide(packages=["inspice"])
 def test_inspice(selenium):
+    """Test basic ngspice analog simulation"""
     from InSpice.Spice.NgSpice.Shared import NgSpiceShared
 
-    ngspice = NgSpiceShared()
+    # Use new_instance() singleton factory to avoid cffi duplicate declarations
+    ngspice = NgSpiceShared.new_instance()
+
     circuit = """
     .title Voltage Multiplier
 
@@ -51,3 +54,45 @@ def test_inspice(selenium):
     ngspice.run()
     plot = ngspice.plot(simulation=None, plot_name=ngspice.last_plot)
     assert "V(6)" in plot
+
+
+@run_in_pyodide(packages=["inspice"])
+def test_inspice_xspice(selenium):
+    """Test XSPICE mixed-signal simulation with ADC bridge"""
+    from InSpice.Spice.NgSpice.Shared import NgSpiceShared
+
+    # Use new_instance() singleton factory - reuses same instance as test_inspice
+    # This avoids cffi duplicate declaration errors with global ffi.cdef()
+    ngspice = NgSpiceShared.new_instance()
+
+    # Load XSPICE code model
+    ngspice.exec_command("codemodel /usr/lib/ngspice/digital.cm")
+
+    # Simple XSPICE test: Analog sine -> ADC bridge
+    # NOTE: lowercase 'a' for XSPICE device instance names
+    circuit = """
+    .title XSPICE ADC Bridge Test
+
+    vdummy dummy 0 DC=0
+
+    * Analog sine wave source
+    vin in 0 SIN(0 2.5 1e6 0 0)
+
+    * ADC bridge: Convert analog to digital
+    aadc [in] [dout] adc1
+    .model adc1 adc_bridge(in_low = 1.0 in_high = 2.0)
+
+    * Resistor to complete circuit
+    R1 in 0 1MEG
+
+    .tran 0.01us 5us
+    .end
+    """
+
+    ngspice.load_circuit(circuit)
+    ngspice.run()
+    plot = ngspice.plot(simulation=None, plot_name=ngspice.last_plot)
+
+    # Verify analog input exists (proves simulation ran)
+    # Note: plot keys are lowercase node names without V() prefix
+    assert "in" in plot

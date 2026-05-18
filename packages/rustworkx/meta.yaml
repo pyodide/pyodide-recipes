@@ -1,15 +1,18 @@
 package:
   name: rustworkx
-  version: 0.17.0a3
+  version: 0.17.1
   top-level:
     - rustworkx
   tag:
     - rust
+  _disabled: true # does not work with latest toolchain
 source:
-  url: https://github.com/IvanIsCoding/rustworkx/releases/download/v0.17.0a3/rustworkx-0.17.0a3.tar.gz
-  sha256: 8bd0c295134e2b0c03808d4e69428b41153849db6488839084a78793c337f191
+  url: https://files.pythonhosted.org/packages/source/r/rustworkx/rustworkx-0.17.1.tar.gz
+  sha256: 59ea01b4e603daffa4e8827316c1641eef18ae9032f0b1b14aa0181687e3108e
 build:
-  script: export RUSTFLAGS="$RUSTFLAGS -C target-feature=+atomics,+bulk-memory,+mutable-globals"
+  script: |
+    rustup component add rust-src
+    export RUSTFLAGS="$RUSTFLAGS -C target-feature=+atomics,+bulk-memory,+mutable-globals"
 requirements:
   executable:
     - rustup

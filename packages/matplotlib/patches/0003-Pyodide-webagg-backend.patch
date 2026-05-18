@@ -1,0 +1,363 @@
+From 648a2264a672e3564f22b123508a05b33e9f8106 Mon Sep 17 00:00:00 2001
+From: Ian Thomas <ianthomas23@gmail.com>
+Date: Fri, 8 May 2026 09:55:27 +0100
+Subject: [PATCH] Pyodide webagg backend
+
+---
+ lib/matplotlib/backends/backend_pyodide.py    | 162 ++++++++++++++++++
+ .../backends/backend_webagg_core.py           |   9 +-
+ lib/matplotlib/backends/meson.build           |   1 +
+ lib/matplotlib/backends/registry.py           |   2 +
+ lib/matplotlib/backends/web_backend/js/mpl.js |  11 +-
+ .../backends/web_backend/js/mpl_pyodide.js    |  75 ++++++++
+ 6 files changed, 256 insertions(+), 4 deletions(-)
+ create mode 100644 lib/matplotlib/backends/backend_pyodide.py
+ create mode 100644 lib/matplotlib/backends/web_backend/js/mpl_pyodide.js
+
+diff --git a/lib/matplotlib/backends/backend_pyodide.py b/lib/matplotlib/backends/backend_pyodide.py
+new file mode 100644
+index 0000000000..fec184da9c
+--- /dev/null
++++ b/lib/matplotlib/backends/backend_pyodide.py
+@@ -0,0 +1,162 @@
++"""Interactive backend for pyodide running in main browser thread, based on webagg."""
++
++import base64
++from io import BytesIO
++import json
++import mimetypes
++from pathlib import Path
++
++from pyodide.code import run_js
++from pyodide.ffi import create_proxy
++
++from matplotlib.backend_bases import _Backend
++from matplotlib._pylab_helpers import Gcf
++from . import backend_webagg_core as core
++
++
++class FigureManagerPyodide(core.FigureManagerWebAgg):
++    _toolbar2_class = core.NavigationToolbar2WebAgg
++
++    @classmethod
++    def pyplot_show(cls, *, block=None):
++        PyodideApplication.initialize()
++        managers = Gcf.get_all_fig_managers()
++        for manager in managers:
++            manager.show()
++
++    def show(self):
++        fignum = str(self.num)
++
++        js_code = \
++            """
++            var websocket_type = mpl.get_websocket_type();
++            const parent_element = document.pyodideMplTarget ?? document.body;
++            const fig = new mpl.figure(fig_id, new websocket_type(fig_id), null, parent_element);
++            fig;
++            """
++        js_code = f"var fig_id = '{fignum}';" + js_code
++
++        self.js_fig = run_js(js_code)
++        web_socket = PyodideApplication.MockPythonWebSocket(self, self.js_fig.ws)
++        web_socket.open(fignum)
++
++
++class FigureCanvasPyodide(core.FigureCanvasWebAggCore):
++    manager_class = FigureManagerPyodide
++
++    def get_diff_image(self):
++        ret = super().get_diff_image()
++        self._force_full = True
++        return ret
++
++    def handle_save(self, event):
++        figure_id = event['figure_id']
++        format = event['format']
++
++        try:
++            from js import alert, document
++        except ImportError:
++            raise RuntimeError("Save not supported as cannot import js.alert and js.document")
++
++        mimetype = mimetypes.types_map.get(f".{format}")
++        if mimetype is None:
++            alert(f"Cannot download plot, unable to determine mimetype for '{format}'")
++            return
++
++        element = document.createElement('a')
++        data = BytesIO()
++        self.figure.savefig(data, format=format)
++
++        element.setAttribute(
++            "href",
++            "data:{};base64,{}".format(
++                mimetype, base64.b64encode(data.getvalue()).decode("ascii")
++            ),
++        )
++        element.setAttribute("download", f"plot{figure_id}.{format}")
++        element.style.display = "none"
++        document.body.appendChild(element)
++        element.click()
++        document.body.removeChild(element)
++
++class PyodideApplication():
++    initialized = False
++
++    class MockPythonWebSocket:
++        supports_binary = True
++
++        def __init__(self, manager, js_web_socket):
++            self.manager = manager
++            self.js_web_socket = js_web_socket
++            self.on_message_proxy = None
++
++        def open(self, fignum):
++            self.fignum = int(fignum)
++            self.on_message_proxy = create_proxy(self.on_message)
++            self.js_web_socket.open(self.on_message_proxy)
++            self.manager.add_web_socket(self)
++
++        def on_close(self):
++            self.manager.remove_web_socket(self)
++            self.on_message_proxy.destroy()
++            self.on_message_proxy = None
++
++        def on_message(self, message):
++            message = json.loads(message)
++
++            # The 'supports_binary' message is on a client-by-client
++            # basis.  The others affect the (shared) canvas as a
++            # whole.
++            if message['type'] == 'supports_binary':
++                self.supports_binary = message['value']
++            else:
++                # It is possible for a figure to be closed,
++                # but a stale figure UI is still sending messages
++                # from the browser.
++                if self.manager is not None:
++                    self.manager.handle_json(message)
++
++        def send_json(self, content):
++            self.js_web_socket.receive_json(json.dumps(content))
++
++        def send_binary(self, blob):
++            if self.supports_binary:
++                self.js_web_socket.receive_binary(blob, binary=True)
++            else:
++                data_uri = "data:image/png;base64,{}".format(
++                    blob.encode('base64').replace('\n', ''))
++                self.js_web_socket.receive_binary(data_uri)
++
++    @classmethod
++    def initialize(cls, url_prefix='', port=None, address=None):
++        if cls.initialized:
++            return
++
++        try:
++            from js import document
++
++            css = (Path(__file__).parent / "web_backend/css/mpl.css").read_text(encoding="utf-8")
++            style = document.createElement('style')
++            style.textContent = css
++            document.head.append(style)
++        except ImportError:
++            # js.document not available, continue without CSS.
++            pass
++
++        js_content = core.FigureManagerWebAgg.get_javascript(pyodide=True)
++        set_toolbar_image_callback = run_js(js_content)
++        set_toolbar_image_callback(create_proxy(PyodideApplication.get_toolbar_image))
++
++        cls.initialized = True
++
++    @classmethod
++    def get_toolbar_image(cls, image):
++        filename = Path(__file__).parent.parent / f"mpl-data/images/{image}.png"
++        png_bytes = filename.read_bytes()
++        return png_bytes
++
++
++@_Backend.export
++class _BackendPyodide(_Backend):
++    FigureCanvas = FigureCanvasPyodide
++    FigureManager = FigureManagerPyodide
+diff --git a/lib/matplotlib/backends/backend_webagg_core.py b/lib/matplotlib/backends/backend_webagg_core.py
+index 12906827a4..1f01445dbe 100644
+--- a/lib/matplotlib/backends/backend_webagg_core.py
++++ b/lib/matplotlib/backends/backend_webagg_core.py
+@@ -481,7 +481,7 @@ class FigureManagerWebAgg(backend_bases.FigureManagerBase):
+                     s.send_binary(diff)
+ 
+     @classmethod
+-    def get_javascript(cls, stream=None):
++    def get_javascript(cls, stream=None, *, pyodide=False):
+         if stream is None:
+             output = StringIO()
+         else:
+@@ -489,6 +489,9 @@ class FigureManagerWebAgg(backend_bases.FigureManagerBase):
+ 
+         output.write((Path(__file__).parent / "web_backend/js/mpl.js")
+                      .read_text(encoding="utf-8"))
++        if pyodide:
++            output.write((Path(__file__).parent / "web_backend/js/mpl_pyodide.js")
++                         .read_text(encoding="utf-8"))
+ 
+         toolitems = []
+         for name, tooltip, image, method in cls.ToolbarCls.toolitems:
+@@ -508,6 +511,10 @@ class FigureManagerWebAgg(backend_bases.FigureManagerBase):
+         output.write("mpl.default_extension = {};".format(
+             json.dumps(FigureCanvasWebAggCore.get_default_filetype())))
+ 
++        if pyodide:
++            output.write("mpl.toolbar_image_callback = null;\n")
++            output.write("mpl.set_toolbar_image_callback = function(c) {mpl.toolbar_image_callback=c;}\n")
++
+         if stream is None:
+             return output.getvalue()
+ 
+diff --git a/lib/matplotlib/backends/meson.build b/lib/matplotlib/backends/meson.build
+index 1e3e47c0a9..adaec3b268 100644
+--- a/lib/matplotlib/backends/meson.build
++++ b/lib/matplotlib/backends/meson.build
+@@ -16,6 +16,7 @@ python_sources = [
+   'backend_pdf.py',
+   'backend_pgf.py',
+   'backend_ps.py',
++  'backend_pyodide.py',
+   'backend_qt.py',
+   'backend_qtagg.py',
+   'backend_qtcairo.py',
+diff --git a/lib/matplotlib/backends/registry.py b/lib/matplotlib/backends/registry.py
+index 7f5a53f917..af4461fd0b 100644
+--- a/lib/matplotlib/backends/registry.py
++++ b/lib/matplotlib/backends/registry.py
+@@ -42,6 +42,7 @@ class BackendRegistry:
+         "macosx": "macosx",
+         "nbagg": "nbagg",
+         "notebook": "nbagg",
++        "pyodide": "pyodide",
+         "qtagg": "qt",
+         "qtcairo": "qt",
+         "qt5agg": "qt5",
+@@ -90,6 +91,7 @@ class BackendRegistry:
+         # "module://some.backend" syntax.
+         self._name_to_module = {
+             "notebook": "nbagg",
++            "webagg": "pyodide",
+         }
+ 
+     def _backend_module_name(self, backend):
+diff --git a/lib/matplotlib/backends/web_backend/js/mpl.js b/lib/matplotlib/backends/web_backend/js/mpl.js
+index 303260773a..0fef28e93a 100644
+--- a/lib/matplotlib/backends/web_backend/js/mpl.js
++++ b/lib/matplotlib/backends/web_backend/js/mpl.js
+@@ -343,6 +343,13 @@ mpl.figure.prototype._init_canvas = function () {
+     window.setTimeout(set_focus, 100);
+ };
+ 
++mpl.figure.prototype._create_toolbar_image = function (image_name) {
++    var icon_img = document.createElement('img');
++    icon_img.src = '_images/' + image_name + '.png';
++    icon_img.srcset = '_images/' + image_name + '_large.png 2x';
++    return icon_img;
++};
++
+ mpl.figure.prototype._init_toolbar = function () {
+     var fig = this;
+ 
+@@ -390,9 +397,7 @@ mpl.figure.prototype._init_toolbar = function () {
+         button.addEventListener('click', on_click_closure(method_name));
+         button.addEventListener('mouseover', on_mouseover_closure(tooltip));
+ 
+-        var icon_img = document.createElement('img');
+-        icon_img.src = '_images/' + image + '.png';
+-        icon_img.srcset = '_images/' + image + '_large.png 2x';
++        var icon_img = this._create_toolbar_image(image)
+         icon_img.alt = tooltip;
+         button.appendChild(icon_img);
+ 
+diff --git a/lib/matplotlib/backends/web_backend/js/mpl_pyodide.js b/lib/matplotlib/backends/web_backend/js/mpl_pyodide.js
+new file mode 100644
+index 0000000000..0d776d166f
+--- /dev/null
++++ b/lib/matplotlib/backends/web_backend/js/mpl_pyodide.js
+@@ -0,0 +1,75 @@
++// mpl.js is imported before this, here we override functions from that and define new functions.
++
++class MockJsWebSocket {
++    binaryType = "blob";
++
++    constructor(fig_id) {
++        this.fig_id = fig_id;
++        this.readyState = 0;
++        this.python_web_socket = null;
++        this.python_onmessage_callback = null;
++    }
++
++    get onopen() {
++        return this._onopen;
++    }
++
++    set onopen(listener) {
++        this._onopen = listener;
++        this.readyState = 1;
++    }
++
++    open(python_onmessage_callback) {
++        this.python_onmessage_callback = python_onmessage_callback;
++        this?.onopen();
++    }
++
++    receive_binary(content, binary=true) {
++        var buffer = content.getBuffer();
++        content.destroy();
++        try {
++            const data = new Blob([buffer.data]);
++            this.onmessage({ data });
++        } finally {
++            buffer.release(); // Release the memory when we're done
++        }
++    }
++
++    receive_json(data) {
++        this.onmessage({ data });
++    }
++
++    send(content) {
++        this?.python_onmessage_callback(content);
++    }
++
++    _onopen = null;
++}
++
++mpl.get_websocket_type = function () {
++    return MockJsWebSocket;
++};
++
++mpl.figure.prototype.handle_save = function (fig, _msg) {
++    var format_dropdown = fig.format_dropdown;
++    var format = format_dropdown.options[format_dropdown.selectedIndex].value;
++    this.ws.send(JSON.stringify({ type: 'save', figure_id: this.id, format: format }));
++};
++
++mpl.figure.prototype._create_toolbar_image = function (image_name) {
++    // Cache image blob URLs for reuse across multiple plots on the same page.
++    if (mpl._toolbar_urls == undefined) {
++        mpl._toolbar_urls = {};
++    }
++    let blob_url = mpl._toolbar_urls[image_name];
++    if (!blob_url) {
++        const image_bytes = mpl.toolbar_image_callback(image_name).toJs({create_pyproxies : false});
++        const blob = new Blob([image_bytes], { type: 'image/png' });
++        blob_url = URL.createObjectURL(blob);
++        mpl._toolbar_urls[image_name] = blob_url;
++    }
++
++    const icon_img = new Image();
++    icon_img.src = blob_url;
++    return icon_img;
++};
+-- 
+2.50.1 (Apple Git-155)
+

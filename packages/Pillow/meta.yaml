@@ -1,15 +1,13 @@
 package:
   name: Pillow
-  version: 11.2.1
+  version: 12.2.0
   top-level:
     - PIL
 source:
-  sha256: a64dd61998416367b7ef979b73d3a85853ba9bec4c2925f74e588879a58716b6
-  url: https://files.pythonhosted.org/packages/source/p/pillow/pillow-11.2.1.tar.gz
+  sha256: a830b1a40919539d07806aa58e1b114df53ddd43213d9c8b75847eee6c0182b5
+  url: https://files.pythonhosted.org/packages/source/p/pillow/pillow-12.2.0.tar.gz
 build:
-  # RELOCATABLE flag is required because if affects how emscripten build ports.
   cflags: |
-    -s RELOCATABLE=1
     -s USE_ZLIB=1
     -s USE_FREETYPE=1
     -s USE_LIBPNG=1
@@ -29,7 +27,8 @@ build:
     jpeg2000=False
     imagequant=False
   script: |
-    embuilder build --pic libjpeg zlib freetype libpng
+    embuilder build --pic libjpeg zlib freetype-legacysjlj libpng freetype
+
     # Pillow parses compiler flags to set the include, library dirs
     # https://github.com/python-pillow/Pillow/blob/339bc5db93bd95decf65a59fab273f300db6594d/setup.py#L486
     export EMSCRIPTEN_LIBRARY_PATH=$(em-config CACHE)/sysroot/lib/wasm32-emscripten/pic/

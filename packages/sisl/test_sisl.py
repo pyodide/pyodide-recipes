@@ -2,6 +2,7 @@ import pytest
 from pytest_pyodide import run_in_pyodide
 
 
+@pytest.mark.driver_timeout(60)
 @pytest.mark.xfail_browsers(firefox="Too slow")
 @run_in_pyodide(packages=["sisl-tests", "pytest"])
 def test_load_sisl(selenium):
@@ -11,6 +12,7 @@ def test_load_sisl(selenium):
     pass
 
 
+@pytest.mark.driver_timeout(60)
 @pytest.mark.xfail_browsers(firefox="Too slow")
 @run_in_pyodide(packages=["sisl-tests", "pytest"])
 def test_nodes(selenium):
@@ -19,6 +21,7 @@ def test_nodes(selenium):
     pytest.main(["--pyargs", "sisl.nodes"])
 
 
+@pytest.mark.driver_timeout(60)
 @pytest.mark.xfail_browsers(firefox="Too slow")
 @run_in_pyodide(packages=["sisl-tests", "pytest"])
 def test_geom(selenium):
@@ -27,6 +30,7 @@ def test_geom(selenium):
     pytest.main(["--pyargs", "sisl.geom"])
 
 
+@pytest.mark.driver_timeout(60)
 @pytest.mark.xfail_browsers(firefox="Too slow")
 @run_in_pyodide(packages=["sisl-tests", "pytest"])
 def test_linalg(selenium):
@@ -35,6 +39,7 @@ def test_linalg(selenium):
     pytest.main(["--pyargs", "sisl.linalg"])
 
 
+@pytest.mark.driver_timeout(60)
 @pytest.mark.xfail_browsers(firefox="Too slow")
 @run_in_pyodide(packages=["sisl-tests", "pytest"])
 def test_sparse(selenium):
@@ -43,6 +48,7 @@ def test_sparse(selenium):
     pytest.main(["--pyargs", "sisl.tests.test_sparse"])
 
 
+@pytest.mark.driver_timeout(60)
 @pytest.mark.xfail_browsers(firefox="Too slow")
 @run_in_pyodide(packages=["sisl-tests", "pytest"])
 def test_physics_sparse(selenium):

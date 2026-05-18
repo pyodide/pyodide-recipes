@@ -1,16 +1,16 @@
 package:
   name: sisl
-  version: 0.16.2
+  version: 0.16.4
   top-level:
-  - sisl_toolbox
-  - sisl
+    - sisl_toolbox
+    - sisl
 source:
-  url: https://files.pythonhosted.org/packages/source/s/sisl/sisl-0.16.2.tar.gz
-  sha256: 21cc2575ca1d3dc7821757765bc84dbe288d11e1216618216c56fd759aecb79d
+  url: https://files.pythonhosted.org/packages/source/s/sisl/sisl-0.16.4.tar.gz
+  sha256: bba5fd45a6286d20eabd1232ea83d830d63f343c6212021034c31d53dee928a3
 about:
   home: https://github.com/zerothi/sisl
   PyPI: https://pypi.org/project/sisl
-  summary: Manipulation and post-processing of DFT output and creating 
+  summary: Manipulation and post-processing of DFT output and creating
     tight-binding models for NEGF transport
   license: MPL-2.0
 
@@ -33,4 +33,4 @@ build:
 
 extra:
   recipe-maintainers:
-  - zerothi
+    - zerothi

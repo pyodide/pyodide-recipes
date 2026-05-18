@@ -5,7 +5,7 @@ package:
     - library
     - static_library
 source:
-  url: https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.16.tar.gz
+  url: https://github.com/ryanking13/lib-mirror/releases/download/1.0.0/libiconv-1.16.tar.gz
   sha256: e6a1b1b589654277ee790cce3734f07876ac4ccfaecbee8afa0b649cf529cc04
 
 build:

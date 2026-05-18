@@ -1,11 +1,11 @@
 package:
   name: referencing
-  version: 0.36.2
+  version: 0.37.0
   top-level:
     - referencing
 source:
-  url: https://files.pythonhosted.org/packages/c1/b1/3baf80dc6d2b7bc27a95a67752d0208e410351e3feb4eb78de5f77454d8d/referencing-0.36.2-py3-none-any.whl
-  sha256: e8699adbbf8b5c7de96d8ffa0eb5c158b3beafce084968e2ea8bb08c6794dcd0
+  url: https://files.pythonhosted.org/packages/py3/r/referencing/referencing-0.37.0-py3-none-any.whl
+  sha256: 381329a9f99628c9069361716891d34ad94af76e461dcb0335825aecc7692231
 requirements:
   run:
     - attrs

@@ -1,11 +1,11 @@
 package:
   name: inspice
-  version: 1.6.3.3
+  version: 1.7.0.1
   top-level:
     - InSpice
 source:
-  url: https://files.pythonhosted.org/packages/65/dc/10a19fea20319d33898aed32d944afef59f6f94c03b2eb6c645ec64ae171/inspice-1.6.3.3-py3-none-any.whl
-  sha256: ae550f6ec792e57bda083f116bd39e2535c6b742de33ca73268ad2792043a45a
+  url: https://files.pythonhosted.org/packages/py3/i/inspice/inspice-1.7.0.1-py3-none-any.whl
+  sha256: fb2d94f96e22830ffdf8e5d104b2c904f7a7382d9b4b1f23bb871d02a2ed4bef
 requirements:
   run:
     - numpy
@@ -15,11 +15,12 @@ requirements:
     - diskcache
     - h5py
     - ply
-    - ngspice
+    - libngspice
 about:
   home: https://github.com/Innovoltive/InSpice
   PyPI: https://pypi.org/project/inspice
-  summary: Python interface to Ngspice and Xyce circuit simulators (forked from PySpice)
+  summary: Python interface to Ngspice and Xyce circuit simulators (forked from
+    PySpice)
   license: GPL-3.0-or-later
 extra:
   recipe-maintainers:

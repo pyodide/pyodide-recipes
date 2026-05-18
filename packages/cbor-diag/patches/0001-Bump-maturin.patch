@@ -1,0 +1,25 @@
+From 646df2eb6efa305da89eb9f5d0f622db3e4c8376 Mon Sep 17 00:00:00 2001
+From: Gyeongjae Choi <gyeongjae@cloudflare.com>
+Date: Fri, 20 Feb 2026 15:12:18 +0900
+Subject: [PATCH 1/1] Bump maturin
+
+maturin 1.12.3 or upper is required to use stable rust toolchain
+
+---
+ pyproject.toml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pyproject.toml b/pyproject.toml
+index c02214b..caf2139 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -1,5 +1,5 @@
+ [build-system]
+-requires = ["maturin>=1.9.0,<1.10"]
++requires = ["maturin>=1.12.3,<1.13"]
+ build-backend = "maturin"
+ 
+ [project]
+-- 
+2.50.1 (Apple Git-155)
+

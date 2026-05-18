@@ -1,11 +1,11 @@
 package:
   name: pytest_httpx
-  version: 0.30.0
+  version: 0.36.0
   top-level:
     - pytest_httpx
 source:
-  url: https://files.pythonhosted.org/packages/14/60/ba9895a260e16c1115e40f8ae6f615c7e8ccdfa5d55418078391dd30b476/pytest_httpx-0.30.0-py3-none-any.whl
-  sha256: 6d47849691faf11d2532565d0c8e0e02b9f4ee730da31687feae315581d7520c
+  url: https://files.pythonhosted.org/packages/py3/p/pytest_httpx/pytest_httpx-0.36.0-py3-none-any.whl
+  sha256: bd4c120bb80e142df856e825ec9f17981effb84d159f9fa29ed97e2357c3a9c8
 requirements:
   run:
     - httpx

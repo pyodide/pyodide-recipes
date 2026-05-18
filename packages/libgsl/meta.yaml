@@ -6,7 +6,7 @@ package:
     - static_library
 source:
   sha256: efbbf3785da0e53038be7907500628b466152dbc3c173a87de1b5eba2e23602b
-  url: https://ftp.gnu.org/gnu/gsl/gsl-2.7.tar.gz
+  url: https://github.com/ryanking13/lib-mirror/releases/download/1.0.0/gsl-2.7.tar.gz
 build:
   type: static_library
   script: |

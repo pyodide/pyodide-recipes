@@ -19,7 +19,7 @@ def maybe_skip_test(item, delayed=False):
     skip_msg = None
     # Testing a package. Skip the test if the package is not built.
     match = re.match(
-        r".*/packages/(?P<name>[\w\-]+)/test_[\w\-]+\.py", str(item.parent.fspath)
+        r".*/packages/(?P<name>[\w\-\.]+)/test_[\w\-]+\.py", str(item.parent.fspath)
     )
     if match and not is_common_test:
         package_name = match.group("name")
@@ -122,6 +122,7 @@ def set_configs():
         });
         """,
     )
+    pytest_pyodide_config.add_node_extra_globals(["Request", "Response", "URL"])
 
 
 set_configs()

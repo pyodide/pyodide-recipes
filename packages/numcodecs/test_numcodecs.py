@@ -1,10 +1,6 @@
-import pytest
 from pytest_pyodide import run_in_pyodide
 
 
-@pytest.mark.xfail_browsers(
-    chrome="test_numcodecs triggers a recursion error in chrome"
-)
 @run_in_pyodide(
     packages=["numcodecs", "numpy"],
 )
