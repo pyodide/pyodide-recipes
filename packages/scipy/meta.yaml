@@ -1,6 +1,6 @@
 package:
   name: scipy
-  version: 1.17.0
+  version: 1.17.1
   tag:
     - min-scipy-stack
     - cross-build
@@ -18,8 +18,8 @@ package:
 # subroutine. Try deleting it.
 
 source:
-  url: https://files.pythonhosted.org/packages/source/s/scipy/scipy-1.17.0.tar.gz
-  sha256: 2591060c8e648d8b96439e111ac41fd8342fdeff1876be2e19dea3fe8930454e
+  url: https://files.pythonhosted.org/packages/source/s/scipy/scipy-1.17.1.tar.gz
+  sha256: 95d8e012d8cb8816c226aef832200b1d45109ed4464303e997c5b13122b297c0
 
   patches:
     - patches/0001-Fix-dstevr-in-special-lapack_defs.h.patch
@@ -32,9 +32,7 @@ source:
     - patches/0008-Set-wrapper-return-type-to-int.patch
     - patches/0009-Remove-f2py-generators.patch
     - patches/0010-Explicitly-convert-return-value-of-SUPERLU_MALLOC.patch
-    - patches/0011-Change-nc-type-from-int64_t-to-Py_ssize_t.patch  # drop after scipy 1.18
-    - patches/0012-MAINT-linalg-Remove-dummy-argument-from-larf-wrapper.patch  # drop after scipy 1.18
-
+    - patches/0011-MAINT-linalg-Remove-dummy-argument-from-larf-wrapper.patch # drop after scipy 1.18
 build:
   vendor-sharedlib: true
   # NumPy 2.1 disabled visibility for symbols outside of extension modules
@@ -56,7 +54,6 @@ build:
     -L$(NUMPY_LIB)/core/lib/
     -L$(NUMPY_LIB)/random/lib/
     -fwasm-exceptions
-
 
   # Exclude tests via Meson's install tags functionality.
   unvendor-tests: true
