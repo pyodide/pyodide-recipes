@@ -454,60 +454,26 @@ jobs:
           name: repodata
           path: ./dist/
 
-      - name: Set up Node.js
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
-        with:
-          node-version: "24"
-
-      # - name: Prepare SciPy test environment
-      #   run: |
-      #     # First, install any version of pyodide from npm
-      #     # to get the file structure
-      #     npm install pyodide
-
-      #     # Copy the Pyodide runtime to the dist folder
-      #     ./tools/copy_pyodide_runtime.sh ./dist
-
-      #     # Copy the Pyodide files from the dist folder to the
-      #     # node_modules/pyodide folder, so that the SciPy tests
-      #     # can find them
-      #     cp -f dist/* node_modules/pyodide
-
-      #     # Delete conftest.py from repo root to avoid conflicts
-      #     rm -rf conftest.py
-
-      #     # Change scipy-conftest.py to conftest.py as pytest
-      #     # doesn't seem to recognise it otherwise
-      #     mv packages/scipy/scipy-conftest.py packages/scipy/conftest.py
-
-      # - name: Run SciPy test suite
-      #   run: node scipy-pytest.js --pyargs scipy -m "not slow" -vra
-      #   working-directory: packages/scipy/
-
       - name: Prepare SciPy test suite
         run: |
+          # Create Pyodide virtual environment
           pyodide venv .venv-pyodide
           source .venv-pyodide/bin/activate
 
-          pip install pytest hypothesis pooch lzma
-          pip install dist/scipy-*.whl
-
-      - name: Remove problematic SciPy test files
-        run: |
-            find .venv-pyodide -name "test_fortran.py" -delete
-            find .venv-pyodide -name "test_odeint_jac.py" -delete
-            find .venv-pyodide/lib/python*/site-packages/scipy -name "pytest.ini" -delete
+          # Install test dependencies and built wheels, including SciPy
+          pip install pytest hypothesis pooch
+          pip install dist/*.whl
 
       - name: Copy test config files
         run: |
           rm -rf conftest.py
-          mv packages/scipy/scipy-conftest.py packages/scipy/conftest.py
+          cp packages/scipy/scipy-conftest.py packages/scipy/conftest.py
 
       - name: Run SciPy test suite
         run: |
           source .venv-pyodide/bin/activate
           cd packages/scipy
-          pytest -vra --pyargs scipy
+          pytest -c /dev/null -svra --pyargs scipy
 
 
   release: # deploy to pyodide channel
