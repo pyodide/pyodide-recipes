@@ -13,6 +13,7 @@ requirements:
     - pydantic
     - starlette
     - anyio
+    - annotated-doc
 about:
   home: https://github.com/fastapi/fastapi/
   PyPI: https://pypi.org/project/fastapi
