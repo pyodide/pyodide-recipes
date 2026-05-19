@@ -346,6 +346,25 @@ def pytest_configure(config):
     if not hasattr(threading, "get_native_id"):
         threading.get_native_id = lambda: random.randint(0, 10000)
 
+
+@pytest.hookimpl(trylast=True)
+def pytest_sessionfinish(session, exitstatus):  # noqa: ARG001
+    # C-extension destructors in SciPy call Fortran functions with void/int
+    # signature mismatches. These run both
+    # during the gc cleanup (gc_collect_harder in _pytest/unraisableexception)
+    # and during Python's own finalization sequence, causing fatal errors that
+    # cannot be caught in Python as they crash the interpreter. os._exit can
+    # at least bypass both of these.
+    import os
+    import sys
+
+    # For outputs (can't get this to work)
+    # sys.stdout.flush()
+    # sys.stderr.flush()
+    # test summary line doesn't work so we can't see how many passed/skipped/etc...
+    os._exit(int(exitstatus))
+
+
 def pytest_collection_modifyitems(config, items):
     for item in items:
         path, line, name = item.reportinfo()
