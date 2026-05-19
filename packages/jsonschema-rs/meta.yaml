@@ -1,0 +1,32 @@
+package:
+  name: jsonschema-rs
+  version: 0.45.0
+  tag:
+    - rust
+  top-level:
+    - jsonschema_rs
+source:
+  url: https://files.pythonhosted.org/packages/d2/7b/40ed0aa40ff2f3bc9bfccf20ea29d9a99199a8eefda26ae9d65601c144fa/jsonschema_rs-0.45.0.tar.gz
+  sha256: 897deffee817fe0f493710221e19bc4d9fedabdba121d9f8e0aa824460d2498d
+  patches:
+    # Needed for https://github.com/Stranger6667/jsonschema/issues/1093
+    - patches/0001-remove-WASM-incompatible-http-options.patch
+build:
+  script: |
+    # jsonschema-rs overrides the default target set by pyodide-build so we have
+    # to set it explicitly here
+    rustup target add wasm32-unknown-emscripten
+requirements:
+  executable:
+    - rustup
+test:
+  imports:
+    - jsonschema_rs
+about:
+  home: https://github.com/Stranger6667/jsonschema
+  PyPI: https://pypi.org/project/jsonschema-rs/0.45.0
+  summary: "A high-performance JSON Schema validator for Python"
+  license: MIT
+extra:
+  recipe-maintainers:
+    - evroon

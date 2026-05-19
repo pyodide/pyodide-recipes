@@ -1,0 +1,33 @@
+diff --git a/crates/jsonschema-py/src/lib.rs b/crates/jsonschema-py/src/lib.rs
+index 9c94628..2def1c7 100644
+--- a/crates/jsonschema-py/src/lib.rs
++++ b/crates/jsonschema-py/src/lib.rs
+@@ -956,28 +956,6 @@ fn make_options(
+         });
+         options = options.with_email_options(email_opts);
+     }
+-    if let Some(http_options) = http_options {
+-        let opts = http_options.extract::<HttpOptions>().map_err(|_| {
+-            exceptions::PyTypeError::new_err("http_options must be an instance of HttpOptions")
+-        })?;
+-        let mut http_opts = jsonschema::HttpOptions::new();
+-        if let Some(timeout) = opts.timeout {
+-            http_opts = http_opts.timeout(std::time::Duration::from_secs_f64(timeout));
+-        }
+-        if let Some(connect_timeout) = opts.connect_timeout {
+-            http_opts =
+-                http_opts.connect_timeout(std::time::Duration::from_secs_f64(connect_timeout));
+-        }
+-        if !opts.tls_verify {
+-            http_opts = http_opts.danger_accept_invalid_certs(true);
+-        }
+-        if let Some(ref ca_cert) = opts.ca_cert {
+-            http_opts = http_opts.add_root_certificate(ca_cert);
+-        }
+-        options = options.with_http_options(&http_opts).map_err(|e| {
+-            exceptions::PyRuntimeError::new_err(format!("Failed to configure HTTP options: {e}"))
+-        })?;
+-    }
+     if let Some(keywords) = keywords {
+         for (name, callback) in keywords.iter() {
+             let name_str = name.to_string();
