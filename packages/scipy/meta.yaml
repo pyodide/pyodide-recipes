@@ -56,6 +56,8 @@ build:
     -fwasm-exceptions
 
   # Exclude tests via Meson's install tags functionality.
+  # unvendor-tests is automatically set to false by the CI SciPy trigger, so
+  # that when we want to test SciPy, we retain the tests inside the wheel
   unvendor-tests: true
   # install-args=--tags=runtime,python-runtime,devel
   # Disable when running tests, enable when a PR is ready, i.e., building for distribution.
