@@ -1,0 +1,32 @@
+package:
+  name: numcodecs-wasm
+  version: 0.2.4
+  tag:
+    - rust
+  top-level:
+    - numcodecs_wasm
+source:
+  url: https://files.pythonhosted.org/packages/source/n/numcodecs_wasm/numcodecs_wasm-0.2.4.tar.gz
+  sha256: 2ea3647ee5250ac440bca6c0198a668f0b9f61547df5af40bf45afc0317313d6
+requirements:
+  executable:
+    - rustup
+  run:
+    - numcodecs
+    - numcodecs-observers
+    - numpy
+    - typing-extensions
+build:
+  script: |
+    # FIXME: remove once https://github.com/pyodide/pyodide/pull/6027 is used in pyodide-recipes
+    export RUSTUP_TOOLCHAIN="nightly-2025-12-10"
+    rustup toolchain install ${RUSTUP_TOOLCHAIN}
+    rustup target add wasm32-unknown-emscripten --toolchain ${RUSTUP_TOOLCHAIN}
+about:
+  home: https://github.com/juntyr/numcodecs-rs
+  PyPI: https://pypi.org/project/numcodecs-wasm
+  summary: numcodecs compression for codecs compiled to WebAssembly
+  license: MPL-2.0
+extra:
+  recipe-maintainers:
+    - juntyr
