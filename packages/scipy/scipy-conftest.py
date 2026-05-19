@@ -1,4 +1,6 @@
+import random
 import re
+import threading
 
 import pytest
 
@@ -338,6 +340,11 @@ tests_to_mark = [
     (".*test_concurrency.*", xfail, thread_msg),
 ]
 
+
+def pytest_configure(config):
+    # threading.get_native_id is not available in Pyodide's WASM environment
+    if not hasattr(threading, "get_native_id"):
+        threading.get_native_id = lambda: random.randint(0, 10000)
 
 def pytest_collection_modifyitems(config, items):
     for item in items:
