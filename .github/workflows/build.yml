@@ -462,7 +462,7 @@ jobs:
 
           # Install test dependencies and built wheels, including SciPy
           pip install pytest hypothesis pooch
-          pip install dist/*.whl
+          pip install dist/scipy-*.whl
 
       - name: Copy test config files
         run: |
