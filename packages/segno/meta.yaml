@@ -1,0 +1,19 @@
+package:
+  name: segno
+  version: 1.6.6
+  top-level:
+    - segno
+source:
+  url: https://files.pythonhosted.org/packages/py3/s/segno/segno-1.6.6-py3-none-any.whl
+  sha256: 28c7d081ed0cf935e0411293a465efd4d500704072cdb039778a2ab8736190c7
+about:
+  home: https://github.com/heuer/segno/
+  PyPI: https://pypi.org/project/segno
+  summary: QR Code and Micro QR Code generator for Python
+  license: BSD-3-Clause
+test:
+  imports:
+    - segno
+extra:
+  recipe-maintainers:
+    - anxkhn
