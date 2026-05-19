@@ -221,6 +221,11 @@ jobs:
             fi
           fi
 
+      - name: Apply scipy test configuration for workflow_dispatch scipy trigger
+        if: github.event_name == 'workflow_dispatch' && needs.check-scipy-test-trigger.outputs.test-scipy == 'true'
+        run: |
+          sed -i 's/unvendor-tests: true/unvendor-tests: false/' packages/scipy/meta.yaml
+
       - name: Build recipes (full)
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || contains(github.event.pull_request.labels.*.name, 'full build')
         run: |
