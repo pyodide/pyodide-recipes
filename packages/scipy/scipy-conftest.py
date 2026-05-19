@@ -20,6 +20,8 @@ todo_runtime_warning = "TODO runtime warning not shown"
 
 
 tests_to_mark = [
+    ("test_odeint_jac\\.py", skip, "test module removed: uses Fortran extension not built for WASM"),
+    ("io/tests/test_fortran\\.py", skip, "test module removed: uses Fortran extension not built for WASM"),
     # scipy/_lib/tests
     (
         "test__threadsafety.py::test_parallel_threads",

@@ -399,8 +399,8 @@ jobs:
           path: test-results-${{ matrix.test-config.runtime }}.xml
         if: always()
 
-  # This job runs the SciPy tests with Node.js based on the
-  # above checks; separate from the main test job.
+  # This job runs the SciPy tests based on the
+  # checks above, separate from the main test job.
   test-scipy:
     runs-on: ubuntu-latest
     defaults:
