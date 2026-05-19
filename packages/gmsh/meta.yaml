@@ -1,0 +1,42 @@
+package:
+  name: gmsh
+  version: 4.15.1
+  top-level:
+    - gmsh
+source:
+  url: https://gmsh.info/src/gmsh-4.15.1-source.tgz
+  sha256: eba8e4064f6586c8ca880f1cfdf697f4d70f026f398a93b458f247f7e4364fed
+  patches:
+    - patches/0001-pyodide-library-loading.patch
+
+requirements:
+  host:
+    - libgmsh
+  run:
+    - libgmsh
+    - numpy
+
+build:
+  script: |
+    cat > setup.py << 'EOF'
+    from setuptools import setup
+    setup(
+        name="gmsh",
+        version="4.15.1",
+        py_modules=["gmsh"],
+        package_dir={"": "api"},
+    )
+    EOF
+
+test:
+  imports:
+    - gmsh
+
+about:
+  home: https://gmsh.info
+  PyPI: https://pypi.org/project/gmsh
+  license: GPL-2.0-or-later
+  summary: Gmsh Python API for mesh generation
+extra:
+  recipe-maintainers:
+    - pepijndevos

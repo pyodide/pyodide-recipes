@@ -1,0 +1,30 @@
+diff --git a/api/gmsh.py b/api/gmsh.py
+index a666f46..0e59b91 100644
+--- a/api/gmsh.py
++++ b/api/gmsh.py
+@@ -89,7 +89,7 @@ if not libpath:
+           " with ctypes.util.find_library() or in the following locations: " +
+           str(possible_libpaths))
+
+-lib = CDLL(libpath)
++lib = CDLL("libgmsh.so")
+
+ try_numpy = True # set this to False to never use numpy
+
+@@ -292,7 +292,7 @@ def initialize(argv=[], readConfigFiles=True, run=False, interruptible=True):
+         c_int(bool(run)),
+         byref(ierr))
+     if interruptible == True:
+-        prev_interrupt_handler = signal.signal(signal.SIGINT, signal.SIG_DFL)
++        pass
+     if ierr.value != 0:
+         raise Exception(logger.getLastError())
+
+@@ -323,7 +323,7 @@ def finalize():
+     lib.gmshFinalize(
+         byref(ierr))
+     if prev_interrupt_handler is not None:
+-        signal.signal(signal.SIGINT, prev_interrupt_handler)
++        pass
+     if ierr.value != 0:
+         raise Exception(logger.getLastError())
