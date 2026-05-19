@@ -286,7 +286,7 @@ tests_to_mark = [
     ),
     ("test_qmc.py::TestVDC.test_van_der_corput", xfail, thread_msg),
     ("test_qmc.py::TestHalton.test_workers", xfail, thread_msg),
-    ("test_qmc.py::TestUtils.test_discrepancy_parallel", xfail, thread_msg),
+    ("test_qmc.py::TestUtils.test_discrepancy_parallel", skip, "thread constructor fails and leaves C destructor with WASM function-pointer mismatch, causing a fatal error during pytest GC cleanup"),
     (
         "test_qmc.py::TestMultivariateNormalQMC.test_validations",
         xfail,
