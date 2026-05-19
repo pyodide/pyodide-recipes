@@ -196,6 +196,7 @@ jobs:
             # No changed recipes
             if [ "$SCIPY_WILL_BE_TESTED" == "true" ]; then
               echo "recipes=tag:core,scipy" >> "$GITHUB_OUTPUT"
+              sed -i 's/unvendor-tests: true/unvendor-tests: false/' packages/scipy/meta.yaml
               echo "Building: tag:core,scipy (no changes + scipy trigger)"
             else
               echo "recipes=tag:core" >> "$GITHUB_OUTPUT"
@@ -207,9 +208,11 @@ jobs:
               # Check if scipy is already in changed recipes to avoid duplication
               if [[ "$CHANGED_RECIPES" == *"scipy"* ]]; then
                 echo "recipes=$CHANGED_RECIPES,tag:core" >> "$GITHUB_OUTPUT"
+                sed -i 's/unvendor-tests: true/unvendor-tests: false/' packages/scipy/meta.yaml
                 echo "Building: $CHANGED_RECIPES,tag:core (scipy already included in changes)"
               else
                 echo "recipes=$CHANGED_RECIPES,tag:core,scipy" >> "$GITHUB_OUTPUT"
+                sed -i 's/unvendor-tests: true/unvendor-tests: false/' packages/scipy/meta.yaml
                 echo "Building: $CHANGED_RECIPES,tag:core,scipy (changes + scipy trigger)"
               fi
             else
@@ -217,6 +220,11 @@ jobs:
               echo "Building: $CHANGED_RECIPES,tag:core (changes only)"
             fi
           fi
+
+      - name: Apply scipy test configuration for workflow_dispatch scipy trigger
+        if: github.event_name == 'workflow_dispatch' && needs.check-scipy-test-trigger.outputs.test-scipy == 'true'
+        run: |
+          sed -i 's/unvendor-tests: true/unvendor-tests: false/' packages/scipy/meta.yaml
 
       - name: Build recipes (full)
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || contains(github.event.pull_request.labels.*.name, 'full build')
@@ -396,8 +404,8 @@ jobs:
           path: test-results-${{ matrix.test-config.runtime }}.xml
         if: always()
 
-  # This job runs the SciPy tests with Node.js based on the
-  # above checks; separate from the main test job.
+  # This job runs the SciPy tests based on the
+  # checks above, separate from the main test job.
   test-scipy:
     runs-on: ubuntu-latest
     defaults:
@@ -451,35 +459,27 @@ jobs:
           name: repodata
           path: ./dist/
 
-      - name: Set up Node.js
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
-        with:
-          node-version: "24"
-
-      - name: Prepare SciPy test environment
+      - name: Prepare SciPy test suite
         run: |
-          # First, install any version of pyodide from npm
-          # to get the file structure
-          npm install pyodide
+          # Create Pyodide virtual environment
+          pyodide venv .venv-pyodide
+          source .venv-pyodide/bin/activate
 
-          # Copy the Pyodide runtime to the dist folder
-          ./tools/copy_pyodide_runtime.sh ./dist
+          # Install test dependencies and built wheels, including SciPy
+          pip install pytest hypothesis pooch
+          pip install dist/numpy-*.whl
+          pip install dist/scipy-*.whl
 
-          # Copy the Pyodide files from the dist folder to the
-          # node_modules/pyodide folder, so that the SciPy tests
-          # can find them
-          cp -f dist/* node_modules/pyodide
-
-          # Delete conftest.py from repo root to avoid conflicts
+      - name: Copy test config files
+        run: |
           rm -rf conftest.py
-
-          # Change scipy-conftest.py to conftest.py as pytest
-          # doesn't seem to recognise it otherwise
-          mv packages/scipy/scipy-conftest.py packages/scipy/conftest.py
+          cp packages/scipy/scipy-conftest.py packages/scipy/conftest.py
 
       - name: Run SciPy test suite
-        run: node scipy-pytest.js --pyargs scipy -m "not slow" -vra
-        working-directory: packages/scipy/
+        run: |
+          source .venv-pyodide/bin/activate
+          cd packages/scipy
+          pytest -c /dev/null -svra --pyargs scipy
 
 
   release: # deploy to pyodide channel

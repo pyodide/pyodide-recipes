@@ -1,7 +1,7 @@
-From 9b670bd5330bd7834d157a9ec3087a97b71d6516 Mon Sep 17 00:00:00 2001
+From e6d621fb313e92f92fba22505e50c48921667471 Mon Sep 17 00:00:00 2001
 From: Agriya Khetarpal <74401230+agriyakhetarpal@users.noreply.github.com>
 Date: Fri, 16 Aug 2024 22:59:26 +0530
-Subject: [PATCH 09/12] Remove f2py generators
+Subject: [PATCH 09/11] Remove f2py generators
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -15,10 +15,14 @@ to be present in the environment where SciPy is built. Instead, the Python
 executable is used to run f2py as a module which is useful where f2py is not
 present on PATH.
 
+Additionally reverts https://github.com/scipy/scipy/pull/24407 as applicable
+which landed between v1.17.0 and v1.17.1.
+
 ---
  scipy/interpolate/meson.build |  8 +++++++-
  scipy/meson.build             | 23 -----------------------
- 2 files changed, 7 insertions(+), 24 deletions(-)
+ tools/generate_f2pymod.py     |  3 ++-
+ 3 files changed, 9 insertions(+), 25 deletions(-)
 
 diff --git a/scipy/interpolate/meson.build b/scipy/interpolate/meson.build
 index 33783fc034..7201533ef6 100644
@@ -74,6 +78,27 @@ index 394c6b4833..cfbfb35a73 100644
  
  # Start of BLAS/LAPACK detection
  
+diff --git a/tools/generate_f2pymod.py b/tools/generate_f2pymod.py
+index 4eb517bfb9..9b546902d5 100644
+--- a/tools/generate_f2pymod.py
++++ b/tools/generate_f2pymod.py
+@@ -9,6 +9,7 @@ import argparse
+ import os
+ import re
+ import subprocess
++import sys
+ 
+ 
+ # START OF CODE VENDORED FROM `numpy.distutils.from_template`
+@@ -292,7 +293,7 @@ def main():
+ 
+     # Now invoke f2py to generate the C API module file
+     if args.infile.endswith(('.pyf.src', '.pyf')):
+-        cmd = ['f2py', fname_pyf, '--build-dir', outdir_abs] + nogil_arg
++        cmd = [sys.executable, '-m', 'numpy.f2py', fname_pyf, '--build-dir', outdir_abs] + nogil_arg
+         if args.f2cmap:
+             cmd += ['--f2cmap', args.f2cmap]
+ 
 -- 
-2.39.3 (Apple Git-146)
+2.50.1 (Apple Git-155)
 
