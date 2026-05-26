@@ -174,12 +174,10 @@ tests_to_mark = [
     ("test_arpack.py::test_parallel_threads", xfail, thread_msg),
     ("test_array_api.py::test_sparse_dense_divide", xfail, fp_exception_msg),
     ("test_linsolve.py::TestSplu.test_threads_parallel", xfail, thread_msg),
-    ("test_propack", skip, todo_signature_mismatch_msg),
     ("test_sparsetools.py::test_threads", xfail, thread_msg),
     # scipy/sparse/csgraph/tests
     ("test_shortest_path.py::test_gh_17782_segfault", xfail, thread_msg),
     # scipy/sparse/linalg/tests
-    ("test_svds.py::Test_SVDS_PROPACK", skip, todo_signature_mismatch_msg),
     # scipy/spatial/tests
     (
         "test_kdtree.py::test_query_ball_point_multithreading",
