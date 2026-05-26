@@ -136,6 +136,12 @@ tests_to_mark = [
         xfail,
         process_msg,
     ),
+    # workers=None passes (uses no multiprocessing), workers=N fails
+    (
+        "test_optimize.py::TestWorkers.+-[0-9]+\\]",
+        xfail,
+        process_msg,
+    ),
     (
         "test_optimize.py::test_multiprocessing_too_many_open_files_23080",
         xfail,
