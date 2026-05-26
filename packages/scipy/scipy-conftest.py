@@ -227,11 +227,6 @@ tests_to_mark = [
         todo_overflow_msg,
     ),
     (
-        "test_kdeoth.py::test_kde_[12]d",
-        xfail,
-        todo_genuine_difference_msg,
-    ),
-    (
         "test_multivariate.py::TestMultivariateT.test_cdf_against_generic_integrators",
         skip,
         "TODO tplquad integration does not seem to converge",
