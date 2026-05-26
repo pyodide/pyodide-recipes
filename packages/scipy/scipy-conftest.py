@@ -267,6 +267,17 @@ def pytest_configure(config):  # noqa: ARG001
     if not hasattr(threading, "get_native_id"):
         threading.get_native_id = lambda: random.randint(0, 10000)
 
+    # pytest's gc_collect_harder triggers the garbage collector during cleanup.
+    # FIXME: we can currently make it a no-op to let pytest finish normally, with
+    # summary prints, and the correct exit code) without the fatal error. We need
+    # a better way to handle this.
+    try:
+        import _pytest.unraisableexception as _ue
+
+        _ue.gc_collect_harder = lambda *args, **kwargs: None
+    except (ImportError, AttributeError):
+        pass
+
 
 @pytest.hookimpl(trylast=True)
 def pytest_sessionfinish(session, exitstatus):  # noqa: ARG001
@@ -274,16 +285,15 @@ def pytest_sessionfinish(session, exitstatus):  # noqa: ARG001
     # signature mismatches. These run both
     # during the gc cleanup (gc_collect_harder in _pytest/unraisableexception)
     # and during Python's own finalization sequence, causing fatal errors that
-    # cannot be caught in Python as they crash the interpreter. os._exit can
-    # at least bypass both of these.
+    # cannot be caught in Python as they crash the interpreter. Registering
+    # os._exit as an atexit handler as LIFO can at least bypass both of these.
+    # atexit is necessary for us here for allowing the terminal summary to
+    # print, since that happens in the terminal reporter's own
+    # pytest_sessionfinish which runs before this trylast hook.
+    import atexit
     import os
-    import sys
 
-    # For outputs (can't get this to work)
-    # sys.stdout.flush()
-    # sys.stderr.flush()
-    # test summary line doesn't work so we can't see how many passed/skipped/etc...
-    os._exit(int(exitstatus))
+    atexit.register(os._exit, int(exitstatus))
 
 
 def pytest_collection_modifyitems(config, items):
