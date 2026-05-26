@@ -105,7 +105,6 @@ build:
     sed -i 's/TYPE_GENERIC_FUNC(\(.*\), void)/TYPE_GENERIC_FUNC(\1, int)/g' scipy/sparse/linalg/_dsolve/_superluobject.h
 
     sed -i 's/^void/int/g' scipy/optimize/_trlib/trlib_private.h
-    sed -i 's/^void/int/g' scipy/optimize/_trlib/trlib/trlib_private.h
     sed -i 's/^void/int/g' scipy/_build_utils/src/wrap_dummy_g77_abi.c
     sed -i 's/, int)/)/g' scipy/optimize/_trlib/trlib_private.h
     sed -i 's/, 1)/)/g' scipy/optimize/_trlib/trlib_private.h
