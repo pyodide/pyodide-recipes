@@ -181,11 +181,6 @@ tests_to_mark = [
     ("test_kdtree.py::test_multithreaded_tree_access", xfail, thread_msg),
     # scipy/special/tests
     (
-        "test_exponential_integrals.py::TestExp1.test_branch_cut",
-        xfail,
-        "TODO maybe float support since +0 and -0 difference",
-    ),
-    (
         "test_round.py::test_add_round_(up|down)",
         xfail,
         "TODO small floating point difference, maybe due to lack of floating point "
