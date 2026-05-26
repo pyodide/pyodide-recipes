@@ -266,7 +266,8 @@ tests_to_mark = [
     (
         "test_stats.py::TestKSTwoSamples.testLargeBoth",
         skip,
-        "TODO test taking > 5 minutes after scipy 1.10.1 update",
+        "Marked @pytest.mark.slow upstream. There's an n=10kx11k exact KS computation "
+        "here that still takes >5 minutes after the vectorisation efforts done in 1.18"
     ),
     (
         "test_stats.py::TestKSTwoSamples.test_some_code_paths",
