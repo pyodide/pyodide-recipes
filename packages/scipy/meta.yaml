@@ -28,7 +28,6 @@ source:
     - patches/0007-Remove-chla_transtype.patch
     - patches/0008-Set-wrapper-return-type-to-int.patch
     - patches/0009-Remove-f2py-generators.patch
-    - patches/0010-Explicitly-convert-return-value-of-SUPERLU_MALLOC.patch
     - patches/0011-MAINT-linalg-Remove-dummy-argument-from-larf-wrapper.patch # drop after scipy 1.18
 build:
   vendor-sharedlib: true
