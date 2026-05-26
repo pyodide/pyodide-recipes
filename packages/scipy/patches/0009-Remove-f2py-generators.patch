@@ -1,7 +1,7 @@
-From c20412ba0c359150820d879eedcefec70438bd1f Mon Sep 17 00:00:00 2001
+From 97924a969bbcb582095a71212b4d379cf13b92ed Mon Sep 17 00:00:00 2001
 From: Agriya Khetarpal <74401230+agriyakhetarpal@users.noreply.github.com>
-Date: Tue, 26 May 2026 09:27:05 +0530
-Subject: [PATCH] BUG: Remove f2py generators
+Date: Tue, 26 May 2026 09:52:21 +0530
+Subject: [PATCH] BUG: Remove f2py generators and fix NumPy version check
 
 This patch reverts changes made in d85ba6b910ea9040b6a72bdc4ea87d151118f41d.
 
@@ -14,16 +14,32 @@ present on PATH.
 Additionally reverts https://github.com/scipy/scipy/pull/24407 as applicable
 which landed between v1.17.0 and v1.17.1.
 
+Also, we replace dependency('numpy') with run_command to get the NumPy version
+directly from Python as numpy-config is absent on PATH.
+
 ---
- scipy/meson.build         | 22 ----------------------
+ scipy/meson.build         | 27 ++-------------------------
  tools/generate_f2pymod.py |  3 ++-
- 2 files changed, 2 insertions(+), 23 deletions(-)
+ 2 files changed, 4 insertions(+), 26 deletions(-)
 
 diff --git a/scipy/meson.build b/scipy/meson.build
-index 7344a5fbf5..6bde4931e2 100644
+index 7344a5fbf5..d48b94e716 100644
 --- a/scipy/meson.build
 +++ b/scipy/meson.build
-@@ -195,28 +195,6 @@ fortranobject_dep = declare_dependency(
+@@ -30,10 +30,9 @@ endif
+ thread_dep = dependency('threads', required: false)
+ 
+ 
+-# Uses the `numpy-config` executable (or a user's numpy.pc pkg-config file).
+-_numpy_dep = dependency('numpy')
++_numpy_version = run_command(py3, ['-c', 'import numpy; print(numpy.__version__)'], check: true).stdout().strip()
+ f2py_freethreading_arg = []
+-if _numpy_dep.version().version_compare('>=2.1.0')
++if _numpy_version.version_compare('>=2.1.0')
+   f2py_freethreading_arg = ['--free-threading']
+   message('f2py free-threading enabled')
+ else
+@@ -195,28 +194,6 @@ fortranobject_dep = declare_dependency(
    compile_args: _f2py_c_args,
  )
  
