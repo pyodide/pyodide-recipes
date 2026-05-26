@@ -262,7 +262,7 @@ tests_to_mark = [
 ]
 
 
-def pytest_configure(config):
+def pytest_configure(config):  # noqa: ARG001
     # threading.get_native_id is not available in Pyodide's WASM environment
     if not hasattr(threading, "get_native_id"):
         threading.get_native_id = lambda: random.randint(0, 10000)
@@ -289,9 +289,7 @@ def pytest_sessionfinish(session, exitstatus):  # noqa: ARG001
 def pytest_collection_modifyitems(config, items):
     for item in items:
         path, line, name = item.reportinfo()
-        path = str(path)
-        full_name = f"{path}::{name}"
+        full_name = f"{str(path)}::{name}"
         for pattern, mark, reason in tests_to_mark:
             if re.search(pattern, full_name):
-                # print(full_name)
                 item.add_marker(mark(reason=reason))
