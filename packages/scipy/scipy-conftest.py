@@ -149,8 +149,9 @@ tests_to_mark = [
         process_msg,
     ),
     # scipy/signal/tests
+    # N=963 float32 passes, but N=964 float32 exceeds atol=1e-5 by a tiny margin on WASM
     (
-        "test_fir_filter_design.py::TestMinimumPhase::test_nyquist.+float32",
+        "test_fir_filter_design.py::TestMinimumPhase.+test_nyquist.+float32-964",
         xfail,
         todo_genuine_difference_msg,
     ),
