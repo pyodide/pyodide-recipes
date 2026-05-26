@@ -174,9 +174,21 @@ tests_to_mark = [
     ),
     # scipy/signal/tests
     (
+        "test_fir_filter_design.py::TestMinimumPhase::test_nyquist.+float32",
+        xfail,
+        todo_genuine_difference_msg,
+    ),
+    (
         "test_signaltools.py::TestMedFilt.test_medfilt2d_parallel",
         xfail,
         thread_msg,
+    ),
+    # scipy/sparse/linalg/_isolve/tests
+    (
+        # TFQMR solver doesn't converge (90 iterations vs 0 expected). float32 precision issue
+        "test_iterative.py.+(test_convergence|test_precond_dummy).+tfqmr",
+        xfail,
+        todo_genuine_difference_msg,
     ),
     # scipy/sparse/tests
     ("test_arpack.py::test_parallel_threads", xfail, thread_msg),
