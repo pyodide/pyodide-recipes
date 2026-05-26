@@ -210,14 +210,6 @@ tests_to_mark = [
         "https://github.com/WebAssembly/design/issues/1384",
     ),
     (
-        # This test is skipped for PyPy as well, maybe for a related reason?,
-        # see
-        # https://github.com/conda-forge/scipy-feedstock/pull/196#issuecomment-979317832
-        "test_distributions.py::TestBeta.test_boost_eval_issue_14606",
-        skip,
-        "TODO C++ exception that causes a Pyodide fatal error",
-    ),
-    (
         "test_sf_error.py::test_check_overflow_message",
         xfail,
         todo_overflow_msg,
