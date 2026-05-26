@@ -122,11 +122,6 @@ tests_to_mark = [
         process_msg,
     ),
     (
-        "test__shgo.py.+",
-        xfail,
-        "Test failing on 32bit (skipped on win32)",
-    ),
-    (
         "test_linprog.py::TestLinprogSimplexNoPresolve.test_bounds_infeasible_2",
         xfail,
         "TODO no warnings emitted maybe due to no floating point exception?",
