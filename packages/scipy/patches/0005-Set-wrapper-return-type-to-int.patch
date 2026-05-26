@@ -1,7 +1,7 @@
 From 111e290fde8c6faa16d28696b23005f10e58edc6 Mon Sep 17 00:00:00 2001
 From: Hood Chatham <roberthoodchatham@gmail.com>
 Date: Tue, 26 May 2026 09:22:00 +0530
-Subject: [PATCH] BUG: Set wrapper return type to int in _generate_pyx.py
+Subject: [PATCH 5/6] Set wrapper return type to int in _generate_pyx.py
 
 Set the C declaration return type for WRAPPED_FUNCS (complex-return BLAS
 wrappers) to int instead of void to match ABI used by our OpenBLAS.

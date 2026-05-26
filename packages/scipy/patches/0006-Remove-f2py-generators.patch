@@ -1,7 +1,7 @@
 From 97924a969bbcb582095a71212b4d379cf13b92ed Mon Sep 17 00:00:00 2001
 From: Agriya Khetarpal <74401230+agriyakhetarpal@users.noreply.github.com>
 Date: Tue, 26 May 2026 09:52:21 +0530
-Subject: [PATCH] BUG: Remove f2py generators and fix NumPy version check
+Subject: [PATCH 6/6] Remove f2py generators and fix NumPy version check
 
 This patch reverts changes made in d85ba6b910ea9040b6a72bdc4ea87d151118f41d.
 

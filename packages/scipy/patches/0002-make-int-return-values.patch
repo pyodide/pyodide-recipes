@@ -1,8 +1,7 @@
 From ad830e6289e8aeec1b06367770ec6708ebe67448 Mon Sep 17 00:00:00 2001
 From: Joe Marshall <joe.marshall@nottingham.ac.uk>
 Date: Wed, 6 Apr 2022 21:25:13 -0700
-Subject: [PATCH] BUG: Fix void return types and declarations for Pyodide
- (emscripten)
+Subject: [PATCH 2/6] BUG: Fix void return types and declarations
 
 The return values of f2c functions are insignificant in most cases, so often it
 is treated as returning void, when it really should return int (values are

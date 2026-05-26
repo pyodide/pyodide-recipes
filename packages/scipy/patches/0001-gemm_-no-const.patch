@@ -1,8 +1,7 @@
 From d41e995faadb51e130253b2b1bc2dffbfae1cf87 Mon Sep 17 00:00:00 2001
 From: Agriya Khetarpal <74401230+agriyakhetarpal@users.noreply.github.com>
 Date: Tue, 26 May 2026 08:58:01 +0530
-Subject: [PATCH] BUG: Remove const from xgemm_ declarations in SuperLU headers
- for Pyodide
+Subject: [PATCH 1/6] Remove const from xgemm_ declarations in SuperLU headers
 
 cgemm_, dgemm_, sgemm_, and zgemm_ are declared with `const` qualifiers
 in slu_*defs.h, but the OpenBLAS library used by Pyodide declares them
