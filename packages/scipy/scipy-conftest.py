@@ -46,7 +46,6 @@ tests_to_mark = [
     ("test_basic.py::TestFFTThreadSafe", xfail, thread_msg),
     ("test_basic.py::test_multiprocess", xfail, process_msg),
     ("test_fft_function.py::test_fft_function", xfail, process_msg),
-    ("test_multithreading.py::test_threaded_same", xfail, thread_msg),
     (
         "test_multithreading.py::test_mixed_threads_processes",
         xfail,
