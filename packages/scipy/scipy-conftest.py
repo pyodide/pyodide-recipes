@@ -70,6 +70,7 @@ tests_to_mark = [
         thread_msg,
     ),
     # scipy/io
+    ("test_mmio.py::.+fast_matrix_market", skip, thread_msg),
     (
         "test_mmio.py::TestMMIOCoordinate.test_precision",
         xfail,
