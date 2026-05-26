@@ -195,6 +195,17 @@ tests_to_mark = [
         thread_msg,
     ),
     ("test_kdtree.py::test_ckdtree_parallel", xfail, thread_msg),
+    (
+        "test_kdtree.py::test_query_ball_point_multithreaded_workers",
+        xfail,
+        thread_msg,
+    ),
+    (
+        "test_kdtree.py::test_query_ball_point_multithreaded_explicit",
+        xfail,
+        thread_msg,
+    ),
+    ("test_kdtree.py::test_multithreaded_tree_access", xfail, thread_msg),
     # scipy/special/tests
     (
         "test_exponential_integrals.py::TestExp1.test_branch_cut",
