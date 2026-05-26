@@ -215,11 +215,6 @@ tests_to_mark = [
         todo_overflow_msg,
     ),
     (
-        "test_multivariate.py::TestMultivariateT.test_cdf_against_generic_integrators",
-        skip,
-        "TODO tplquad integration does not seem to converge",
-    ),
-    (
         "test_multivariate.py::TestCovariance.test_mvn_with_covariance_cdf.+Precision-size1",
         xfail,
         "TODO small floating point difference 6e-7 relative diff instead of 1e-7",
