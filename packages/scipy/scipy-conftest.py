@@ -150,11 +150,6 @@ tests_to_mark = [
         process_msg,
     ),
     (
-        "test_optimize.py::TestWorkers.*",
-        xfail,
-        process_msg,
-    ),
-    (
         "test_optimize.py::test_multiprocessing_too_many_open_files_23080",
         xfail,
         process_msg,
