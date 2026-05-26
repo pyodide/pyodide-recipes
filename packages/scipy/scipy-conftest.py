@@ -159,6 +159,12 @@ tests_to_mark = [
         thread_msg,
     ),
     # scipy/sparse/linalg/_isolve/tests
+    # rand-sym-pd with float32 (-F-) doesn't converge, but all other tfqmr variants pass as of 1.18.
+    (
+        "test_iterative.py.+(test_convergence|test_precond_dummy).+rand-sym-pd-F-tfqmr",
+        xfail,
+        todo_genuine_difference_msg,
+    ),
     # scipy/sparse/tests
     ("test_arpack.py::test_parallel_threads", xfail, thread_msg),
     ("test_array_api.py::test_sparse_dense_divide", xfail, fp_exception_msg),
