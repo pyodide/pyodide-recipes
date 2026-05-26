@@ -37,8 +37,6 @@ tests_to_mark = [
     ("test_ccallback.py::test_threadsafety", xfail, thread_msg),
     ("test_import_cycles.py::test_modules_importable", xfail, process_msg),
     ("test_import_cycles.py::test_public_modules_importable", xfail, process_msg),
-    # scipy/datasets/tests
-    ("test_data.py::TestDatasets", xfail, "TODO datasets not working right now"),
     # scipy/fft/tests
     (
         r"test_basic.py::TestFFT1D.test_dtypes\[float32-numpy\]",
