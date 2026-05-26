@@ -58,16 +58,6 @@ tests_to_mark = [
         xfail,
         "Test relying on finding libm.so shared library",
     ),
-    (
-        "test_quadrature.py.+TestQMCQuad.test_basic",
-        xfail,
-        todo_genuine_difference_msg,
-    ),
-    (
-        "test_quadrature.py.+TestQMCQuad.test_sign",
-        xfail,
-        todo_genuine_difference_msg,
-    ),
     # scipy/interpolate
     (
         "test_fitpack.+test_kink",
