@@ -94,7 +94,7 @@ build:
     sed -i 's/void BLAS_FUNC/int BLAS_FUNC/g' scipy/sparse/linalg/_propack/PROPACK/src/include/blaslapack_declarations.h
     sed -i 's/void ARNAUD_BLAS/int ARNAUD_BLAS/g' scipy/sparse/linalg/_eigen/arpack/arnaud/src/blaslapack_declarations.h
     sed -i 's/void BLAS_FUNC/int BLAS_FUNC/g' scipy/integrate/src/blaslapack_declarations.h
-    sed -i 's/void BLAS_FUNC/int BLAS_FUNC/g' scipy/optimize/src/blaslapack_declarations.h
+    sed -i 's/void[[:space:]]*BLAS_FUNC/int BLAS_FUNC/g' scipy/optimize/src/blaslapack_declarations.h
 
     sed -i 's/^void/int/g' scipy/interpolate/src/_fitpackmodule.c
     sed -i 's/void BLAS_FUNC/int BLAS_FUNC/g' scipy/interpolate/src/__fitpack.h
