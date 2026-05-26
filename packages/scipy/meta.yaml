@@ -90,7 +90,6 @@ build:
 
     # Change fortran functions called in C code to return int instead of void
     # This adhoc regex checks function names ending with _ such as `void zgetrs_(`
-    sed -i 's/^void \([a-z0-9]*_\)(/int \1(/g' scipy/linalg/_matfuncs_expm.h
     sed -i 's/^void \([a-z0-9]*_\)(/int \1(/g' scipy/sparse/linalg/_propack/PROPACK/src/include/blaslapack_declarations.h
     sed -i 's/^void \([a-z0-9]*_\)(/int \1(/g' scipy/sparse/linalg/_eigen/arpack/arnaud/src/blaslapack_declarations.h
     sed -i 's/^void \([a-z0-9]*_\)(/int \1(/g' scipy/integrate/src/blaslapack_declarations.h
