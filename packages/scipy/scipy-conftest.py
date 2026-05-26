@@ -192,41 +192,6 @@ tests_to_mark = [
         xfail,
         todo_overflow_msg,
     ),
-    (
-        "test_multivariate.py::TestCovariance.test_mvn_with_covariance_cdf.+Precision-size1",
-        xfail,
-        "TODO small floating point difference 6e-7 relative diff instead of 1e-7",
-    ),
-    (
-        "test_multivariate.py::TestMultivariateNormal.test_logcdf_default_values",
-        xfail,
-        todo_genuine_difference_msg,
-    ),
-    (
-        "test_multivariate.py::TestMultivariateNormal.test_broadcasting",
-        xfail,
-        todo_genuine_difference_msg,
-    ),
-    (
-        "test_multivariate.py::TestMultivariateNormal.test_normal_1D",
-        xfail,
-        todo_genuine_difference_msg,
-    ),
-    (
-        "test_multivariate.py::TestMultivariateNormal.test_R_values",
-        xfail,
-        todo_genuine_difference_msg,
-    ),
-    (
-        "test_multivariate.py::TestMultivariateNormal.test_cdf_with_lower_limit",
-        xfail,
-        todo_genuine_difference_msg,
-    ),
-    (
-        "test_multivariate.py::TestMultivariateT.test_cdf_against_multivariate_normal",
-        xfail,
-        todo_genuine_difference_msg,
-    ),
     ("test_qmc.py::TestVDC.test_van_der_corput", xfail, thread_msg),
     ("test_qmc.py::TestHalton.test_workers", xfail, thread_msg),
     ("test_qmc.py::TestUtils.test_discrepancy_parallel", skip, "thread constructor fails and leaves C destructor with WASM function-pointer mismatch, causing a fatal error during pytest GC cleanup"),
