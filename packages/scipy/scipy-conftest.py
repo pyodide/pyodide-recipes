@@ -208,7 +208,11 @@ tests_to_mark = [
     ),
     ("test_qmc.py::TestVDC.test_van_der_corput", xfail, thread_msg),
     ("test_qmc.py::TestHalton.test_workers", xfail, thread_msg),
-    ("test_qmc.py::TestUtils.test_discrepancy_parallel", skip, "thread constructor fails and leaves C destructor with WASM function-pointer mismatch, causing a fatal error during pytest GC cleanup"),
+    (
+        "test_qmc.py::TestUtils.test_discrepancy_parallel",
+        skip,
+        "thread constructor fails and leaves C destructor with WASM function-pointer mismatch, causing a fatal error during pytest GC cleanup",
+    ),
     (
         "test_qmc.py::TestMultivariateNormalQMC.test_validations",
         xfail,
@@ -225,7 +229,7 @@ tests_to_mark = [
         "test_stats.py::TestKSTwoSamples.testLargeBoth",
         skip,
         "Marked @pytest.mark.slow upstream. There's an n=10kx11k exact KS computation "
-        "here that still takes >5 minutes after the vectorisation efforts done in 1.18"
+        "here that still takes >5 minutes after the vectorisation efforts done in 1.18",
     ),
     (
         "test_stats.py::TestKSTwoSamples.test_some_code_paths",
