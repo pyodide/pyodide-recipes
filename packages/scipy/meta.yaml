@@ -22,7 +22,6 @@ source:
   sha256: 75037c0f026b67451c93a785df90af5b0cb7efeeb93c25e8a283a2461b2bd418
 
   patches:
-    - patches/0001-Fix-dstevr-in-special-lapack_defs.h.patch
     - patches/0002-gemm_-no-const.patch
     - patches/0003-make-int-return-values.patch
     - patches/0004-Fix-fitpack.patch
@@ -88,7 +87,6 @@ build:
     sed -i 's/^void/int/g' scipy/odr/odrpack.h
     sed -i 's/^void/int/g' scipy/odr/__odrpack.c
 
-    sed -i 's/void BLAS_FUNC/int BLAS_FUNC/g' scipy/special/lapack_defs.h
     # sed -i 's/void F_FUNC/int F_FUNC/g' scipy/linalg/_lapack_subroutines.h
     sed -i 's/extern void/extern int/g' scipy/optimize/__minpack.h
     sed -i 's/void/int/g' scipy/linalg/cython_blas_signatures.txt
