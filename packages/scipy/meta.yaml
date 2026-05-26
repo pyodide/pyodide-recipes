@@ -1,6 +1,6 @@
 package:
   name: scipy
-  version: 1.17.1
+  version: 1.18.0rc1
   tag:
     - min-scipy-stack
     - cross-build
@@ -18,8 +18,8 @@ package:
 # subroutine. Try deleting it.
 
 source:
-  url: https://files.pythonhosted.org/packages/source/s/scipy/scipy-1.17.1.tar.gz
-  sha256: 95d8e012d8cb8816c226aef832200b1d45109ed4464303e997c5b13122b297c0
+  url: https://files.pythonhosted.org/packages/source/s/scipy/scipy-1.18.0rc1.tar.gz
+  sha256: 75037c0f026b67451c93a785df90af5b0cb7efeeb93c25e8a283a2461b2bd418
 
   patches:
     - patches/0001-Fix-dstevr-in-special-lapack_defs.h.patch
