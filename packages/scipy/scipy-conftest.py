@@ -95,7 +95,6 @@ tests_to_mark = [
     ("test_cython_blas.+complex", skip, todo_signature_mismatch_msg),
     ("test_cython_abi.py::test_cython_blas_abi_stability", xfail, todo_signature_mismatch_msg),
     ("test_cython_abi.py::test_cython_lapack_abi_stability", xfail, todo_signature_mismatch_msg),
-    ("test_lapack.py.+larfg_larf", skip, todo_signature_mismatch_msg),
     # scipy/ndimage/tests
     ("test_filters.py::TestThreading", xfail, thread_msg),
     # scipy/optimize/tests
