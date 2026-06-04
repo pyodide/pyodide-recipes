@@ -272,7 +272,7 @@ jobs:
         run: |
           ./tools/copy_pyodide_runtime.sh ./repodata
       - name: Store the build summary
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: github.event_name == 'pull_request' && env.SUMMARY_CREATED == 'true'
         with:
           name: build-result
@@ -280,14 +280,14 @@ jobs:
           retention-days: 7
 
       - name: Store artifacts build
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: repodata
           path: ./repodata/
           retention-days: 7
 
       - name: Store build logs
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: build-log
           path: ./build-logs/
@@ -398,7 +398,7 @@ jobs:
           title: "Test Results - ${{ matrix.test-config.runtime }}"
 
       - name: Upload test results XML
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: test-results-${{ matrix.test-config.runtime }}
           path: test-results-${{ matrix.test-config.runtime }}.xml
