@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import os
-import re
 from pathlib import Path
 from subprocess import check_call
 
@@ -8,16 +7,11 @@ from numpy import get_include
 from setuptools import Extension, setup
 from setuptools.command.build_py import build_py
 
+# Keep in sync with the `version` declared in pyproject.toml
+VERSION = "2.9.1"
+
 
 def create_pkg_directory():
-    with open("CMakeLists.txt") as f:
-        content = f.read()
-        version = []
-        for s in ("MAJOR", "MINOR", "BUGFIX"):
-            m = re.search(f"NLOPT_{s}_VERSION *['\"](.+)['\"]", content)
-            version.append(m.group(1))
-        version = ".".join(version)
-
     pkg_folder = Path("nlopt")
     pkg_folder.mkdir(exist_ok=True)
     with (pkg_folder / "__init__.py").open("w") as f:
@@ -25,12 +19,10 @@ def create_pkg_directory():
             f"""
 from .nlopt import *
 
-__version__ = '{version}'
+__version__ = '{VERSION}'
     """.strip()
             + "\n"
         )
-
-    return version
 
 
 def configure_with_cmake():
@@ -62,7 +54,7 @@ def configure_with_cmake():
     check_call(cmd, env=os.environ)
 
 
-version = create_pkg_directory()
+create_pkg_directory()
 
 
 class build_py_after_build_ext(build_py):
@@ -73,10 +65,6 @@ class build_py_after_build_ext(build_py):
 
 
 setup(
-    name="nlopt",
-    version=version,
-    packages=["nlopt"],
-    install_requires=["numpy >=1.14"],
     ext_modules=[
         Extension(
             "nlopt._nlopt",
@@ -155,6 +143,5 @@ setup(
             swig_opts=["-c++", "-interface", "_nlopt", "-outdir", "./nlopt"],
         )
     ],
-    zip_safe=False,
     cmdclass={"build_py": build_py_after_build_ext},
 )
