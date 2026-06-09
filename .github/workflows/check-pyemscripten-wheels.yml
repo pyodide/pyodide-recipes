@@ -1,0 +1,46 @@
+name: Check pyemscripten wheels on PyPI
+
+on:
+  # Run once a week, on Monday at 5am UTC
+  schedule:
+    - cron: "0 5 * * 1"
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-pyemscripten-wheels:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@e92bafb6253dcd438e0484186d7669ea7a8ca1cc # v6.4.3
+        with:
+          python-version: "3.13"
+
+      - name: Check PyPI for pyemscripten wheels and update tracker issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          uv run tools/check_pyemscripten_wheels.py \
+            --update-issue \
+            --output-json pyemscripten-wheel-status.json \
+            --output-markdown pyemscripten-wheel-status.md
+
+      - name: Upload status report
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: always()
+        with:
+          name: pyemscripten-wheel-status
+          path: |
+            pyemscripten-wheel-status.json
+            pyemscripten-wheel-status.md
+          retention-days: 30
