@@ -1,6 +1,6 @@
 package:
   name: scipy
-  version: 1.18.0rc1
+  version: 1.18.0rc2
   tag:
     - min-scipy-stack
     - cross-build
@@ -18,8 +18,8 @@ package:
 # subroutine. Try deleting it.
 
 source:
-  url: https://files.pythonhosted.org/packages/source/s/scipy/scipy-1.18.0rc1.tar.gz
-  sha256: 75037c0f026b67451c93a785df90af5b0cb7efeeb93c25e8a283a2461b2bd418
+  url: https://files.pythonhosted.org/packages/source/s/scipy/scipy-1.18.0rc2.tar.gz
+  sha256: a0e432930da210b6417a328de1c49c6307910c190ce9c3d2e0cf23c02384e249
 
   patches:
     - patches/0001-gemm_-no-const.patch
