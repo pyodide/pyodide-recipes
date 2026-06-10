@@ -13,7 +13,7 @@ source:
   patches:
     - patches/0001-Disable-timer.patch
     - patches/0002-Hardcode-font-cache-path.patch
-    - patches/0003-WebAgg-backend.patch
+    - patches/0003-Pyodide-webagg-backend.patch
     - patches/0004-Fix-32bit-casting.patch
     - patches/0005-Use-system-freetype.patch
 
@@ -22,19 +22,14 @@ build:
     setup-args=-DrcParams-backend=webagg
     setup-args=-Dsystem-freetype=true
   cflags: |
-    -s USE_FREETYPE=1
-    -s USE_LIBPNG=1
-    -s USE_ZLIB=1
     -fwasm-exceptions
     -fno-lto
   cxxflags: |
     -fno-lto
-    -std=c++17
     -fwasm-exceptions
   ldflags: |
     -fno-lto
     -lfreetype-legacysjlj
-    -s USE_FREETYPE=1
     -fwasm-exceptions
   script: |
     embuilder build freetype-legacysjlj --pic
@@ -44,8 +39,8 @@ build:
     export SETUPTOOLS_SCM_PRETEND_VERSION=$PKG_VERSION
   post: |
     rm -rf matplotlib/backends/qt_editor
-    # mpl.css and mpl.js are used by the patched webagg backend, so do not delete them.
-    find matplotlib/backends/web_backend -type f ! -name mpl.css ! -name mpl.js -delete
+    # mpl.css, mpl.js and mpl_pyodide.js are used by the patched webagg backend, so do not delete them.
+    find matplotlib/backends/web_backend -type f ! -name mpl.css ! -name mpl.js ! -name mpl_pyodide.js -delete
     rm -rf sphinxext
     cp $PKGDIR/extras/fontlist.json matplotlib
     cp $PKGDIR/extras/Humor-Sans-1.0.ttf matplotlib/mpl-data/fonts/ttf/Humor-Sans.ttf

@@ -1,7 +1,6 @@
 package:
   name: pyarrow
   version: 22.0.0
-  _disabled: true  # update to 2026_0
   top-level:
     - pyarrow
 
@@ -9,8 +8,8 @@ source:
   # the build script for pyarrow is stored in meta.yaml.backup file. You can use that to build pyarrow from source.
   # however, we are not building from source in CI to save time as it takes a long time to build.
   # TODO: upstream the build script to arrow so we don't need to maintain it here.
-  url: https://anaconda.org/pyodide/pyarrow/22.0.0/download/pyarrow-22.0.0-cp313-cp313-pyodide_2025_0_wasm32.whl
-  sha256: c12e597efd26eea44ae6eca2d6e9b87064f0e011ecfb10a97c9ead896f1a7473
+  url: https://anaconda.org/pyodide/pyarrow/22.0.0/download/pyarrow-22.0.0-cp314-cp314-pyemscripten_2026_0_wasm32.whl
+  sha256: a6e35547b9af0008bf40098605b964b672e83aafa3195755638839cbb9f2e852
 about:
   home: https://arrow.apache.org/
   PyPI: https://pypi.org/project/pyarrow

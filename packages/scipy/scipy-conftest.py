@@ -1,4 +1,6 @@
+import random
 import re
+import threading
 
 import pytest
 
@@ -20,6 +22,8 @@ todo_runtime_warning = "TODO runtime warning not shown"
 
 
 tests_to_mark = [
+    ("test_odeint_jac\\.py", skip, "test module removed: uses Fortran extension not built for WASM"),
+    ("io/tests/test_fortran\\.py", skip, "test module removed: uses Fortran extension not built for WASM"),
     # scipy/_lib/tests
     (
         "test__threadsafety.py::test_parallel_threads",
@@ -284,7 +288,7 @@ tests_to_mark = [
     ),
     ("test_qmc.py::TestVDC.test_van_der_corput", xfail, thread_msg),
     ("test_qmc.py::TestHalton.test_workers", xfail, thread_msg),
-    ("test_qmc.py::TestUtils.test_discrepancy_parallel", xfail, thread_msg),
+    ("test_qmc.py::TestUtils.test_discrepancy_parallel", skip, "thread constructor fails and leaves C destructor with WASM function-pointer mismatch, causing a fatal error during pytest GC cleanup"),
     (
         "test_qmc.py::TestMultivariateNormalQMC.test_validations",
         xfail,
@@ -335,6 +339,30 @@ tests_to_mark = [
     # many
     (".*test_concurrency.*", xfail, thread_msg),
 ]
+
+
+def pytest_configure(config):
+    # threading.get_native_id is not available in Pyodide's WASM environment
+    if not hasattr(threading, "get_native_id"):
+        threading.get_native_id = lambda: random.randint(0, 10000)
+
+
+@pytest.hookimpl(trylast=True)
+def pytest_sessionfinish(session, exitstatus):  # noqa: ARG001
+    # C-extension destructors in SciPy call Fortran functions with void/int
+    # signature mismatches. These run both
+    # during the gc cleanup (gc_collect_harder in _pytest/unraisableexception)
+    # and during Python's own finalization sequence, causing fatal errors that
+    # cannot be caught in Python as they crash the interpreter. os._exit can
+    # at least bypass both of these.
+    import os
+    import sys
+
+    # For outputs (can't get this to work)
+    # sys.stdout.flush()
+    # sys.stderr.flush()
+    # test summary line doesn't work so we can't see how many passed/skipped/etc...
+    os._exit(int(exitstatus))
 
 
 def pytest_collection_modifyitems(config, items):

@@ -1,25 +1,52 @@
 package:
   name: cryptography
-  version: 46.0.5
+  version: 47.0.0
   tag:
     - rust
   top-level:
     - cryptography
 source:
-  url: https://files.pythonhosted.org/packages/source/c/cryptography/cryptography-46.0.5.tar.gz
-  sha256: abace499247268e3757271b2f1e244b36b06f8515cf27c4d49468fc9eb16e93d
-  patches:
-    - patches/0001-Tell-rust-lang-libc-that-time_t-is-64-bits.patch
+  url: https://files.pythonhosted.org/packages/source/c/cryptography/cryptography-47.0.0.tar.gz
+  sha256: 9f8e55fe4e63613a5e1cc5819030f27b97742d720203a087802ce4ce9ceb52bb
 build:
-  vendor-sharedlib: true
   script: |
-    export OPENSSL_DIR=$WASM_LIBRARY_DIR
+    # cryptography v47 requires OpenSSL >= 3.0, but Pyodide 314 no longer
+    # ships a downstream-linkable OpenSSL.
+    # Build our own and link it statically.
+    #
+    # Upstream equivalent in flight: pyca/cryptography PR #14787 adds the
+    # same cross-compile + static-link path inside cryptography's own wheel
+    # build. Retire this recipe once that ships pyemscripten wheels.
+    OPENSSL_VERSION=3.6.2
+    OPENSSL_SHA256=aaf51a1fe064384f811daeaeb4ec4dce7340ec8bd893027eee676af31e83a04f
+    OPENSSL_PREFIX=${WASM_LIBRARY_DIR}/openssl-${OPENSSL_VERSION}
+
+    if [ ! -f "${OPENSSL_PREFIX}/lib/libssl.a" ] && \
+       [ ! -f "${OPENSSL_PREFIX}/lib64/libssl.a" ]; then
+      curl -L "https://github.com/openssl/openssl/releases/download/openssl-${OPENSSL_VERSION}/openssl-${OPENSSL_VERSION}.tar.gz" \
+        -o "openssl-${OPENSSL_VERSION}.tar.gz"
+      echo "${OPENSSL_SHA256}  openssl-${OPENSSL_VERSION}.tar.gz" | sha256sum -c -
+      tar xzf "openssl-${OPENSSL_VERSION}.tar.gz"
+
+      pushd "openssl-${OPENSSL_VERSION}"
+      emconfigure ./Configure linux-generic32 \
+        no-shared no-asm no-engine no-dso no-tests no-srtp no-cms \
+        no-ui-console no-threads \
+        --cross-compile-prefix= \
+        CC=emcc AR=emar RANLIB=emranlib \
+        --prefix="${OPENSSL_PREFIX}"
+      emmake make -j ${PYODIDE_JOBS:-3} install_dev
+      popd
+    fi
+
+    export OPENSSL_DIR=${OPENSSL_PREFIX}
+    export OPENSSL_STATIC=1
+    export OPENSSL_NO_VENDOR=1
 requirements:
   run:
     - six
     - cffi
   host:
-    - libopenssl
     - cffi
   executable:
     - rustup

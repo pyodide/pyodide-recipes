@@ -1,0 +1,14 @@
+[project]
+name = "nlopt"
+# Keep in sync with setup.py
+version = "2.9.1"
+license = "LGPL-2.1-or-later"
+dependencies = ["numpy>=1.14"]
+
+[build-system]
+requires = ["setuptools", "numpy"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["nlopt"]
+zip-safe = false
