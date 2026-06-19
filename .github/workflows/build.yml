@@ -479,7 +479,7 @@ jobs:
         run: |
           source .venv-pyodide/bin/activate
           cd packages/scipy
-          pytest -c /dev/null -svra --pyargs scipy
+          pytest -c /dev/null -sra --pyargs scipy
 
 
   release: # deploy to pyodide channel

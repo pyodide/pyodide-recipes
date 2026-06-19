@@ -1,13 +1,9 @@
-From e6d621fb313e92f92fba22505e50c48921667471 Mon Sep 17 00:00:00 2001
+From 97924a969bbcb582095a71212b4d379cf13b92ed Mon Sep 17 00:00:00 2001
 From: Agriya Khetarpal <74401230+agriyakhetarpal@users.noreply.github.com>
-Date: Fri, 16 Aug 2024 22:59:26 +0530
-Subject: [PATCH 09/11] Remove f2py generators
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Tue, 26 May 2026 09:52:21 +0530
+Subject: [PATCH 6/6] Remove f2py generators and fix NumPy version check
 
-This patch reverts changes made in d85ba6b910ea9040b6a72bdc4ea87d151118f41d
-and is applied at the end, after the rest of the patches – the order is important.
+This patch reverts changes made in d85ba6b910ea9040b6a72bdc4ea87d151118f41d.
 
 It removes the f2py generator and replaces it with custom targets mapping to
 f2py-generated wrappers. This is done to avoid the need for the f2py executable
@@ -18,37 +14,32 @@ present on PATH.
 Additionally reverts https://github.com/scipy/scipy/pull/24407 as applicable
 which landed between v1.17.0 and v1.17.1.
 
----
- scipy/interpolate/meson.build |  8 +++++++-
- scipy/meson.build             | 23 -----------------------
- tools/generate_f2pymod.py     |  3 ++-
- 3 files changed, 9 insertions(+), 25 deletions(-)
+Also, we replace dependency('numpy') with run_command to get the NumPy version
+directly from Python as numpy-config is absent on PATH.
 
-diff --git a/scipy/interpolate/meson.build b/scipy/interpolate/meson.build
-index 33783fc034..7201533ef6 100644
---- a/scipy/interpolate/meson.build
-+++ b/scipy/interpolate/meson.build
-@@ -168,8 +168,14 @@ if use_ilp64
-    extra_f2py_arg = f2py_ilp64_opts[0] + '=' + fs.parent(f2c_map_file) / fs.name(f2c_map_file)
- endif
- 
-+dfitpack_module = custom_target('dfitpack_module',
-+  output: ['_dfitpack-f2pywrappers.f', '_dfitpackmodule.c'],
-+  input: 'src/dfitpack.pyf',
-+  command: [generate_f2pymod, '@INPUT@', '-o', '@OUTDIR@']
-+)
-+
- py3.extension_module('_dfitpack',
--  f2py_gen.process('src/dfitpack.pyf', extra_args: extra_f2py_arg),
-+  dfitpack_module,
-   c_args: [Wno_unused_variable] +  c_flags_ilp64,
-   link_args: version_link_args,
-   dependencies: [fortranobject_dep],
+---
+ scipy/meson.build         | 27 ++-------------------------
+ tools/generate_f2pymod.py |  3 ++-
+ 2 files changed, 4 insertions(+), 26 deletions(-)
+
 diff --git a/scipy/meson.build b/scipy/meson.build
-index 394c6b4833..cfbfb35a73 100644
+index 7344a5fbf5..d48b94e716 100644
 --- a/scipy/meson.build
 +++ b/scipy/meson.build
-@@ -201,29 +201,6 @@ fortranobject_dep = declare_dependency(
+@@ -30,10 +30,9 @@ endif
+ thread_dep = dependency('threads', required: false)
+ 
+ 
+-# Uses the `numpy-config` executable (or a user's numpy.pc pkg-config file).
+-_numpy_dep = dependency('numpy')
++_numpy_version = run_command(py3, ['-c', 'import numpy; print(numpy.__version__)'], check: true).stdout().strip()
+ f2py_freethreading_arg = []
+-if _numpy_dep.version().version_compare('>=2.1.0')
++if _numpy_version.version_compare('>=2.1.0')
+   f2py_freethreading_arg = ['--free-threading']
+   message('f2py free-threading enabled')
+ else
+@@ -195,28 +194,6 @@ fortranobject_dep = declare_dependency(
    compile_args: _f2py_c_args,
  )
  
@@ -74,10 +65,9 @@ index 394c6b4833..cfbfb35a73 100644
 -  arguments : ['@INPUT@', '-o', '@BUILD_DIR@', '@EXTRA_ARGS@'] + f2py_freethreading_arg,
 -  output : ['_@BASENAME@module.c', '_@BASENAME@-f2pywrappers.f'],
 -)
--
+ 
  
  # Start of BLAS/LAPACK detection
- 
 diff --git a/tools/generate_f2pymod.py b/tools/generate_f2pymod.py
 index 4eb517bfb9..9b546902d5 100644
 --- a/tools/generate_f2pymod.py
