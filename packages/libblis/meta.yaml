@@ -1,6 +1,6 @@
 package:
   name: libblis
-  version: "2.0"
+  version: "2.1"
   tag:
     - library
     - shared_library
