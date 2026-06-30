@@ -1,0 +1,42 @@
+package:
+  name: libblis
+  version: "2.0"
+  tag:
+    - library
+    - shared_library
+source:
+  url: https://github.com/flame/blis/archive/refs/tags/2.1.tar.gz
+  sha256: 901752ec596cd63421ea45a6a06a9f34491cf5ae01cea412ece05f97a2690a96
+  patches:
+    # Derived from https://github.com/agriyakhetarpal/blis/pull/1
+    - patches/0001-Compile-BLIS-to-WebAssembly.patch
+    # See https://github.com/flame/blis/issues/916. This patch is a backport of
+    # https://github.com/flame/blis/pull/926 add CBLAS wrappers for Givens rotation
+    # functions in the BLIS f2c compat layer. The patch is needed for SciPy's test
+    # suite to pass.
+    - patches/0002-CBLAS-interface-for-crotg-zrotg-zdrot-and-csrot.patch
+
+build:
+  type: shared_library
+  script: |
+    CC=emcc AR=emar RANLIB=emranlib \
+      ./configure \
+        --disable-threading \
+        --disable-shared \
+        --enable-cblas \
+        --prefix=${WASM_LIBRARY_DIR} \
+        wasm32
+
+    emmake make -j ${PYODIDE_JOBS:-3}
+    emmake make install
+
+    mkdir -p dist
+    emcc ${WASM_LIBRARY_DIR}/lib/libblis.a \
+        ${SIDE_MODULE_LDFLAGS} \
+        -o dist/libblis.so
+
+    cp dist/libblis.so ${WASM_LIBRARY_DIR}/lib/libblis.so
+about:
+  home: https://github.com/flame/blis
+  license: BSD-3-Clause
+  summary: BLAS-like Library Instantiation Software Framework
