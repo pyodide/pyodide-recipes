@@ -36,6 +36,10 @@ build:
         -o dist/libblis.so
 
     cp dist/libblis.so ${WASM_LIBRARY_DIR}/lib/libblis.so
+requirements:
+  # only for the tests
+  host:
+    - numpy
 about:
   home: https://github.com/flame/blis
   license: BSD-3-Clause
