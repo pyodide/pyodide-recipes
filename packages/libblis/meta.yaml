@@ -30,6 +30,13 @@ build:
     emmake make -j ${PYODIDE_JOBS:-3}
     emmake make install
 
+    emcc -O2 ${PKGDIR}/test_blis_levels.c \
+        -I ${WASM_LIBRARY_DIR}/include/blis \
+        ${WASM_LIBRARY_DIR}/lib/libblis.a -lm \
+        -s ALLOW_MEMORY_GROWTH=1 -s ENVIRONMENT=node \
+        -o blis_smoke.js
+    node blis_smoke.js
+
     mkdir -p dist
     emcc ${WASM_LIBRARY_DIR}/lib/libblis.a \
         ${SIDE_MODULE_LDFLAGS} \
