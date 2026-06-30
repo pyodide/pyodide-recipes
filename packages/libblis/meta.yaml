@@ -33,9 +33,7 @@ build:
     mkdir -p dist
     emcc ${WASM_LIBRARY_DIR}/lib/libblis.a \
         ${SIDE_MODULE_LDFLAGS} \
-        -o dist/libblis.so
-
-    cp dist/libblis.so ${WASM_LIBRARY_DIR}/lib/libblis.so
+        -o ${WASM_LIBRARY_DIR}/lib/libblis.so
 about:
   home: https://github.com/flame/blis
   license: BSD-3-Clause
