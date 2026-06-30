@@ -27,7 +27,6 @@ source:
     - patches/0003-Fix-gees-calls.patch
     - patches/0004-Remove-chla_transtype.patch
     - patches/0005-Set-wrapper-return-type-to-int.patch
-    - patches/0006-Remove-f2py-generators.patch
 build:
   vendor-sharedlib: true
   # NumPy 2.1 disabled visibility for symbols outside of extension modules
