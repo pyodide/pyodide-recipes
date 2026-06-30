@@ -1,0 +1,348 @@
+From 85aa27abe96e988adc8fdfbf61844bfd3307ccbf Mon Sep 17 00:00:00 2001
+From: Agriya Khetarpal <74401230+agriyakhetarpal@users.noreply.github.com>
+Date: Tue, 30 Jun 2026 06:06:59 +0530
+Subject: Compile BLIS to WebAssembly
+
+This is a squashed patch from https://github.com/agriyakhetarpal/blis/pull/1
+and applied on top of the v2.1 release of BLIS. See the release notes at:
+https://github.com/flame/blis/releases/tag/2.1
+
+The patch adds support for compiling BLIS to WebAssembly using Emscripten.
+The following changes have been made:
+
+* Treat Emscripten vendor as Clang
+* Generate compile rule for `obj/wasm32/config/wasm32`
+* Rename ref kernel init function after wasm32 config
+* Include `WASM32` in `INSERT_GENTCONF`
+* Declare BLIS_ARCH_WASM32
+* Compile with PIC for Pyodide shared module
+* Add family and kernel definitions headers
+
+---
+ config/wasm32/bli_cntx_init_wasm32.c    | 40 +++++++++++++
+ config/wasm32/bli_family_wasm32.h       | 38 +++++++++++++
+ config/wasm32/bli_kernel_defs_wasm32.h  | 38 +++++++++++++
+ config/wasm32/make_defs.mk              | 74 +++++++++++++++++++++++++
+ config_registry                         |  1 +
+ configure                               |  6 ++
+ frame/base/bli_arch.c                   |  7 +++
+ frame/include/bli_gentconf_macro_defs.h | 12 +++-
+ frame/include/bli_type_defs.h           |  3 +
+ 9 files changed, 218 insertions(+), 1 deletion(-)
+ create mode 100644 config/wasm32/bli_cntx_init_wasm32.c
+ create mode 100644 config/wasm32/bli_family_wasm32.h
+ create mode 100644 config/wasm32/bli_kernel_defs_wasm32.h
+ create mode 100644 config/wasm32/make_defs.mk
+
+diff --git a/config/wasm32/bli_cntx_init_wasm32.c b/config/wasm32/bli_cntx_init_wasm32.c
+new file mode 100644
+index 00000000..bc0f86b9
+--- /dev/null
++++ b/config/wasm32/bli_cntx_init_wasm32.c
+@@ -0,0 +1,40 @@
++/*
++
++   BLIS
++   An object-based framework for developing high-performance BLAS-like
++   libraries.
++
++   Copyright (C) 2014, The University of Texas at Austin
++
++   Redistribution and use in source and binary forms, with or without
++   modification, are permitted provided that the following conditions are
++   met:
++    - Redistributions of source code must retain the above copyright
++      notice, this list of conditions and the following disclaimer.
++    - Redistributions in binary form must reproduce the above copyright
++      notice, this list of conditions and the following disclaimer in the
++      documentation and/or other materials provided with the distribution.
++    - Neither the name(s) of the copyright holder(s) nor the names of its
++      contributors may be used to endorse or promote products derived
++      from this software without specific prior written permission.
++
++   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
++   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
++   HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
++   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
++   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++
++*/
++
++#include "blis.h"
++
++void bli_cntx_init_wasm32( cntx_t* cntx )
++{
++	bli_cntx_init_wasm32_ref( cntx );
++}
+diff --git a/config/wasm32/bli_family_wasm32.h b/config/wasm32/bli_family_wasm32.h
+new file mode 100644
+index 00000000..74dbaf22
+--- /dev/null
++++ b/config/wasm32/bli_family_wasm32.h
+@@ -0,0 +1,38 @@
++/*
++
++   BLIS
++   An object-based framework for developing high-performance BLAS-like
++   libraries.
++
++   Copyright (C) 2014, The University of Texas at Austin
++
++   Redistribution and use in source and binary forms, with or without
++   modification, are permitted provided that the following conditions are
++   met:
++    - Redistributions of source code must retain the above copyright
++      notice, this list of conditions and the following disclaimer.
++    - Redistributions in binary form must reproduce the above copyright
++      notice, this list of conditions and the following disclaimer in the
++      documentation and/or other materials provided with the distribution.
++    - Neither the name(s) of the copyright holder(s) nor the names of its
++      contributors may be used to endorse or promote products derived
++      from this software without specific prior written permission.
++
++   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
++   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
++   HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
++   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
++   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++
++*/
++
++// This file is intentionally left blank.No family-specific configuration
++// is needed for wasm32. We still need to provide this file so that the
++// build system can find it and compile it, but it does not need to
++// contain any code.
+diff --git a/config/wasm32/bli_kernel_defs_wasm32.h b/config/wasm32/bli_kernel_defs_wasm32.h
+new file mode 100644
+index 00000000..73f8d513
+--- /dev/null
++++ b/config/wasm32/bli_kernel_defs_wasm32.h
+@@ -0,0 +1,38 @@
++/*
++
++   BLIS
++   An object-based framework for developing high-performance BLAS-like
++   libraries.
++
++   Copyright (C) 2014, The University of Texas at Austin
++
++   Redistribution and use in source and binary forms, with or without
++   modification, are permitted provided that the following conditions are
++   met:
++    - Redistributions of source code must retain the above copyright
++      notice, this list of conditions and the following disclaimer.
++    - Redistributions in binary form must reproduce the above copyright
++      notice, this list of conditions and the following disclaimer in the
++      documentation and/or other statements provided with the distribution.
++    - Neither the name(s) of the copyright holder(s) nor the names of its
++      contributors may be used to endorse or promote products derived
++      from this software without specific prior written permission.
++
++   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
++   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
++   HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
++   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
++   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++
++*/
++
++// This file is intentionally left blank. No kernel overrides are needed
++// because we have used generic reference kernels for wasm32. We still need
++// to provide this file so that the build system can find it and compile it,
++// but it does not need to contain any code.
+diff --git a/config/wasm32/make_defs.mk b/config/wasm32/make_defs.mk
+new file mode 100644
+index 00000000..27020ccb
+--- /dev/null
++++ b/config/wasm32/make_defs.mk
+@@ -0,0 +1,74 @@
++#
++#
++#  BLIS
++#  An object-based framework for developing high-performance BLAS-like
++#  libraries.
++#
++#  Copyright (C) 2014, The University of Texas at Austin
++#
++#  Redistribution and use in source and binary forms, with or without
++#  modification, are permitted provided that the following conditions are
++#  met:
++#   - Redistributions of source code must retain the above copyright
++#     notice, this list of conditions and the following disclaimer.
++#   - Redistributions in binary form must reproduce the above copyright
++#     notice, this list of conditions and the following disclaimer in the
++#     documentation and/or other materials provided with the distribution.
++#   - Neither the name(s) of the copyright holder(s) nor the names of its
++#     contributors may be used to endorse or promote products derived
++#     from this software without specific prior written permission.
++#
++#  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++#  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++#  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
++#  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
++#  HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++#  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
++#  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
++#  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++#  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++#  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++#
++#
++
++# Declare the name of the current configuration and add it to the
++# running list of configurations included by common.mk.
++THIS_CONFIG    := wasm32
++#CONFIGS_INCL   += $(THIS_CONFIG)
++
++#
++# --- Determine the C compiler and related flags ---
++#
++
++# NOTE: configure normalises emcc to cc_vendor=clang, so CC_VENDOR=clang here.
++CPPROCFLAGS    :=
++CMISCFLAGS     :=
++CPICFLAGS      := -fPIC
++CWARNFLAGS     :=
++
++ifneq ($(DEBUG_TYPE),off)
++CDBGFLAGS      := -g
++endif
++
++ifeq ($(DEBUG_TYPE),noopt)
++COPTFLAGS      := -O0
++else
++COPTFLAGS      := -O2
++endif
++
++# Flags specific to optimized kernels.
++CKOPTFLAGS     := $(COPTFLAGS) -O3
++CKVECFLAGS     :=
++
++# Flags specific to reference kernels.
++CROPTFLAGS     := $(CKOPTFLAGS)
++ifeq ($(CC_VENDOR),clang)
++CRVECFLAGS     := $(CKVECFLAGS) -funsafe-math-optimizations -ffp-contract=fast
++else
++CRVECFLAGS     := $(CKVECFLAGS)
++endif
++
++# Store all of the variables here to new variables containing the
++# configuration name.
++$(eval $(call store-make-defs,$(THIS_CONFIG)))
+diff --git a/config_registry b/config_registry
+index 8c1f6f25..a865e51c 100644
+--- a/config_registry
++++ b/config_registry
+@@ -66,3 +66,4 @@ sifive_x280: sifive_x280
+ 
+ # Generic architectures.
+ generic:     generic
++wasm32:      wasm32/generic
+diff --git a/configure b/configure
+index 34f71e36..2ac56b49 100755
+--- a/configure
++++ b/configure
+@@ -1685,6 +1685,12 @@ get_compiler_version()
+ 		             | grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.?[0-9]*' \
+ 		             | { read -r first rest ; echo "${first}"; })
+ 
++	elif [ "${cc_vendor}" = "emcc" ]; then
++		cc_vendor="clang"
++		cc_version=$(echo "${vendor_string}" \
++		             | grep -oE '[0-9]+\.[0-9]+\.?[0-9]*' \
++		             | { read -r first rest ; echo "${first}"; })
++
+ 	elif [ "${cc_vendor}" = "NVIDIA" ]; then
+ 
+ 		cc_version=$(echo "${vendor_string}" \
+diff --git a/frame/base/bli_arch.c b/frame/base/bli_arch.c
+index f7a6d693..198dad26 100644
+--- a/frame/base/bli_arch.c
++++ b/frame/base/bli_arch.c
+@@ -319,6 +319,11 @@ arch_t bli_arch_query_id_impl( void )
+ 		id = BLIS_ARCH_SIFIVE_X280;
+ 		#endif
+ 
++		// WebAssembly.
++		#ifdef BLIS_FAMILY_WASM32
++		id = BLIS_ARCH_WASM32;
++		#endif
++
+ 		// Generic microarchitecture.
+ 		#ifdef BLIS_FAMILY_GENERIC
+ 		id = BLIS_ARCH_GENERIC;
+@@ -386,6 +391,8 @@ static const char* config_name[ BLIS_NUM_ARCHS ] =
+ 
+     "sifive_x280",
+ 
++    "wasm32",
++
+     "generic"
+ };
+ 
+diff --git a/frame/include/bli_gentconf_macro_defs.h b/frame/include/bli_gentconf_macro_defs.h
+index 70414fb4..818a159c 100644
+--- a/frame/include/bli_gentconf_macro_defs.h
++++ b/frame/include/bli_gentconf_macro_defs.h
+@@ -236,6 +236,14 @@
+ #define INSERT_GENTCONF_GENERIC
+ #endif
+ 
++// -- WebAssembly architectures ------------------------------------------------
++
++#ifdef BLIS_CONFIG_WASM32
++#define INSERT_GENTCONF_WASM32 GENTCONF( WASM32, wasm32 )
++#else
++#define INSERT_GENTCONF_WASM32
++#endif
++
+ 
+ // -- configuration-specific macro --
+ 
+@@ -282,7 +290,9 @@ INSERT_GENTCONF_RV64IV \
+ \
+ INSERT_GENTCONF_SIFIVE_X280 \
+ \
+-INSERT_GENTCONF_GENERIC
++INSERT_GENTCONF_GENERIC \
++\
++INSERT_GENTCONF_WASM32
+ 
+ 
+ #endif
+diff --git a/frame/include/bli_type_defs.h b/frame/include/bli_type_defs.h
+index 8fe8e5ed..a005bd97 100644
+--- a/frame/include/bli_type_defs.h
++++ b/frame/include/bli_type_defs.h
+@@ -1009,6 +1009,9 @@ typedef enum arch_e
+ 	// SiFive
+ 	BLIS_ARCH_SIFIVE_X280,
+ 
++	// WebAssembly
++	BLIS_ARCH_WASM32,
++
+ 	// Generic architecture/configuration
+ 	BLIS_ARCH_GENERIC,
+ 
+-- 
+2.50.1 (Apple Git-155)
+
