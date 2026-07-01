@@ -1,0 +1,24 @@
+package:
+  name: libsymmetrica
+  version: 3.1.0
+  tag:
+    - library
+    - static_library
+source:
+  url: https://github.com/sagemath/sage-package/releases/download/tars/symmetrica-3.1.0.tar.xz
+  sha256: 2efc4b1d047c6fe036453882a20e906ca2bedecae888356c7626447db2b10fd3
+
+build:
+  type: static_library
+  script: |
+    emconfigure ./configure \
+        CFLAGS="-fPIC -DFAST -DALLTRUE" \
+        --disable-dependency-tracking \
+        --disable-shared \
+        --prefix=${WASM_LIBRARY_DIR} \
+        --host=wasm32-unknown-emscripten
+    emmake make -j ${PYODIDE_JOBS:-3}
+    emmake make install
+about:
+  home: https://gitlab.com/sagemath/symmetrica
+  license: 0BSD
