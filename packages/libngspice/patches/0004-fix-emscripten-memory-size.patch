@@ -1,0 +1,64 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Pepijn de Vos <pepijndevos@gmail.com>
+Date: Tue, 30 Jun 2026 00:00:00 +0000
+Subject: [PATCH] Report WASM heap as memory size under Emscripten
+
+ngspice 46 added an available-memory check in OUTpD_memory() (frontend/
+outitf.c) that aborts the run when the estimated output size exceeds the
+reported free memory. Under Emscripten there is no /proc/meminfo, so
+getMemorySize()/getAvailableMemorySize() opened it, failed, and returned
+0. The check then always tripped, leading to a bogus multi-GB allocation
+and "ngspice.dll cannot recover" abort even for tiny circuits.
+
+Report the Emscripten heap (max / max-current) instead so the memory
+check sees realistic values and the simulation runs normally.
+--- a/src/frontend/get_avail_mem_size.c
++++ b/src/frontend/get_avail_mem_size.c
+@@ -7,6 +7,10 @@
+ #include "ngspice/ngspice.h"
+ #include "resource.h"
+ 
++#if defined(__EMSCRIPTEN__)
++#include <emscripten/heap.h>
++#endif
++
+ #if defined(_WIN32)
+ #include <windows.h>
+ 
+@@ -31,7 +35,10 @@
+  */
+ unsigned long long getAvailableMemorySize(void)
+ {
+-#if defined(HAVE__PROC_MEMINFO)
++#if defined(__EMSCRIPTEN__)
++    /* No /proc/meminfo under WASM; estimate free space from the heap. */
++    return (unsigned long long) (emscripten_get_heap_max() - emscripten_get_heap_size());
++#elif defined(HAVE__PROC_MEMINFO)
+     /* Cygwin , Linux--------------------------------- */
+     /* Search for string "MemFree" */
+     FILE *fp;
+--- a/src/frontend/get_phys_mem_size.c
++++ b/src/frontend/get_phys_mem_size.c
+@@ -9,6 +9,10 @@
+ #include "ngspice/ngspice.h"
+ #include "resource.h"
+ 
++#if defined(__EMSCRIPTEN__)
++#include <emscripten/heap.h>
++#endif
++
+ #if defined(_WIN32)
+ #include <windows.h>
+ 
+@@ -31,7 +35,10 @@
+  */
+ unsigned long long getMemorySize(void)
+ {
+-#if defined(HAVE__PROC_MEMINFO)
++#if defined(__EMSCRIPTEN__)
++    /* No /proc/meminfo under WASM; report the max the heap can grow to. */
++    return (unsigned long long) emscripten_get_heap_max();
++#elif defined(HAVE__PROC_MEMINFO)
+     /* Cygwin , Linux--------------------------------- */
+     FILE *fp;
+     char buffer[2048];
