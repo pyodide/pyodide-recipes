@@ -1,0 +1,42 @@
+package:
+  name: passagemath-objects
+  version: 10.8.1
+  top-level:
+    - sage
+source:
+  url: https://pypi.org/packages/source/p/passagemath-objects/passagemath_objects-10.8.1.tar.gz
+  sha256: 6823a0665f187a729bf34d941db0afb31190e56647d2b2315bac4b76574dba2a
+about:
+  home: ""
+  PyPI: https://pypi.org/project/passagemath-objects
+  summary:
+    "passagemath: Open Source Mathematics Software: Sage objects, elements, parents,
+    categories, coercion, metaclasses"
+  license: GNU General Public License (GPL) v2 or later
+requirements:
+  host:
+    - libgmp
+    - libmpfr
+    - libmpc
+    - cysignals
+    - pkgconfig
+    - gmpy2
+    - passagemath-setup
+    - passagemath-environment
+    - passagemath-conf
+  run:
+    - cysignals
+    - gmpy2
+build:
+  cflags: |
+    -I$(WASM_LIBRARY_DIR)/include
+  cxxflags: |
+    -std=c++11
+    -I$(WASM_LIBRARY_DIR)/include
+  ldflags: |
+    -L$(WASM_LIBRARY_DIR)/lib
+  script: |
+    export SAGE_NUM_THREADS=12
+    export SAGE_CONF_FILE=/dev/null
+    export PIP_VERBOSE=1
+  unvendor-tests: false
