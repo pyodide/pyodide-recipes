@@ -146,7 +146,6 @@ test:
     - scipy.linalg.interpolative
     - scipy.misc
     - scipy.ndimage
-    - scipy.odr
     - scipy.optimize
     - scipy.signal
     - scipy.signal.windows
