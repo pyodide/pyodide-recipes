@@ -15,11 +15,10 @@ build:
     # shim must be a plain (static) library on Emscripten.
     sed -i 's/shared_library(/library(/' src/fortran_shim/meson.build
 
-    CROSS=$(python -c 'import pyodide_build, os; print(os.path.join(os.path.dirname(pyodide_build.__file__), "tools", "emscripten.meson.cross"))')
     export PKG_CONFIG_PATH="${WASM_LIBRARY_DIR}/lib/pkgconfig:${WASM_LIBRARY_DIR}/share/pkgconfig:${PKG_CONFIG_PATH}"
 
     CC=emcc CXX=em++ AR=emar \
-    meson setup builddir --cross-file "$CROSS" \
+    meson setup builddir --cross-file "${MESON_CROSS_FILE}" \
       -Dblas=blis \
       -Dfabi_shim=true \
       -Dtests=false \
