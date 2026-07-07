@@ -50,12 +50,6 @@ build:
   # Disable when running tests, enable when a PR is ready, i.e., building for distribution.
   backend-flags: |
     build-dir=build
-
-  # IMPORTANT: Other locations important in scipy build process:
-  # There are two files built in the "capture" pass that need patching:
-  #    _blas_subroutines.h, and _cython
-  # Scipy has a bunch of custom logic implemented in
-  # pyodide-build/pyodide_build/_f2c_fixes.py.
   script: |
     set -x
     export NPY_BLAS_LIBS="-I$WASM_LIBRARY_DIR/include $WASM_LIBRARY_DIR/lib/libopenblas.so"
