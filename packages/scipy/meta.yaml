@@ -119,8 +119,6 @@ requirements:
     - libboost
   run:
     - numpy
-  executable:
-    - gfortran
   constraint:
     # Getting: Error: Dynamic linking error: cannot resolve symbol pow_di
     - meson < 1.10
