@@ -1,0 +1,44 @@
+package:
+  name: libsemilapack
+  version: "0.01.2-pre"
+  tag:
+    - library
+    - shared_library
+source:
+  url: https://github.com/ilayn/semicolon-lapack/archive/refs/tags/v0.01.2-pre.tar.gz
+  sha256: 447f49d333fadf0168a51976865c3d702bef0826e6c72cf29dd14ee8c9f903ef
+
+build:
+  type: shared_library
+  script: |
+    # wasm-ld cannot build shared libraries through Meson, so the Fortran-ABI
+    # shim must be a plain (static) library on Emscripten.
+    sed -i 's/shared_library(/library(/' src/fortran_shim/meson.build
+
+    CROSS=$(python -c 'import pyodide_build, os; print(os.path.join(os.path.dirname(pyodide_build.__file__), "tools", "emscripten.meson.cross"))')
+    export PKG_CONFIG_PATH="${WASM_LIBRARY_DIR}/lib/pkgconfig:${WASM_LIBRARY_DIR}/share/pkgconfig:${PKG_CONFIG_PATH}"
+
+    CC=emcc CXX=em++ AR=emar \
+    meson setup builddir --cross-file "$CROSS" \
+      -Dblas=blis \
+      -Dfabi_shim=true \
+      -Dtests=false \
+      --default-library=static \
+      --prefix="${WASM_LIBRARY_DIR}"
+    ninja -C builddir
+    ninja -C builddir install
+
+    mkdir -p dist
+    emcc ${WASM_LIBRARY_DIR}/lib/libsemilapack.a \
+        ${WASM_LIBRARY_DIR}/lib/libsemilapack_fortran.a \
+        ${SIDE_MODULE_LDFLAGS} \
+        -o dist/libsemilapack.so
+
+    cp dist/libsemilapack.so ${WASM_LIBRARY_DIR}/lib/libsemilapack.so
+requirements:
+  host:
+    - libblis
+about:
+  home: https://github.com/ilayn/semicolon-lapack
+  license: BSD-3-Clause
+  summary: LAPACK linear algebra routines implemented in C
