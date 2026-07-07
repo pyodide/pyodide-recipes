@@ -78,9 +78,6 @@ requirements:
     - libboost
   run:
     - numpy
-  constraint:
-    # Getting: Error: Dynamic linking error: cannot resolve symbol pow_di
-    - meson < 1.10
 test:
   imports:
     - scipy
