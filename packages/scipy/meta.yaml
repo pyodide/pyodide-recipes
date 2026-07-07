@@ -51,6 +51,8 @@ build:
   backend-flags: |
     build-dir=build
     setup-args=-D_without-fortran=true
+    setup-args=-Dblas=blis
+    setup-args=-Dlapack=semilapack
   script: |
     set -x
     export NPY_BLAS_LIBS="-I$WASM_LIBRARY_DIR/include $WASM_LIBRARY_DIR/lib/libopenblas.so"
@@ -99,6 +101,7 @@ build:
 
     # Input error causes "duplicate symbol" linker errors. Empty out the file.
     echo "" > scipy/sparse/linalg/_dsolve/SuperLU/SRC/input_error.c
+    export PKG_CONFIG_PATH="${WASM_LIBRARY_DIR}/lib/pkgconfig:${WASM_LIBRARY_DIR}/share/pkgconfig:${PKG_CONFIG_PATH}"
 
     # https://github.com/mesonbuild/meson/blob/e542901af6e30865715d3c3c18f703910a096ec0/mesonbuild/backend/ninjabackend.py#L94
     # Prevent from using response file. The response file that meson generates is not compatible to pyodide-build
@@ -116,7 +119,8 @@ build:
 requirements:
   host:
     - numpy
-    - libopenblas
+    - libblis
+    - libsemilapack
     - libboost
   run:
     - numpy
