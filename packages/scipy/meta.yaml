@@ -50,6 +50,7 @@ build:
   # Disable when running tests, enable when a PR is ready, i.e., building for distribution.
   backend-flags: |
     build-dir=build
+    setup-args=-D_without-fortran=true
   script: |
     set -x
     export NPY_BLAS_LIBS="-I$WASM_LIBRARY_DIR/include $WASM_LIBRARY_DIR/lib/libopenblas.so"
