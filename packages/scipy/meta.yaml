@@ -52,7 +52,7 @@ build:
     build-dir=build
     setup-args=-D_without-fortran=true
     setup-args=-Dblas=blis
-    setup-args=-Dlapack=semilapack
+    setup-args=-Dlapack=semicolon-lapack
   script: |
     set -x
     export PKG_CONFIG_PATH="${WASM_LIBRARY_DIR}/lib/pkgconfig:${WASM_LIBRARY_DIR}/share/pkgconfig:${PKG_CONFIG_PATH}"
