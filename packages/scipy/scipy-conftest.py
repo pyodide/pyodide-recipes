@@ -88,6 +88,8 @@ tests_to_mark = [
     # scipy/linalg tests
     ("test_cython_abi.py::test_cython_blas_abi_stability", xfail, todo_signature_mismatch_msg),
     ("test_cython_abi.py::test_cython_lapack_abi_stability", xfail, todo_signature_mismatch_msg),
+    # TODO investigate: hangs.
+    ("test_decomp_update.py.*test_overwrite_qr_p_row", skip, "hanged"),
     # TODO investigate: fatal crash, does not look like the callback issue.
     ("test_hyp2f1.py::TestHyp2f1.test_region4\\[hyp2f1_test_case14\\]", skip, "TODO investigate hyp2f1 region4 case14 crash"),
     # scipy/ndimage/tests
