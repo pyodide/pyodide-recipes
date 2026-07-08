@@ -15,29 +15,11 @@ source:
     # functions in the BLIS f2c compat layer. The patch is needed for SciPy's test
     # suite to pass.
     - patches/0002-CBLAS-interface-for-crotg-zrotg-zdrot-and-csrot.patch
+    - patches/0003-WASM-ABI-void-returns-lsame-xerbla_array.patch
 
 build:
   type: shared_library
   script: |
-    for f in $(grep -rlE '/\* Subroutine \*/ int PASTEF77' frame/compat/f2c/); do
-      sed -i 's|/\* Subroutine \*/ int PASTEF77|/* Subroutine */ void PASTEF77|g' "$f"
-      sed -i 's|return 0;|return;|g' "$f"
-      h="${f%.c}.h"
-      [ -f "$h" ] && sed -i 's|BLIS_EXPORT_BLAS int PASTEF77|BLIS_EXPORT_BLAS void PASTEF77|g' "$h"
-    done
-    sed -i -E 's/(PASTEF77\(lsame\)\(const char \*ca, const char \*cb), (long|int) ca_len, (long|int) cb_len\)/\1)/' \
-      frame/compat/f2c/bla_lsame.c frame/compat/f2c/bla_lsame.h
-    # f2c line-wraps long calls, so `(ftnlen)1` may be split across lines
-    # (e.g. `(\n ftnlen)1`); tolerate whitespace inside and around it.
-    perl -0777 -pi -e 's/PASTEF77\(lsame\)\((.*?),\s*\(\s*ftnlen\s*\)\s*1\s*,\s*\(\s*ftnlen\s*\)\s*1\s*\)/PASTEF77(lsame)($1)/gs' \
-      $(grep -rlE 'PASTEF77\(lsame\)\(' frame/)
-    sed -i -E 's/int PASTEF77\(xerbla_array\)\((const bla_character \*srname_array), (const bla_integer) srname_len, (const bla_integer \*info)\)/void PASTEF77(xerbla_array)(\1, \2 *srname_len, \3)/' \
-      frame/compat/f2c/bla_xerbla_array.c frame/compat/f2c/bla_xerbla_array.h
-    sed -i -e 's/bli_min( srname_len,/bli_min( *srname_len,/' \
-           -e 's/( ftnlen )srname_len/( ftnlen )*srname_len/' \
-           -e 's/return 0;/return;/' \
-      frame/compat/f2c/bla_xerbla_array.c
-
     CC=emcc AR=emar RANLIB=emranlib \
       ./configure \
         --disable-threading \
