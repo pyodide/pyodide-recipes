@@ -71,6 +71,11 @@ build:
     # actually voids in semicolon-lapack and in SciPy's cython_lapack. There are
     # 8 of these declarations in _common_array_utils.hh.
     sed -i 's/^CBLAS_INT$/void/' scipy/linalg/src/_common_array_utils.hh
+    # TODO: send a PR to SciPy to fix this. The issue here is that the bundled
+    # trlib declares and calls dlagtm with the g77 ABI, which has a trailing
+    # hidden Fortran string-length for the `char *trans` argument. However,
+    # semicolon-lapack and SciPy's cython_lapack use the no-length form.
+    # (I found dlagtm to be the only one, maybe there are others in dead code?)
     sed -i -e '/BLAS_FUNC(dlagtm)/ s/, int);/);/' \
            -e '/BLAS_FUNC(dlagtm)/ s/, 1);/);/' \
       scipy/optimize/_trlib/trlib_private.h
