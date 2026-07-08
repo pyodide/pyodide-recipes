@@ -1,3 +1,76 @@
+From 9118b064b4ae23ce72f591229e000a0b8623e20f Mon Sep 17 00:00:00 2001
+From: Agriya Khetarpal <74401230+agriyakhetarpal@users.noreply.github.com>
+Date: Tue, 9 Jul 2026 00:05:21 +0530
+Subject: [PATCH 3/3] WASM ABI normalisation: various void returns, a two-arg lsame, and xerbla_array
+
+This patch does three things right now, but the idea is mostly the ABI
+normalisation for WASM to fix function signatures:
+  1. BLIS has an f2c-ed reference BLAS implementation, which returns ints for
+     subroutines, as an f2c artifact. The native wrappers (gemm, gemv, etc.) and
+     SciPy's cython_blas use voids. The banded/packed level-2 and Givens-rotation
+     routines (gbmv, sbmv, spmv, spr, tbmv, tbsv, tpmv, tpsv, hbmv, hpmv, hpr, hpr2,
+     rot, rotg, rotm, rotmg) are normalised to void.
+  2. lsame_ drops its two unused trailing string-length arguments. SciPy calls
+     the two-argument form of lsame_.
+  3. xerbla_array_ is made to return void with a pointer length, which is the
+     signature that SciPy and reference LAPACK use.
+---
+ frame/compat/check/bla_gemm3m_check.h |  12 +--
+ frame/compat/check/bla_gemm_check.h   |  12 +--
+ frame/compat/check/bla_gemmt_check.h  |  16 ++--
+ frame/compat/check/bla_gemv_check.h   |   6 +-
+ frame/compat/check/bla_hemm_check.h   |   8 +-
+ frame/compat/check/bla_hemv_check.h   |   4 +-
+ frame/compat/check/bla_her2_check.h   |   4 +-
+ frame/compat/check/bla_her2k_check.h  |   8 +-
+ frame/compat/check/bla_her_check.h    |   4 +-
+ frame/compat/check/bla_herk_check.h   |   8 +-
+ frame/compat/check/bla_syr2k_check.h  |  10 +--
+ frame/compat/check/bla_syrk_check.h   |  10 +--
+ frame/compat/check/bla_trmm_check.h   |  18 ++--
+ frame/compat/check/bla_trmv_check.h   |  14 +--
+ frame/compat/f2c/bla_gbmv.c           |  80 ++++++++---------
+ frame/compat/f2c/bla_gbmv.h           |   8 +-
+ frame/compat/f2c/bla_hbmv.c           |  34 ++++---
+ frame/compat/f2c/bla_hbmv.h           |   4 +-
+ frame/compat/f2c/bla_hpmv.c           |  34 ++++---
+ frame/compat/f2c/bla_hpmv.h           |   4 +-
+ frame/compat/f2c/bla_hpr.c            |  30 +++----
+ frame/compat/f2c/bla_hpr.h            |   4 +-
+ frame/compat/f2c/bla_hpr2.c           |  30 +++----
+ frame/compat/f2c/bla_hpr2.h           |   4 +-
+ frame/compat/f2c/bla_lsame.c          |   4 +-
+ frame/compat/f2c/bla_lsame.h          |   4 +-
+ frame/compat/f2c/bla_rot.c            |  48 +++++-----
+ frame/compat/f2c/bla_rot.h            |  12 +--
+ frame/compat/f2c/bla_rotg.c           |  16 ++--
+ frame/compat/f2c/bla_rotg.h           |   8 +-
+ frame/compat/f2c/bla_rotm.c           |   8 +-
+ frame/compat/f2c/bla_rotm.h           |   4 +-
+ frame/compat/f2c/bla_rotmg.c          |   8 +-
+ frame/compat/f2c/bla_rotmg.h          |   4 +-
+ frame/compat/f2c/bla_sbmv.c           |  34 ++++---
+ frame/compat/f2c/bla_sbmv.h           |   4 +-
+ frame/compat/f2c/bla_spmv.c           |  34 ++++---
+ frame/compat/f2c/bla_spmv.h           |   4 +-
+ frame/compat/f2c/bla_spr.c            |  30 +++----
+ frame/compat/f2c/bla_spr.h            |   4 +-
+ frame/compat/f2c/bla_spr2.c           |  30 +++----
+ frame/compat/f2c/bla_spr2.h           |   4 +-
+ frame/compat/f2c/bla_tbmv.c           | 124 ++++++++++++--------------
+ frame/compat/f2c/bla_tbmv.h           |   8 +-
+ frame/compat/f2c/bla_tbsv.c           | 124 ++++++++++++--------------
+ frame/compat/f2c/bla_tbsv.h           |   8 +-
+ frame/compat/f2c/bla_tpmv.c           | 124 ++++++++++++--------------
+ frame/compat/f2c/bla_tpmv.h           |   8 +-
+ frame/compat/f2c/bla_tpsv.c           | 124 ++++++++++++--------------
+ frame/compat/f2c/bla_tpsv.h           |   8 +-
+ frame/compat/f2c/bla_xerbla.c         |   4 +-
+ frame/compat/f2c/bla_xerbla.h         |   2 +-
+ frame/compat/f2c/bla_xerbla_array.c   |   8 +-
+ frame/compat/f2c/bla_xerbla_array.h   |   2 +-
+ 54 files changed, 559 insertions(+), 611 deletions(-)
+
 diff --git a/frame/compat/check/bla_gemm3m_check.h b/frame/compat/check/bla_gemm3m_check.h
 index e6c4e38..2f2d9d8 100644
 --- a/frame/compat/check/bla_gemm3m_check.h
@@ -3893,3 +3966,6 @@ index 4684b94..1ca6151 100644
 +BLIS_EXPORT_BLAS void PASTEF77(xerbla_array)(const bla_character *srname, const bla_integer *srname_len, const bla_integer *info);
  
  #endif
+-- 
+2.50.1 (Apple Git-155)
+
