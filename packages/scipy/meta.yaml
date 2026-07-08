@@ -21,6 +21,12 @@ source:
   url: https://files.pythonhosted.org/packages/source/s/scipy/scipy-1.18.0.tar.gz
   sha256: 67b2ad2ad54c72ca6d04975a9b2df8c3638c34ddd5b28738e94fc2b57929d378
   patches:
+    # TODO: figure out what to do with this patch. I realised that this patch is
+    # needed because the gees f2py wrapper is generated with the wrong signature.
+    # This comes up a lot in Schur. It passes two hidden Fortran string lengths
+    # for its char args (jobvs, sort) in the callstatement/callprotoargument.
+    # BLIS and semicolon-lapack (and the f2ced stack we had before, even) take no
+    # hidden lengths.
     - patches/0003-Fix-gees-calls.patch
 build:
   vendor-sharedlib: true
