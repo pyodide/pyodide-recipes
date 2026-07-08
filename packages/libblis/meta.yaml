@@ -25,6 +25,12 @@ build:
       h="${f%.c}.h"
       [ -f "$h" ] && sed -i 's|BLIS_EXPORT_BLAS int PASTEF77|BLIS_EXPORT_BLAS void PASTEF77|g' "$h"
     done
+    sed -i -E 's/(PASTEF77\(lsame\)\(const char \*ca, const char \*cb), (long|int) ca_len, (long|int) cb_len\)/\1)/' \
+      frame/compat/f2c/bla_lsame.c frame/compat/f2c/bla_lsame.h
+    # f2c line-wraps long calls, so `(ftnlen)1` may be split across lines
+    # (e.g. `(\n ftnlen)1`); tolerate whitespace inside and around it.
+    perl -0777 -pi -e 's/PASTEF77\(lsame\)\((.*?),\s*\(\s*ftnlen\s*\)\s*1\s*,\s*\(\s*ftnlen\s*\)\s*1\s*\)/PASTEF77(lsame)($1)/gs' \
+      $(grep -rlE 'PASTEF77\(lsame\)\(' frame/)
     CC=emcc AR=emar RANLIB=emranlib \
       ./configure \
         --disable-threading \
