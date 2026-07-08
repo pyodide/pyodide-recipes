@@ -19,6 +19,12 @@ source:
 build:
   type: shared_library
   script: |
+    for f in $(grep -rlE '/\* Subroutine \*/ int PASTEF77' frame/compat/f2c/); do
+      sed -i 's|/\* Subroutine \*/ int PASTEF77|/* Subroutine */ void PASTEF77|g' "$f"
+      sed -i 's|return 0;|return;|g' "$f"
+      h="${f%.c}.h"
+      [ -f "$h" ] && sed -i 's|BLIS_EXPORT_BLAS int PASTEF77|BLIS_EXPORT_BLAS void PASTEF77|g' "$h"
+    done
     CC=emcc AR=emar RANLIB=emranlib \
       ./configure \
         --disable-threading \
