@@ -66,6 +66,10 @@ build:
     set -x
     export PKG_CONFIG_PATH="${WASM_LIBRARY_DIR}/lib/pkgconfig:${WASM_LIBRARY_DIR}/share/pkgconfig:${PKG_CONFIG_PATH}"
 
+    # TODO: send a PR to SciPy to fix this. The issue here is that getrf and getri
+    # are declared as returning CBLAS_INT in _batched_linalg, but they are
+    # actually voids in semicolon-lapack and in SciPy's cython_lapack. There are
+    # 8 of these declarations in _common_array_utils.hh.
     sed -i 's/^CBLAS_INT$/void/' scipy/linalg/src/_common_array_utils.hh
     sed -i -e '/BLAS_FUNC(dlagtm)/ s/, int);/);/' \
            -e '/BLAS_FUNC(dlagtm)/ s/, 1);/);/' \
