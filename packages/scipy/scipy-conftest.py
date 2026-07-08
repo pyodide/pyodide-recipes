@@ -101,6 +101,7 @@ tests_to_mark = [
     ("test_matfuncs.py::TestFractionalMatrixPower", skip, todo_callback_signature_msg),
     ("test_decomp.py::TestQZ", skip, todo_callback_signature_msg),
     ("test_decomp.py::TestOrdQZ", skip, todo_callback_signature_msg),
+    ("test_decomp.py::TestOverwrite::test_schur", skip, todo_callback_signature_msg),
     # TODO investigate: fatal crash, does not look like the callback issue.
     ("test_hyp2f1.py::TestHyp2f1.test_region4\\[hyp2f1_test_case14\\]", skip, "TODO investigate hyp2f1 region4 case14 crash"),
     # scipy/ndimage/tests
