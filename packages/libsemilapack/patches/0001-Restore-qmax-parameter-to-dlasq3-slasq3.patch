@@ -1,3 +1,25 @@
+From bb7ce22eaccd82d4fddcb47ed99c379920d10785 Mon Sep 17 00:00:00 2001
+From: Agriya Khetarpal <74401230+agriyakhetarpal@users.noreply.github.com>
+Date: Wed, 9 Jul 2026 00:03:45 +0530
+Subject: [PATCH] Restore qmax parameter to dlasq3/slasq3
+
+semicolon-lapack does not include the qmax parameter in dlasq3/slasq3,
+diverging from the signatures of reference LAPACK and SciPy's cython_lapack.
+
+This patch adds the qmax parameter to dlasq3/slasq3 (and its reversal-branch update),
+have dlasq2/slasq2 pass it through, and updates the shim and public headers
+accordingly.
+---
+ src/d/dlasq2.c                        | 2 +-
+ src/d/dlasq3.c                        | 6 ++++--
+ src/fortran_shim/shim_double.c        | 6 +++---
+ src/fortran_shim/shim_single.c        | 6 +++---
+ src/include/semicolon_lapack_double.h | 2 +-
+ src/include/semicolon_lapack_single.h | 2 +-
+ src/s/slasq2.c                        | 2 +-
+ src/s/slasq3.c                        | 6 ++++--
+ 8 files changed, 18 insertions(+), 14 deletions(-)
+
 diff --git a/src/d/dlasq2.c b/src/d/dlasq2.c
 index 926a7c0..54734f1 100644
 --- a/src/d/dlasq2.c
@@ -160,3 +182,6 @@ index 03b758c..85718f2 100644
                  *dmin = -ZERO;
              }
          }
+-- 
+2.50.1 (Apple Git-155)
+
