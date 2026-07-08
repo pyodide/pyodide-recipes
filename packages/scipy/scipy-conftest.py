@@ -88,8 +88,11 @@ tests_to_mark = [
     # scipy/linalg tests
     ("test_cython_abi.py::test_cython_blas_abi_stability", xfail, todo_signature_mismatch_msg),
     ("test_cython_abi.py::test_cython_lapack_abi_stability", xfail, todo_signature_mismatch_msg),
-    # TODO investigate: hangs.
-    ("test_decomp_update.py.*test_overwrite_qr_p_row", skip, "hanged"),
+    # This test intermittently freezes when run after the preceding linalg tests.
+    # However, it passes in isolation, and often in the full suite too). The module
+    # is the most Givens-rotation-heavy in SciPy and the frozen test varies run to run
+    # TODO: find why? Or run the tests in this file in a different order?
+    ("test_decomp_update.py.*test_overwrite_qr_p_row", skip, "intermittent wasm hang in the qr update/rotation path"),
     # scipy/ndimage/tests
     ("test_filters.py::TestThreading", xfail, thread_msg),
     # scipy/optimize/tests
