@@ -20,6 +20,8 @@ package:
 source:
   url: https://files.pythonhosted.org/packages/source/s/scipy/scipy-1.18.0.tar.gz
   sha256: 67b2ad2ad54c72ca6d04975a9b2df8c3638c34ddd5b28738e94fc2b57929d378
+  patches:
+    - patches/0003-Fix-gees-calls.patch
 build:
   vendor-sharedlib: true
   # NumPy 2.1 disabled visibility for symbols outside of extension modules
