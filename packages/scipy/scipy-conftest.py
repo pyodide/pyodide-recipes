@@ -14,10 +14,6 @@ fp_exception_msg = (
 process_msg = "no process support"
 thread_msg = "no thread support"
 todo_signature_mismatch_msg = "TODO signature mismatch"
-todo_callback_signature_msg = (
-    "TODO fatal wasm trap: f2py callback (LAPACK select) signature mismatch "
-    "in the gees/gges Schur/QZ drivers"
-)
 todo_memory_corruption_msgt = "TODO memory corruption"
 todo_genuine_difference_msg = "TODO genuine difference to be investigated"
 todo_fp_exception_msg = "TODO did not raise maybe no floating point exception support?"
