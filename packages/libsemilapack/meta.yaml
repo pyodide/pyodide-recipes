@@ -1,6 +1,6 @@
 package:
   name: libsemilapack
-  version: "0.01.2-pre"
+  version: "0.01.3-pre"
   tag:
     - library
     - shared_library
