@@ -38,6 +38,10 @@ build:
 requirements:
   host:
     - libblis
+  # TODO: explore whether libblis is needed at runtime, or if the CBLAS symbols
+  # can be resolved at build time and the libblis.so dependency dropped
+  run:
+    - libblis
 about:
   home: https://github.com/ilayn/semicolon-lapack
   license: BSD-3-Clause
