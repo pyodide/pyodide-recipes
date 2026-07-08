@@ -93,8 +93,12 @@ tests_to_mark = [
     ("test_batch.py.*test_funm", skip, todo_callback_signature_msg),
     ("test_batch.py.*test_logm\\[", skip, todo_callback_signature_msg),
     ("test_batch.py.*test_fractional_matrix_power", skip, todo_callback_signature_msg),
-    ("test_batch.py.*test_schur_lu\\[schur", skip, todo_callback_signature_msg),
+    ("test_batch.py.*test_schur_lu\\[.*schur", skip, todo_callback_signature_msg),
     ("test_matfuncs.py::TestExpM.test_logm_consistency", skip, todo_callback_signature_msg),
+    ("test_matfuncs.py::TestSignM", skip, todo_callback_signature_msg),
+    ("test_matfuncs.py::TestLogM", skip, todo_callback_signature_msg),
+    ("test_matfuncs.py::TestSqrtM", skip, todo_callback_signature_msg),
+    ("test_matfuncs.py::TestFractionalMatrixPower", skip, todo_callback_signature_msg),
     ("test_decomp.py::TestQZ", skip, todo_callback_signature_msg),
     ("test_decomp.py::TestOrdQZ", skip, todo_callback_signature_msg),
     # TODO investigate: fatal crash, does not look like the callback issue.
