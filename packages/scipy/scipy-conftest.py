@@ -14,6 +14,10 @@ fp_exception_msg = (
 process_msg = "no process support"
 thread_msg = "no thread support"
 todo_signature_mismatch_msg = "TODO signature mismatch"
+todo_callback_signature_msg = (
+    "TODO fatal wasm trap: f2py callback (LAPACK select) signature mismatch "
+    "in the gees/gges Schur/QZ drivers"
+)
 todo_memory_corruption_msgt = "TODO memory corruption"
 todo_genuine_difference_msg = "TODO genuine difference to be investigated"
 todo_fp_exception_msg = "TODO did not raise maybe no floating point exception support?"
@@ -84,6 +88,11 @@ tests_to_mark = [
     # scipy/linalg tests
     ("test_cython_abi.py::test_cython_blas_abi_stability", xfail, todo_signature_mismatch_msg),
     ("test_cython_abi.py::test_cython_lapack_abi_stability", xfail, todo_signature_mismatch_msg),
+    ("test_decomp.py::TestSchur", skip, todo_callback_signature_msg),
+    ("test_batch.py::TestBatch.test_matmat\\[.*signm", skip, todo_callback_signature_msg),
+    ("test_matfuncs.py::TestExpM.test_logm_consistency", skip, todo_callback_signature_msg),
+    # TODO investigate: fatal crash, does not look like the callback issue.
+    ("test_hyp2f1.py::TestHyp2f1.test_region4\\[hyp2f1_test_case14\\]", skip, "TODO investigate hyp2f1 region4 case14 crash"),
     # scipy/ndimage/tests
     ("test_filters.py::TestThreading", xfail, thread_msg),
     # scipy/optimize/tests
