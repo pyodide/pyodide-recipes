@@ -1,0 +1,162 @@
+diff --git a/src/d/dlasq2.c b/src/d/dlasq2.c
+index 926a7c0..54734f1 100644
+--- a/src/d/dlasq2.c
++++ b/src/d/dlasq2.c
+@@ -367,7 +367,7 @@ L100:
+             }
+ 
+             /* While submatrix unfinished take a good dqds step. */
+-            dlasq3(i0, &n0, Z, &pp, &dmin, &sigma, &desig, &nfail,
++            dlasq3(i0, &n0, Z, &pp, &dmin, &sigma, &desig, &qmax, &nfail,
+                    &iter, &ndiv, ieee, &ttype, &dmin1, &dmin2, &dn, &dn1,
+                    &dn2, &g, &tau);
+ 
+diff --git a/src/d/dlasq3.c b/src/d/dlasq3.c
+index 7266792..dc414bd 100644
+--- a/src/d/dlasq3.c
++++ b/src/d/dlasq3.c
+@@ -22,7 +22,7 @@
+  * @param[out]    dmin   Minimum value of d.
+  * @param[out]    sigma  Sum of shifts used in current segment.
+  * @param[in,out] desig  Lower order part of SIGMA.
+- * @param[in]     qmax   Maximum value of q.
++ * @param[in,out] qmax   Maximum value of q.
+  * @param[in,out] nfail  Increment NFAIL by 1 each time the shift was too big.
+  * @param[in,out] iter   Increment ITER by 1 for each iteration.
+  * @param[in,out] ndiv   Increment NDIV by 1 for each division.
+@@ -38,7 +38,7 @@
+  * @param[in,out] tau    This is the shift.
+  */
+ void dlasq3(const INT i0, INT* n0, f64* restrict Z,
+-            INT* pp, f64* dmin, f64* sigma, f64* desig,
++            INT* pp, f64* dmin, f64* sigma, f64* desig, f64* qmax,
+             INT* nfail, INT* iter, INT* ndiv,
+             const INT ieee, INT* ttype, f64* dmin1, f64* dmin2,
+             f64* dn, f64* dn1, f64* dn2, f64* g, f64* tau)
+@@ -161,6 +161,8 @@ compute_shift:
+                 Z[4 * (*n0) - *pp + 3] = fmin(fmin(Z[4 * (*n0) - *pp + 3],
+                                                      Z[4 * i0 - *pp + 3]),
+                                                 Z[4 * i0 - *pp + 7]);
++                *qmax = fmax(fmax(*qmax, Z[4 * i0 + *pp]),
++                             Z[4 * i0 + *pp + 4]);
+                 *dmin = -ZERO;
+             }
+         }
+diff --git a/src/fortran_shim/shim_double.c b/src/fortran_shim/shim_double.c
+index c4521a4..2422c8c 100644
+--- a/src/fortran_shim/shim_double.c
++++ b/src/fortran_shim/shim_double.c
+@@ -251,7 +251,7 @@ void dlasdt_(INT* n, INT* lvl, INT* nd, INT* inode, INT* ndiml, INT* ndimr, INT*
+ void dlaset_(char* uplo, INT* m, INT* n, f64* alpha, f64* beta, f64* A, INT* lda);
+ void dlasq1_(INT* n, f64* D, f64* E, f64* work, INT* info);
+ void dlasq2_(INT* n, f64* Z, INT* info);
+-void dlasq3_(INT* i0, INT* n0, f64* Z, INT* pp, f64* dmin, f64* sigma, f64* desig, INT* nfail, INT* iter, INT* ndiv, INT* ieee, INT* ttype, f64* dmin1, f64* dmin2, f64* dn, f64* dn1, f64* dn2, f64* g, f64* tau);
++void dlasq3_(INT* i0, INT* n0, f64* Z, INT* pp, f64* dmin, f64* sigma, f64* desig, f64* qmax, INT* nfail, INT* iter, INT* ndiv, INT* ieee, INT* ttype, f64* dmin1, f64* dmin2, f64* dn, f64* dn1, f64* dn2, f64* g, f64* tau);
+ void dlasq4_(INT* i0, INT* n0, f64* Z, INT* pp, INT* n0in, f64* dmin, f64* dmin1, f64* dmin2, f64* dn, f64* dn1, f64* dn2, f64* tau, INT* ttype, f64* g);
+ void dlasq5_(INT* i0, INT* n0, f64* Z, INT* pp, f64* tau, f64* sigma, f64* dmin, f64* dmin1, f64* dmin2, f64* dn, f64* dnm1, f64* dnm2, INT* ieee, f64* eps);
+ void dlasq6_(INT* i0, INT* n0, f64* Z, INT* pp, f64* dmin, f64* dmin1, f64* dmin2, f64* dn, f64* dnm1, f64* dnm2);
+@@ -1762,8 +1762,8 @@ void dlasq2_(INT* n, f64* Z, INT* info) {
+     dlasq2(*n, Z, info);
+ }
+ 
+-void dlasq3_(INT* i0, INT* n0, f64* Z, INT* pp, f64* dmin, f64* sigma, f64* desig, INT* nfail, INT* iter, INT* ndiv, INT* ieee, INT* ttype, f64* dmin1, f64* dmin2, f64* dn, f64* dn1, f64* dn2, f64* g, f64* tau) {
+-    dlasq3(*i0, n0, Z, pp, dmin, sigma, desig, nfail, iter, ndiv, *ieee, ttype, dmin1, dmin2, dn, dn1, dn2, g, tau);
++void dlasq3_(INT* i0, INT* n0, f64* Z, INT* pp, f64* dmin, f64* sigma, f64* desig, f64* qmax, INT* nfail, INT* iter, INT* ndiv, INT* ieee, INT* ttype, f64* dmin1, f64* dmin2, f64* dn, f64* dn1, f64* dn2, f64* g, f64* tau) {
++    dlasq3(*i0, n0, Z, pp, dmin, sigma, desig, qmax, nfail, iter, ndiv, *ieee, ttype, dmin1, dmin2, dn, dn1, dn2, g, tau);
+ }
+ 
+ void dlasq4_(INT* i0, INT* n0, f64* Z, INT* pp, INT* n0in, f64* dmin, f64* dmin1, f64* dmin2, f64* dn, f64* dn1, f64* dn2, f64* tau, INT* ttype, f64* g) {
+diff --git a/src/fortran_shim/shim_single.c b/src/fortran_shim/shim_single.c
+index 6930a68..545cfb7 100644
+--- a/src/fortran_shim/shim_single.c
++++ b/src/fortran_shim/shim_single.c
+@@ -251,7 +251,7 @@ void slasdt_(INT* n, INT* lvl, INT* nd, INT* inode, INT* ndiml, INT* ndimr, INT*
+ void slaset_(char* uplo, INT* m, INT* n, f32* alpha, f32* beta, f32* A, INT* lda);
+ void slasq1_(INT* n, f32* D, f32* E, f32* work, INT* info);
+ void slasq2_(INT* n, f32* Z, INT* info);
+-void slasq3_(INT* i0, INT* n0, f32* Z, INT* pp, f32* dmin, f32* sigma, f32* desig, INT* nfail, INT* iter, INT* ndiv, INT* ieee, INT* ttype, f32* dmin1, f32* dmin2, f32* dn, f32* dn1, f32* dn2, f32* g, f32* tau);
++void slasq3_(INT* i0, INT* n0, f32* Z, INT* pp, f32* dmin, f32* sigma, f32* desig, f32* qmax, INT* nfail, INT* iter, INT* ndiv, INT* ieee, INT* ttype, f32* dmin1, f32* dmin2, f32* dn, f32* dn1, f32* dn2, f32* g, f32* tau);
+ void slasq4_(INT* i0, INT* n0, f32* Z, INT* pp, INT* n0in, f32* dmin, f32* dmin1, f32* dmin2, f32* dn, f32* dn1, f32* dn2, f32* tau, INT* ttype, f32* g);
+ void slasq5_(INT* i0, INT* n0, f32* Z, INT* pp, f32* tau, f32* sigma, f32* dmin, f32* dmin1, f32* dmin2, f32* dn, f32* dnm1, f32* dnm2, INT* ieee, f32* eps);
+ void slasq6_(INT* i0, INT* n0, f32* Z, INT* pp, f32* dmin, f32* dmin1, f32* dmin2, f32* dn, f32* dnm1, f32* dnm2);
+@@ -1759,8 +1759,8 @@ void slasq2_(INT* n, f32* Z, INT* info) {
+     slasq2(*n, Z, info);
+ }
+ 
+-void slasq3_(INT* i0, INT* n0, f32* Z, INT* pp, f32* dmin, f32* sigma, f32* desig, INT* nfail, INT* iter, INT* ndiv, INT* ieee, INT* ttype, f32* dmin1, f32* dmin2, f32* dn, f32* dn1, f32* dn2, f32* g, f32* tau) {
+-    slasq3(*i0, n0, Z, pp, dmin, sigma, desig, nfail, iter, ndiv, *ieee, ttype, dmin1, dmin2, dn, dn1, dn2, g, tau);
++void slasq3_(INT* i0, INT* n0, f32* Z, INT* pp, f32* dmin, f32* sigma, f32* desig, f32* qmax, INT* nfail, INT* iter, INT* ndiv, INT* ieee, INT* ttype, f32* dmin1, f32* dmin2, f32* dn, f32* dn1, f32* dn2, f32* g, f32* tau) {
++    slasq3(*i0, n0, Z, pp, dmin, sigma, desig, qmax, nfail, iter, ndiv, *ieee, ttype, dmin1, dmin2, dn, dn1, dn2, g, tau);
+ }
+ 
+ void slasq4_(INT* i0, INT* n0, f32* Z, INT* pp, INT* n0in, f32* dmin, f32* dmin1, f32* dmin2, f32* dn, f32* dn1, f32* dn2, f32* tau, INT* ttype, f32* g) {
+diff --git a/src/include/semicolon_lapack_double.h b/src/include/semicolon_lapack_double.h
+index 1756315..7a865de 100644
+--- a/src/include/semicolon_lapack_double.h
++++ b/src/include/semicolon_lapack_double.h
+@@ -257,7 +257,7 @@ SEMICOLON_API void dlasdt(const INT n, INT* lvl, INT* nd, INT* restrict inode, I
+ SEMICOLON_API void dlaset(const char* uplo, const INT m, const INT n, const f64 alpha, const f64 beta, f64* restrict A, const INT lda);
+ SEMICOLON_API void dlasq1(const INT n, f64* restrict D, f64* restrict E, f64* restrict work, INT* info);
+ SEMICOLON_API void dlasq2(const INT n, f64* restrict Z, INT* info);
+-SEMICOLON_API void dlasq3(const INT i0, INT* n0, f64* restrict Z, INT* pp, f64* dmin, f64* sigma, f64* desig, INT* nfail, INT* iter, INT* ndiv, const INT ieee, INT* ttype, f64* dmin1, f64* dmin2, f64* dn, f64* dn1, f64* dn2, f64* g, f64* tau);
++SEMICOLON_API void dlasq3(const INT i0, INT* n0, f64* restrict Z, INT* pp, f64* dmin, f64* sigma, f64* desig, f64* qmax, INT* nfail, INT* iter, INT* ndiv, const INT ieee, INT* ttype, f64* dmin1, f64* dmin2, f64* dn, f64* dn1, f64* dn2, f64* g, f64* tau);
+ SEMICOLON_API void dlasq4(const INT i0, const INT n0, const f64* restrict Z, const INT pp, const INT n0in, const f64 dmin, const f64 dmin1, const f64 dmin2, const f64 dn, const f64 dn1, const f64 dn2, f64* tau, INT* ttype, f64* g);
+ SEMICOLON_API void dlasq5(const INT i0, const INT n0, f64* restrict Z, const INT pp, f64* tau, f64 sigma, f64* dmin, f64* dmin1, f64* dmin2, f64* dn, f64* dnm1, f64* dnm2, const INT ieee, const f64 eps);
+ SEMICOLON_API void dlasq6(const INT i0, const INT n0, f64* restrict Z, const INT pp, f64* dmin, f64* dmin1, f64* dmin2, f64* dn, f64* dnm1, f64* dnm2);
+diff --git a/src/include/semicolon_lapack_single.h b/src/include/semicolon_lapack_single.h
+index 47da47d..62de006 100644
+--- a/src/include/semicolon_lapack_single.h
++++ b/src/include/semicolon_lapack_single.h
+@@ -257,7 +257,7 @@ SEMICOLON_API void slasdt(const INT n, INT* lvl, INT* nd, INT* restrict inode, I
+ SEMICOLON_API void slaset(const char* uplo, const INT m, const INT n, const f32 alpha, const f32 beta, f32* restrict A, const INT lda);
+ SEMICOLON_API void slasq1(const INT n, f32* restrict D, f32* restrict E, f32* restrict work, INT* info);
+ SEMICOLON_API void slasq2(const INT n, f32* restrict Z, INT* info);
+-SEMICOLON_API void slasq3(const INT i0, INT* n0, f32* restrict Z, INT* pp, f32* dmin, f32* sigma, f32* desig, INT* nfail, INT* iter, INT* ndiv, const INT ieee, INT* ttype, f32* dmin1, f32* dmin2, f32* dn, f32* dn1, f32* dn2, f32* g, f32* tau);
++SEMICOLON_API void slasq3(const INT i0, INT* n0, f32* restrict Z, INT* pp, f32* dmin, f32* sigma, f32* desig, f32* qmax, INT* nfail, INT* iter, INT* ndiv, const INT ieee, INT* ttype, f32* dmin1, f32* dmin2, f32* dn, f32* dn1, f32* dn2, f32* g, f32* tau);
+ SEMICOLON_API void slasq4(const INT i0, const INT n0, const f32* restrict Z, const INT pp, const INT n0in, const f32 dmin, const f32 dmin1, const f32 dmin2, const f32 dn, const f32 dn1, const f32 dn2, f32* tau, INT* ttype, f32* g);
+ SEMICOLON_API void slasq5(const INT i0, const INT n0, f32* restrict Z, const INT pp, f32* tau, f32 sigma, f32* dmin, f32* dmin1, f32* dmin2, f32* dn, f32* dnm1, f32* dnm2, const INT ieee, const f32 eps);
+ SEMICOLON_API void slasq6(const INT i0, const INT n0, f32* restrict Z, const INT pp, f32* dmin, f32* dmin1, f32* dmin2, f32* dn, f32* dnm1, f32* dnm2);
+diff --git a/src/s/slasq2.c b/src/s/slasq2.c
+index 7559914..61774b1 100644
+--- a/src/s/slasq2.c
++++ b/src/s/slasq2.c
+@@ -369,7 +369,7 @@ L100:
+             }
+ 
+             /* While submatrix unfinished take a good dqds step. */
+-            slasq3(i0, &n0, Z, &pp, &dmin, &sigma, &desig, &nfail,
++            slasq3(i0, &n0, Z, &pp, &dmin, &sigma, &desig, &qmax, &nfail,
+                    &iter, &ndiv, ieee, &ttype, &dmin1, &dmin2, &dn, &dn1,
+                    &dn2, &g, &tau);
+ 
+diff --git a/src/s/slasq3.c b/src/s/slasq3.c
+index 03b758c..85718f2 100644
+--- a/src/s/slasq3.c
++++ b/src/s/slasq3.c
+@@ -22,7 +22,7 @@
+  * @param[out]    dmin   Minimum value of d.
+  * @param[out]    sigma  Sum of shifts used in current segment.
+  * @param[in,out] desig  Lower order part of SIGMA.
+- * @param[in]     qmax   Maximum value of q.
++ * @param[in,out] qmax   Maximum value of q.
+  * @param[in,out] nfail  Increment NFAIL by 1 each time the shift was too big.
+  * @param[in,out] iter   Increment ITER by 1 for each iteration.
+  * @param[in,out] ndiv   Increment NDIV by 1 for each division.
+@@ -38,7 +38,7 @@
+  * @param[in,out] tau    This is the shift.
+  */
+ void slasq3(const INT i0, INT* n0, f32* restrict Z,
+-            INT* pp, f32* dmin, f32* sigma, f32* desig,
++            INT* pp, f32* dmin, f32* sigma, f32* desig, f32* qmax,
+             INT* nfail, INT* iter, INT* ndiv,
+             const INT ieee, INT* ttype, f32* dmin1, f32* dmin2,
+             f32* dn, f32* dn1, f32* dn2, f32* g, f32* tau)
+@@ -161,6 +161,8 @@ compute_shift:
+                 Z[4 * (*n0) - *pp + 3] = fminf(fminf(Z[4 * (*n0) - *pp + 3],
+                                                      Z[4 * i0 - *pp + 3]),
+                                                 Z[4 * i0 - *pp + 7]);
++                *qmax = fmaxf(fmaxf(*qmax, Z[4 * i0 + *pp]),
++                              Z[4 * i0 + *pp + 4]);
+                 *dmin = -ZERO;
+             }
+         }

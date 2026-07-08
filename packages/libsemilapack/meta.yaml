@@ -7,6 +7,8 @@ package:
 source:
   url: https://github.com/ilayn/semicolon-lapack/archive/refs/tags/v0.01.2-pre.tar.gz
   sha256: 447f49d333fadf0168a51976865c3d702bef0826e6c72cf29dd14ee8c9f903ef
+  patches:
+    - patches/0001-Restore-qmax-parameter-to-dlasq3-slasq3.patch
 
 build:
   type: shared_library
