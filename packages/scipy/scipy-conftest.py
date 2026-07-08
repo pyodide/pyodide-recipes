@@ -292,21 +292,36 @@ def pytest_configure(config):  # noqa: ARG001
         pass
 
 
+EXIT_STATUS = 0
+
+
 @pytest.hookimpl(trylast=True)
 def pytest_sessionfinish(session, exitstatus):  # noqa: ARG001
-    # C-extension destructors in SciPy call Fortran functions with void/int
-    # signature mismatches. These run both
-    # during the gc cleanup (gc_collect_harder in _pytest/unraisableexception)
-    # and during Python's own finalization sequence, causing fatal errors that
-    # cannot be caught in Python as they crash the interpreter. Registering
-    # os._exit as an atexit handler as LIFO can at least bypass both of these.
-    # atexit is necessary for us here for allowing the terminal summary to
-    # print, since that happens in the terminal reporter's own
-    # pytest_sessionfinish which runs before this trylast hook.
-    import atexit
-    import os
+    # We stash the real pytest exit status so pytest_unconfigure can hand it
+    # to os._exit below. We need this hook for the test summary to be printed
+    # before we exit.
+    global EXIT_STATUS
+    EXIT_STATUS = int(exitstatus)
 
-    atexit.register(os._exit, int(exitstatus))
+
+def pytest_unconfigure(config):  # noqa: ARG001
+    # C-extension destructors in SciPy call Fortran functions with void/int
+    # signature mismatches. These run during Python's own finalization
+    # sequence and cause a fatal error that crashes the interpreter and,
+    # more importantly, makes Node.js report a non-zero exit code even when
+    # every test passed. os._exit here bypasses interpreter finalization entirely.
+    #
+    # pytest_unconfigure runs after the terminal reporter has printed its summary
+    # but while we are still in normal execution (before finalization), so the
+    # Emscripten ExitStatus it raises unwinds cleanly and Node.js maps it to the
+    # real exit code, instead of an exit-120 "error during finalization" path
+    # an atexit-scheduled os._exit seems to be hitting.
+    import os
+    import sys
+
+    sys.stdout.flush()
+    sys.stderr.flush()
+    os._exit(EXIT_STATUS)
 
 
 def pytest_collection_modifyitems(config, items):
