@@ -15,6 +15,17 @@ source:
     # functions in the BLIS f2c compat layer. The patch is needed for SciPy's test
     # suite to pass.
     - patches/0002-CBLAS-interface-for-crotg-zrotg-zdrot-and-csrot.patch
+    # This patch does three things right now, but the idea is mostly the ABI
+    # normalisation for WASM to fix function signatures:
+    # 1. BLIS has an f2c-ed reference BLAS implementation, which returns ints for
+    # subroutines, as an f2c artefact. The native wrappers (gemm, gemv, etc.) and
+    # SciPy's cython_blas use voids. The banded/packed level-2 and Givens-rotation
+    # routines (gbmv, sbmv, spmv, spr, tbmv, tbsv, tpmv, tpsv, hbmv, hpmv, hpr, hpr2, rot, rotg, rotm, rotmg)
+    # are normalised to void.
+    # 2. lsame_ drops its two unused trailing string-length arguments. SciPy calls
+    # the two-argument form of lsame_.
+    # 3. xerbla_array_ is made to return void with a pointer length, which is the
+    # signature that SciPy and reference LAPACK use.
     - patches/0003-WASM-ABI-void-returns-lsame-xerbla_array.patch
 
 build:
