@@ -56,6 +56,7 @@ build:
   unvendor-tests: true
   # install-args=--tags=runtime,python-runtime,devel
   # Disable when running tests, enable when a PR is ready, i.e., building for distribution.
+  # TODO before merging: update to SciPy 2.0 when it arrives and drop -D_without-fortran=true
   backend-flags: |
     build-dir=build
     setup-args=-D_without-fortran=true
