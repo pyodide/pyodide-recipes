@@ -15,6 +15,8 @@ build:
   script: |
     # wasm-ld cannot build shared libraries through Meson, so the Fortran-ABI
     # shim must be a plain (static) library on Emscripten.
+    # TODO: drop when https://github.com/ilayn/semicolon-lapack/pull/23
+    # is merged and released
     sed -i 's/shared_library(/library(/' src/fortran_shim/meson.build
 
     export PKG_CONFIG_PATH="${WASM_LIBRARY_DIR}/lib/pkgconfig:${WASM_LIBRARY_DIR}/share/pkgconfig:${PKG_CONFIG_PATH}"
