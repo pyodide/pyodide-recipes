@@ -31,6 +31,13 @@ build:
     # (e.g. `(\n ftnlen)1`); tolerate whitespace inside and around it.
     perl -0777 -pi -e 's/PASTEF77\(lsame\)\((.*?),\s*\(\s*ftnlen\s*\)\s*1\s*,\s*\(\s*ftnlen\s*\)\s*1\s*\)/PASTEF77(lsame)($1)/gs' \
       $(grep -rlE 'PASTEF77\(lsame\)\(' frame/)
+    sed -i -E 's/int PASTEF77\(xerbla_array\)\((const bla_character \*srname_array), (const bla_integer) srname_len, (const bla_integer \*info)\)/void PASTEF77(xerbla_array)(\1, \2 *srname_len, \3)/' \
+      frame/compat/f2c/bla_xerbla_array.c frame/compat/f2c/bla_xerbla_array.h
+    sed -i -e 's/bli_min( srname_len,/bli_min( *srname_len,/' \
+           -e 's/( ftnlen )srname_len/( ftnlen )*srname_len/' \
+           -e 's/return 0;/return;/' \
+      frame/compat/f2c/bla_xerbla_array.c
+
     CC=emcc AR=emar RANLIB=emranlib \
       ./configure \
         --disable-threading \
