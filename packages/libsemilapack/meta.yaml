@@ -30,6 +30,7 @@ build:
     mkdir -p dist
     emcc ${WASM_LIBRARY_DIR}/lib/libsemilapack.a \
         ${WASM_LIBRARY_DIR}/lib/libsemilapack_fortran.a \
+        ${WASM_LIBRARY_DIR}/lib/libblis.so \
         ${SIDE_MODULE_LDFLAGS} \
         -o dist/libsemilapack.so
 
