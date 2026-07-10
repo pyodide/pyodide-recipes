@@ -27,7 +27,9 @@ source:
     # for its char args (jobvs, sort) in the callstatement/callprotoargument.
     # BLIS and semicolon-lapack (and the f2ced stack we had before, even) take no
     # hidden lengths.
-    - patches/0003-Fix-gees-calls.patch
+    - patches/0001-Fix-gees-calls.patch
+    # Drop this patch with SciPy v1.19
+    - patches/0002-Fix-signatures-for-getrf-getri-and-trlib-dlagtm.patch
 build:
   vendor-sharedlib: true
   # NumPy 2.1 disabled visibility for symbols outside of extension modules
@@ -64,21 +66,8 @@ build:
     setup-args=-Dlapack=semicolon-lapack
   script: |
     set -x
-    export PKG_CONFIG_PATH="${WASM_LIBRARY_DIR}/lib/pkgconfig:${WASM_LIBRARY_DIR}/share/pkgconfig:${PKG_CONFIG_PATH}"
 
-    # TODO: send a PR to SciPy to fix this. The issue here is that getrf and getri
-    # are declared as returning CBLAS_INT in _batched_linalg, but they are
-    # actually voids in semicolon-lapack and in SciPy's cython_lapack. There are
-    # 8 of these declarations in _common_array_utils.hh.
-    sed -i 's/^CBLAS_INT$/void/' scipy/linalg/src/_common_array_utils.hh
-    # TODO: send a PR to SciPy to fix this. The issue here is that the bundled
-    # trlib declares and calls dlagtm with the g77 ABI, which has a trailing
-    # hidden Fortran string-length for the `char *trans` argument. However,
-    # semicolon-lapack and SciPy's cython_lapack use the no-length form.
-    # (I found dlagtm to be the only one, maybe there are others in dead code?)
-    sed -i -e '/BLAS_FUNC(dlagtm)/ s/, int);/);/' \
-           -e '/BLAS_FUNC(dlagtm)/ s/, 1);/);/' \
-      scipy/optimize/_trlib/trlib_private.h
+    export PKG_CONFIG_PATH="${WASM_LIBRARY_DIR}/lib/pkgconfig:${WASM_LIBRARY_DIR}/share/pkgconfig:${PKG_CONFIG_PATH}"
 
     # https://github.com/mesonbuild/meson/blob/e542901af6e30865715d3c3c18f703910a096ec0/mesonbuild/backend/ninjabackend.py#L94
     # Prevent from using response file. The response file that meson generates is not compatible to pyodide-build
