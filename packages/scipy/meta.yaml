@@ -21,14 +21,8 @@ source:
   url: https://files.pythonhosted.org/packages/source/s/scipy/scipy-1.18.0.tar.gz
   sha256: 67b2ad2ad54c72ca6d04975a9b2df8c3638c34ddd5b28738e94fc2b57929d378
   patches:
-    # TODO: figure out what to do with this patch. I realised that this patch is
-    # needed because the gees f2py wrapper is generated with the wrong signature.
-    # This comes up a lot in Schur. It passes two hidden Fortran string lengths
-    # for its char args (jobvs, sort) in the callstatement/callprotoargument.
-    # BLIS and semicolon-lapack (and the f2ced stack we had before, even) take no
-    # hidden lengths.
+    # NOTE: Drop both of these patches with SciPy v1.19/2.0
     - patches/0001-Fix-gees-calls.patch
-    # Drop this patch with SciPy v1.19
     - patches/0002-Fix-signatures-for-getrf-getri-and-trlib-dlagtm.patch
 build:
   vendor-sharedlib: true
@@ -58,7 +52,7 @@ build:
   unvendor-tests: true
   # install-args=--tags=runtime,python-runtime,devel
   # Disable when running tests, enable when a PR is ready, i.e., building for distribution.
-  # TODO before merging: update to SciPy 2.0 when it arrives and drop -D_without-fortran=true
+  # TODO before merging: update to SciPy 1.19/2.0 when it arrives and drop -D_without-fortran=true
   backend-flags: |
     build-dir=build
     setup-args=-D_without-fortran=true
