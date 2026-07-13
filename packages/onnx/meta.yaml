@@ -1,0 +1,51 @@
+package:
+  name: onnx
+  version: 1.15.0
+  top-level:
+    - onnx
+
+source:
+  url: https://files.pythonhosted.org/packages/source/o/onnx/onnx-1.15.0.tar.gz
+  sha256: b18461a7d38f286618ca2a6e78062a2a9c634ce498e631e708a8041b00094825
+  patches:
+    - patches/0001-use-host-protoc.patch
+    - patches/0002-remove-unsupported-linker-flag.patch
+
+build:
+  script: |
+    protoc_dir="${PKGDIR}/.protoc"
+    if [ ! -x "${protoc_dir}/bin/protoc" ]; then
+      mkdir -p "${protoc_dir}"
+      curl --fail --location --silent --show-error \
+        "https://github.com/protocolbuffers/protobuf/releases/download/v22.3/protoc-22.3-linux-x86_64.zip" \
+        --output "${protoc_dir}/protoc.zip"
+      echo "0f8070d762eb8a2f5a13a47713a553f989f9d9b556e7e3ebfa2bd6464e2ecaeb  ${protoc_dir}/protoc.zip" \
+        | sha256sum --check
+      unzip -q -o "${protoc_dir}/protoc.zip" -d "${protoc_dir}"
+    fi
+    export PROTOC="${protoc_dir}/bin/protoc"
+    export CMAKE_ARGS="${CMAKE_ARGS:-} -DPYTHON_INCLUDE_DIR=${PYTHONINCLUDE} -DPYTHON_INCLUDE_DIRS=${PYTHONINCLUDE} -DPYTHON_LIBRARIES=dummy"
+  cflags: "-DGOOGLE_PROTOBUF_NO_THREAD_SAFETY"
+  post: |
+    rm -rf onnx/backend/test
+
+requirements:
+  run:
+    - numpy
+    - protobuf
+
+test:
+  imports:
+    - onnx
+    - onnx.checker
+    - onnx.helper
+
+about:
+  home: https://onnx.ai/
+  PyPI: https://pypi.org/project/onnx
+  summary: Open Neural Network Exchange
+  license: Apache-2.0
+
+extra:
+  recipe-maintainers:
+    - metalmancode

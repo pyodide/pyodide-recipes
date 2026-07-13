@@ -1,0 +1,15 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -262,7 +262,11 @@
+     set(protobuf_BUILD_TESTS OFF CACHE BOOL "Build protobuf tests" FORCE)
+     message(STATUS "Download and build Protobuf from ${ProtobufURL}")
+     FetchContent_MakeAvailable(Protobuf Abseil)
+-    set(ONNX_PROTOC_EXECUTABLE $<TARGET_FILE:protobuf::protoc>)
++    if(NOT DEFINED ENV{PROTOC} OR "$ENV{PROTOC}" STREQUAL "")
++      message(FATAL_ERROR
++              "PROTOC must point to a host-native protoc 22.3 binary")
++    endif()
++    set(ONNX_PROTOC_EXECUTABLE "$ENV{PROTOC}")
+     set(Protobuf_VERSION "4.22.3")
+     # Change back the BUILD_SHARED_LIBS to control the onnx project.
+
