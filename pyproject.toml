@@ -80,5 +80,5 @@ testpaths = [
 asyncio_mode = "strict"
 
 [tool.pyodide.build]
-rust_toolchain = "1.95.0"
+rust_toolchain = "1.97.1"
 rustflags = ""
