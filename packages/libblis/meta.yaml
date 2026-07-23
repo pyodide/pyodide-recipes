@@ -15,6 +15,7 @@ source:
     # functions in the BLIS f2c compat layer. The patch is needed for SciPy's test
     # suite to pass.
     - patches/0002-CBLAS-interface-for-crotg-zrotg-zdrot-and-csrot.patch
+    - patches/0003-WASM-ABI-void-returns-lsame-xerbla_array.patch
 
 build:
   type: shared_library
