@@ -1,7 +1,7 @@
-From 85aa27abe96e988adc8fdfbf61844bfd3307ccbf Mon Sep 17 00:00:00 2001
+From b935a630a38466569c6ff769f8fb953bf6c3bd02 Mon Sep 17 00:00:00 2001
 From: Agriya Khetarpal <74401230+agriyakhetarpal@users.noreply.github.com>
 Date: Tue, 30 Jun 2026 06:06:59 +0530
-Subject: Compile BLIS to WebAssembly
+Subject: [PATCH 1/3] Compile BLIS to WebAssembly
 
 This is a squashed patch from https://github.com/agriyakhetarpal/blis/pull/1
 and applied on top of the v2.1 release of BLIS. See the release notes at:
@@ -17,7 +17,6 @@ The following changes have been made:
 * Declare BLIS_ARCH_WASM32
 * Compile with PIC for Pyodide shared module
 * Add family and kernel definitions headers
-
 ---
  config/wasm32/bli_cntx_init_wasm32.c    | 40 +++++++++++++
  config/wasm32/bli_family_wasm32.h       | 38 +++++++++++++
@@ -170,7 +169,7 @@ index 00000000..73f8d513
 +// but it does not need to contain any code.
 diff --git a/config/wasm32/make_defs.mk b/config/wasm32/make_defs.mk
 new file mode 100644
-index 00000000..27020ccb
+index 00000000..27b8a7e1
 --- /dev/null
 +++ b/config/wasm32/make_defs.mk
 @@ -0,0 +1,74 @@
@@ -344,5 +343,5 @@ index 8fe8e5ed..a005bd97 100644
  	BLIS_ARCH_GENERIC,
  
 -- 
-2.50.1 (Apple Git-155)
+2.54.0
 

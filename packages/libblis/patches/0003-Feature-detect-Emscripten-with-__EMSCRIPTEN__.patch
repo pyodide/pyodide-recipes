@@ -1,0 +1,27 @@
+From f780d65d7fdd2e01f8d27eff41578386b921dfea Mon Sep 17 00:00:00 2001
+From: Hood Chatham <roberthoodchatham@gmail.com>
+Date: Fri, 24 Jul 2026 23:39:00 +0200
+Subject: [PATCH 3/3] Feature detect Emscripten with __EMSCRIPTEN__
+
+The `EMSCRIPTEN` macro is deprecated and was moved in emcc 5.0.4 to be only
+defined in `emscripten.h`. This switches to using the preferred __EMSCRIPTEN__.
+---
+ frame/include/bli_system.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/frame/include/bli_system.h b/frame/include/bli_system.h
+index 0a47e14a..c7174ba4 100644
+--- a/frame/include/bli_system.h
++++ b/frame/include/bli_system.h
+@@ -96,7 +96,7 @@
+         defined(__bsdi__) || defined(__DragonFly__) || \
+         defined(__FreeBSD_kernel__) || defined(__HAIKU__)
+     #define BLIS_OS_BSD 1
+-  #elif defined(EMSCRIPTEN)
++  #elif defined(__EMSCRIPTEN__)
+     #define BLIS_OS_EMSCRIPTEN
+   #else
+     #error "Cannot determine operating system"
+-- 
+2.54.0
+
