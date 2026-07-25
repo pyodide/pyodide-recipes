@@ -1,9 +1,22 @@
-From c4d0f4b80cdc2f0b83b3e7a5736f6a3ba484868c Mon Sep 17 00:00:00 2001
+From a67d1436eb9f18dc86432bf20028d4de85a8b293 Mon Sep 17 00:00:00 2001
 From: Hood Chatham <roberthoodchatham@gmail.com>
 Date: Sat, 25 Jul 2026 19:07:14 +0200
-Subject: [PATCH 2/2] Pass --without-zlib-check and --without-fortran to
+Subject: [PATCH 2/4] Pass --without-zlib-check and --without-fortran to
  configure for Pyodide builds
 
+cfitsio links with zlib and includes a check for zlib in its configure script.
+When building the package out of tree, there is currently no zlib available on
+the host, so the check fails. We disable the check, as suggested by the
+configure docs for cross-builds, and at cross-compile time the correct
+Pyodide-built zlib is found.
+
+cfitsio is by default built with support for a Fortran wrapper, which requires
+f2c. Since we do not need the Fortran wrappers, we can simplify the build and
+not build the Fortran wrappers.
+
+Both options are passed from healpy's setup.py script to the configure scripts
+of all subprojects, even though they are only relevant for cfitsio, but the
+other subprojects just ignore the to-them-unknown options.
 ---
  setup.py | 8 ++++++++
  1 file changed, 8 insertions(+)

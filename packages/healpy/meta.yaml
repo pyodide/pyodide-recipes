@@ -9,8 +9,8 @@ source:
   patches:
     - patches/0001-Skip-linking-cfitsio-and-healpix_cxx-programs-for-Py.patch
     - patches/0002-Pass-without-zlib-check-and-without-fortran-to-confi.patch
-    - patches/0003-install-path.patch
-    - patches/0004-disable-openmp.patch
+    - patches/0003-Also-disable-openmp-in-configure.patch
+    - patches/0004-Install-subproject-shared-libraries-into-Pyodide-s-l.patch
 requirements:
   host:
     - libzlib
