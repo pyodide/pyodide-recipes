@@ -1,0 +1,37 @@
+From fbb140c2017c42b9434f9e19d9c9c0aa6492bb1b Mon Sep 17 00:00:00 2001
+From: Hood Chatham <roberthoodchatham@gmail.com>
+Date: Sat, 25 Jul 2026 19:35:45 +0200
+Subject: [PATCH 3/4] Also disable openmp in configure
+
+Emscripten 6 added OpenMP support, so autoconf's AC_OPENMP check now succeeds
+and healpix_cxx's configure appends -fopenmp to CFLAGS/CXXFLAGS. On Emscripten
+`-fopenmp` implies pthreads which is causes a link error.
+---
+ setup.py | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index 30656b5..9da624b 100755
+--- a/setup.py
++++ b/setup.py
+@@ -178,9 +178,16 @@ class build_external_clib(build_clib):
+             # binary that cannot be executed, so disable it as recommended for
+             # cross-builds; the cross-compiled zlib is still linked in. The
+             # Fortran wrappers need f2c and are unused by healpy, so drop them.
++            # Emscripten 6 added OpenMP support, so healpix_cxx's AC_OPENMP
++            # check succeeds and -fopenmp lands in CFLAGS/CXXFLAGS, but
++            # -fopenmp implies pthreads there and the link then fails.
+             # The other subprojects ignore these unknown options.
+             if is_emscripten():
+-                cmd += ["--without-zlib-check", "--without-fortran"]
++                cmd += [
++                    "--without-zlib-check",
++                    "--without-fortran",
++                    "--disable-openmp",
++                ]
+ 
+             log.info("%s", " ".join(cmd))
+             check_call(
+-- 
+2.54.0
+

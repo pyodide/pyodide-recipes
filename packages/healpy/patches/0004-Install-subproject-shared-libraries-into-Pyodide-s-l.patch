@@ -1,15 +1,24 @@
+From fd5188467f1d79ffca123549852541db13240182 Mon Sep 17 00:00:00 2001
+From: Hood Chatham <roberthoodchatham@gmail.com>
+Date: Sat, 25 Jul 2026 19:39:41 +0200
+Subject: [PATCH 4/4] Install subproject shared libraries into Pyodide's lib
+ folder
+
 healpy's setup.py script sets up its own build directory structure when
 building the shared library dependencies it needs. However, this structure
 makes it difficult for auditwheel-emscripten to find the libraries for
 vendoring, and many different rpath combinations do not work. However, we can
 just ask the subprojects to install their shared libraries into Pyodide's lib
 folder, which allows auditwheel-emscripten to find them.
+---
+ setup.py | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/setup.py b/setup.py
-index 3cab0f3..db70742 100755
+index 9da624b..917075d 100755
 --- a/setup.py
 +++ b/setup.py
-@@ -167,6 +167,7 @@ class build_external_clib(build_clib):
+@@ -169,6 +169,7 @@ class build_external_clib(build_clib):
                  "/bin/sh",
                  os.path.join(os.path.realpath(local_source), "configure"),
                  "--prefix=" + build_clib,
@@ -17,3 +26,6 @@ index 3cab0f3..db70742 100755
                  "--disable-curl",
                  "--with-pic",
                  "--disable-maintainer-mode",
+-- 
+2.54.0
+
