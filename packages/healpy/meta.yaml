@@ -10,6 +10,7 @@ source:
     - patches/0001-build-no-binaries.patch
     - patches/0002-without-zlib-check-fortran.patch
     - patches/0003-install-path.patch
+    - patches/0004-disable-openmp.patch
 requirements:
   host:
     - libzlib
