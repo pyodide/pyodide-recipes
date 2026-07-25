@@ -1,0 +1,65 @@
+From 4fd18a7b7ffec86b878a1dfbd00cdb503fd44bb5 Mon Sep 17 00:00:00 2001
+From: Hood Chatham <roberthoodchatham@gmail.com>
+Date: Sat, 25 Jul 2026 09:51:38 +0200
+Subject: [PATCH] Skip linking cfitsio and healpix_cxx programs for Pyodide
+ builds
+
+They fail to link with duplicate symbols and are unneeded.
+---
+ CHANGELOG.rst |  3 ++-
+ setup.py      | 13 ++++++++++++-
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/CHANGELOG.rst b/CHANGELOG.rst
+index 4a695d5..de0349e 100644
+--- a/CHANGELOG.rst
++++ b/CHANGELOG.rst
+@@ -1,5 +1,6 @@
+ Unreleased
+-|
++
++* Build: skip the unused cfitsio and healpix_cxx command line utilities when building for Emscripten/WebAssembly. They fail to link on WebAssembly with duplicate symbols.
+ 
+ Release 1.20.0 22 Jul 2026
+ 
+diff --git a/setup.py b/setup.py
+index e727611..26b0d76 100755
+--- a/setup.py
++++ b/setup.py
+@@ -7,7 +7,7 @@ import sys
+ import shlex
+ import shutil
+ from Cython.Distutils import build_ext
+-from sysconfig import get_config_vars
++from sysconfig import get_config_vars, get_platform
+ from subprocess import check_output, CalledProcessError, check_call
+ from setuptools import setup, Extension
+ from setuptools.command.build_clib import build_clib
+@@ -27,6 +27,10 @@ if "test" in sys.argv:
+     sys.exit(1)
+ 
+ 
++def is_emscripten():
++    return get_platform().startswith("emscripten")
++
++
+ class build_external_clib(build_clib):
+     """Subclass of Distutils' standard build_clib subcommand. Adds support for
+     libraries that are installed externally and detected with pkg-config, with
+@@ -179,6 +183,13 @@ class build_external_clib(build_clib):
+ 
+             # Run make install.
+             cmd = ["make", "install"]
++
++            # On Emscripten, these binaries fail to link with duplicate symbols.
++            # healpy only needs the libraries and headers, so skip the programs
++            # entirely by emptying the automake variables that list them.
++            if is_emscripten():
++                cmd += ["bin_PROGRAMS=", "noinst_PROGRAMS="]
++
+             log.info("%s", " ".join(cmd))
+             check_call(cmd, cwd=build_temp, env=env)
+ 
+-- 
+2.54.0
+
