@@ -15,6 +15,9 @@ requirements:
 build:
   cflags: |
     -Wno-return-type
+  # Emscripten 6.0.3 added OpenMP support but we don't support threads.
+  script: |
+    export IGRAPH_CMAKE_EXTRA_ARGS="-DIGRAPH_OPENMP_SUPPORT=OFF"
 
 test:
   imports:

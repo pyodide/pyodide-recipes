@@ -8,9 +8,9 @@ source:
   sha256: 28e839cb885a23d36c77fc3423a3cb9271a07fda94085bd12fc329f941130ec5
   patches:
     - patches/0001-Skip-linking-cfitsio-and-healpix_cxx-programs-for-Py.patch
-    - patches/0002-Pass-without-zlib-check-and-without-fortran-to-confi.patch
-    - patches/0003-Also-disable-openmp-in-configure.patch
-    - patches/0004-Install-subproject-shared-libraries-into-Pyodide-s-l.patch
+    - patches/0002-without-zlib-check-fortran.patch
+    - patches/0003-install-path.patch
+    - patches/0004-disable-openmp.patch
 requirements:
   host:
     - libzlib
