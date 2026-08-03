@@ -26,9 +26,6 @@ permissions:
 env:
   # Increase this value to reset cache if environment.yml has not changed
   CONDA_CACHE_NUMBER: 0
-  # Increase this value to reset cache if emscripten_version has not changed
-  EMSDK_CACHE_FOLDER: 'emsdk-cache'
-  EMSDK_CACHE_NUMBER: 0
   CCACHE_DIR: /tmp/.ccache
   CCACHE_CACHE_NUMBER: 0
   FORCE_COLOR: 3
@@ -88,20 +85,6 @@ jobs:
           submodules: recursive
           persist-credentials: false
 
-      - name: Install Emscripten ccache
-        run: |
-
-          # FIXME: Installing ccache using `emsdk install ccache-git-emscripten-64bit` doesn't work well in conda env:
-          # https://stackoverflow.com/questions/71340058/conda-does-not-look-for-libpthread-and-libpthread-nonshared-at-the-right-place-w
-          git clone https://github.com/juj/ccache -b emscripten --depth 1
-          cd ccache
-          cmake .
-          make ccache
-          export PATH=$(pwd):$PATH
-          cd ..
-
-          which ccache
-
       - name: Cache conda
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
@@ -158,6 +141,16 @@ jobs:
           which python
           ./tools/prepare_pyodide_build.sh
 
+      - name: Set Emscripten toolchain and pyodide-build versions for ccache
+        run: |
+          EMSCRIPTEN_VERSION=$(pyodide config get emscripten_version)
+          PYODIDE_BUILD_VERSION=$(python -m pip show pyodide-build | awk '/^Version:/{print $2}')
+
+          echo "EMSCRIPTEN_VERSION=${EMSCRIPTEN_VERSION}" >> $GITHUB_ENV
+          echo "PYODIDE_BUILD_VERSION=${PYODIDE_BUILD_VERSION}" >> $GITHUB_ENV
+
+          echo "CCACHE_COMPILERCHECK=string:emscripten-${EMSCRIPTEN_VERSION}-pyodide-build-${PYODIDE_BUILD_VERSION}" >> $GITHUB_ENV
+
       - name: Set ccache suffix
         run: |
           # This step makes the cache key in the main branch and PRs different.
@@ -171,9 +164,12 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ${{ env.CCACHE_DIR }}
-          key: ${{ env.CCACHE_DIR }}-${{ env.CCACHE_CACHE_NUMBER }}-${{ env.EMSCRIPTEN_VERSION }}-${{ runner.os }}${{ env.CCACHE_SUFFIX }}
+          # Make the key unique once per day because actions/cache does not
+          # update an existing cache on an exact hit for a fully static key
+          key: ccache-${{ env.CCACHE_CACHE_NUMBER }}-${{ env.EMSCRIPTEN_VERSION }}-${{ env.PYODIDE_BUILD_VERSION }}-${{ runner.os }}${{ env.CCACHE_SUFFIX }}-${{ steps.get-date.outputs.today }}
           restore-keys: |
-            ${{ env.CCACHE_DIR }}-${{ env.CCACHE_CACHE_NUMBER }}-${{ env.EMSCRIPTEN_VERSION }}-${{ runner.os }}
+            ccache-${{ env.CCACHE_CACHE_NUMBER }}-${{ env.EMSCRIPTEN_VERSION }}-${{ env.PYODIDE_BUILD_VERSION }}-${{ runner.os }}${{ env.CCACHE_SUFFIX }}-
+            ccache-${{ env.CCACHE_CACHE_NUMBER }}-${{ env.EMSCRIPTEN_VERSION }}-${{ env.PYODIDE_BUILD_VERSION }}-${{ runner.os }}
 
       - name: Calculate recipes to build (pull_request)
         if: github.event_name == 'pull_request'
@@ -230,7 +226,7 @@ jobs:
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || contains(github.event.pull_request.labels.*.name, 'full build')
         run: |
           ccache -z
-          export _EMCC_CACHE=1
+          export _EMCC_CCACHE=1
 
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
           mkdir -p result
@@ -243,7 +239,7 @@ jobs:
           STEPS_CALCULATE_RECIPES_PR_OUTPUTS_RECIPES: ${{ steps.calculate_recipes_pr.outputs.recipes }}
         run: |
           ccache -z
-          export _EMCC_CACHE=1
+          export _EMCC_CCACHE=1
 
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
           mkdir -p result
