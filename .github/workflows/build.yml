@@ -230,7 +230,7 @@ jobs:
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || contains(github.event.pull_request.labels.*.name, 'full build')
         run: |
           ccache -z
-          export _EMCC_CACHE=1
+          export _EMCC_CCACHE=1
 
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
           mkdir -p result
@@ -243,7 +243,7 @@ jobs:
           STEPS_CALCULATE_RECIPES_PR_OUTPUTS_RECIPES: ${{ steps.calculate_recipes_pr.outputs.recipes }}
         run: |
           ccache -z
-          export _EMCC_CACHE=1
+          export _EMCC_CCACHE=1
 
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
           mkdir -p result
