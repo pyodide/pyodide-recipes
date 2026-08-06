@@ -15,6 +15,12 @@ build:
     touch dummy_src_for_port.c
     emcc dummy_src_for_port.c -sSUPPORT_LONGJMP="wasm" -sSIDE_MODULE=1 -fPIC "--use-port=sdl2_image:formats=bmp,gif,jpg,lbm,pcx,png,pnm,qoi,svg,tga,xcf,xpm,xv"
 
+    # meson.build links against the freetype "-legacysjlj" variant (built with
+    # -sSUPPORT_LONGJMP=wasm, see emscripten tools/ports/freetype.py). The
+    # `embuilder build sdl2_ttf` below only produces the default freetype
+    # variant (libfreetype.a), so build the PIC -legacysjlj variant explicitly.
+    emcc dummy_src_for_port.c -sSUPPORT_LONGJMP="wasm" -sSIDE_MODULE=1 -fPIC -sUSE_FREETYPE=1
+
     embuilder --pic build sdl2 libhtml5 sdl2_ttf 'sdl2_mixer:formats=ogg,mp3,mod,mid'
 
     # remove -sRELOCATABLE=1 flag baked in the meson.build file

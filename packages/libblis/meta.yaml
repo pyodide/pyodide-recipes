@@ -16,6 +16,9 @@ source:
     # suite to pass.
     - patches/0002-CBLAS-interface-for-crotg-zrotg-zdrot-and-csrot.patch
     - patches/0003-WASM-ABI-void-returns-lsame-xerbla_array.patch
+    # emcc 5.0.4 moved the deprecated `EMSCRIPTEN` macro into emscripten.h, so
+    # BLIS's OS detection failed with "Cannot determine operating system".
+    - patches/0004-Feature-detect-Emscripten-with-__EMSCRIPTEN__.patch
 
 build:
   type: shared_library

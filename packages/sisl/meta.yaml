@@ -7,6 +7,8 @@ package:
 source:
   url: https://files.pythonhosted.org/packages/source/s/sisl/sisl-0.16.4.tar.gz
   sha256: bba5fd45a6286d20eabd1232ea83d830d63f343c6212021034c31d53dee928a3
+  patches:
+    - patches/0001-Use-build.verbose-instead-of-cmake.verbose.patch
 about:
   home: https://github.com/zerothi/sisl
   PyPI: https://pypi.org/project/sisl

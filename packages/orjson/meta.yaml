@@ -8,6 +8,11 @@ package:
 source:
   url: https://files.pythonhosted.org/packages/source/o/orjson/orjson-3.11.8.tar.gz
   sha256: 96163d9cdc5a202703e9ad1b9ae757d5f0ca62f4fa0cc93d1f27b0e180cc404e
+build:
+  script: |
+    # whenever rustc >= 1.95, orjson uses a nightly-only feature so we have to
+    # set RUSTC_BOOTSTRAP.
+    export RUSTC_BOOTSTRAP=1
 requirements:
   executable:
     - rustup

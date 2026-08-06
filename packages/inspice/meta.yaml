@@ -1,11 +1,11 @@
 package:
   name: inspice
-  version: 1.7.0.1
+  version: 1.7.0.5
   top-level:
     - InSpice
 source:
-  url: https://files.pythonhosted.org/packages/py3/i/inspice/inspice-1.7.0.1-py3-none-any.whl
-  sha256: fb2d94f96e22830ffdf8e5d104b2c904f7a7382d9b4b1f23bb871d02a2ed4bef
+  url: https://files.pythonhosted.org/packages/py3/i/inspice/inspice-1.7.0.5-py3-none-any.whl
+  sha256: 7c4c0ce6b9c9610380285859bc93858a4ef73c7c079522683832d5be4bfdc8f8
 requirements:
   run:
     - numpy

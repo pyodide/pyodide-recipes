@@ -1,4 +1,4 @@
-From 8ef1abca0c395dbc02dba134c088fc403fe8c782 Mon Sep 17 00:00:00 2001
+From b370cde2e14384ea86225bb464d63338e33a45cc Mon Sep 17 00:00:00 2001
 From: Edward Smyth <117460141+edwsmyth@users.noreply.github.com>
 Date: Sun, 28 Jun 2026 20:47:26 +0100
 Subject: [PATCH 2/3] CBLAS interface for crotg, zrotg, zdrot and csrot (#926)
@@ -8,7 +8,6 @@ Details:
   https://github.com/flame/blis/issues/916.
 
 This patch has been backported to be applied to the 2.1 release of BLIS.
-
 ---
  frame/compat/cblas/src/cblas.h       | 11 ++++--
  frame/compat/cblas/src/cblas_crotg.c | 50 ++++++++++++++++++++++++
@@ -317,5 +316,5 @@ index 00000000..30cfaa72
 +}
 +#endif
 -- 
-2.50.1 (Apple Git-155)
+2.54.0
 
