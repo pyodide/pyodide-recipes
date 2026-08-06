@@ -48,7 +48,7 @@ jobs:
           GITHUB_EVENT_PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
           GITHUB_EVENT_INPUTS_SCIPY: ${{ github.event.inputs.scipy }}
         # Run if commit_msg contains "[scipy]" or
-        # if the PR has the "scipy" label or
+        # if the PR has the "scipy" label or the "full build" label or
         # if the PR title contains "[scipy]" or if
         # the workflow is triggered manually with the `scipy` input set to true
         run: |
@@ -57,12 +57,14 @@ jobs:
           COMMIT_MSG=$(git log --no-merges -1 --oneline)
           PR_TITLE="${GITHUB_EVENT_PULL_REQUEST_TITLE}"
           SCIPY_LABEL=${{ contains(github.event.pull_request.labels.*.name, 'scipy') }}
+          FULL_BUILD_LABEL=${{ contains(github.event.pull_request.labels.*.name, 'full build') }}
           SCIPY_INPUT="${GITHUB_EVENT_INPUTS_SCIPY}"
           GITHUB_EVENT_NAME="${{ github.event_name }}"
 
           if [[ "$COMMIT_MSG" =~ \[scipy\] ]] || \
              [[ "$PR_TITLE" =~ \[scipy\] ]] || \
              [[ "$SCIPY_LABEL" == "true" ]] || \
+             [[ "$FULL_BUILD_LABEL" == "true" ]] || \
              { [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$SCIPY_INPUT" == "true" ]]; }
           then
             echo "SciPy tests will run"
