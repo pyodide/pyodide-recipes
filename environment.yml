@@ -9,6 +9,8 @@ dependencies:
   - swig
   - make
   - cmake<4
+  - meson
+  - ninja
   - texinfo
   - autoconf
   - automake
