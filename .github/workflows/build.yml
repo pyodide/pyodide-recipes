@@ -48,7 +48,7 @@ jobs:
           GITHUB_EVENT_PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
           GITHUB_EVENT_INPUTS_SCIPY: ${{ github.event.inputs.scipy }}
         # Run if commit_msg contains "[scipy]" or
-        # if the PR has the "scipy" label or
+        # if the PR has the "scipy" label or the "full build" label or
         # if the PR title contains "[scipy]" or if
         # the workflow is triggered manually with the `scipy` input set to true
         run: |
@@ -57,12 +57,14 @@ jobs:
           COMMIT_MSG=$(git log --no-merges -1 --oneline)
           PR_TITLE="${GITHUB_EVENT_PULL_REQUEST_TITLE}"
           SCIPY_LABEL=${{ contains(github.event.pull_request.labels.*.name, 'scipy') }}
+          FULL_BUILD_LABEL=${{ contains(github.event.pull_request.labels.*.name, 'full build') }}
           SCIPY_INPUT="${GITHUB_EVENT_INPUTS_SCIPY}"
           GITHUB_EVENT_NAME="${{ github.event_name }}"
 
           if [[ "$COMMIT_MSG" =~ \[scipy\] ]] || \
              [[ "$PR_TITLE" =~ \[scipy\] ]] || \
              [[ "$SCIPY_LABEL" == "true" ]] || \
+             [[ "$FULL_BUILD_LABEL" == "true" ]] || \
              { [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] && [[ "$SCIPY_INPUT" == "true" ]]; }
           then
             echo "SciPy tests will run"
@@ -94,7 +96,7 @@ jobs:
             hashFiles('environment.yml') }}
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4.0.1
+        uses: conda-incubator/setup-miniconda@be893c923ea9cf1cf7cd510fbdde27c7e18cbdcb # v4.1.0
         with:
           miniforge-variant: Miniforge3
           miniforge-version: latest
@@ -118,6 +120,11 @@ jobs:
         run:
           mamba env update -n pyodide-env -f environment.yml
         if: steps.conda-cache.outputs.cache-hit != 'true'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
 
       # See https://github.com/jlumbroso/free-disk-space/issues/40
       - name: Disable man-db to free up disk space faster
@@ -175,6 +182,7 @@ jobs:
         if: github.event_name == 'pull_request'
         id: calculate_recipes_pr
         env:
+          DB_TEST_TRIGGER: ${{ contains(github.event.pull_request.labels.*.name, 'db') || contains(github.event.pull_request.labels.*.name, 'full build') }}
           GITHUB_EVENT_PULL_REQUEST_BASE_REF: ${{ github.event.pull_request.base.ref }}
           NEEDS_CHECK_SCIPY_TEST_TRIGGER_OUTPUTS_TEST_SCIPY: ${{ needs.check-scipy-test-trigger.outputs.test-scipy }}
         run: |
@@ -310,8 +318,8 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         test-config: [
-          {runner: selenium, runtime: chrome, runtime-version: 134 },
-          {runner: selenium, runtime: firefox, runtime-version: "136.0" },
+          {runner: selenium, runtime: chrome, runtime-version: stable },
+          {runner: selenium, runtime: firefox, runtime-version: stable },
           {runner: selenium, runtime: node, runtime-version: "24" },
         ]
 
@@ -331,7 +339,7 @@ jobs:
             hashFiles('environment.yml') }}
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4.0.1
+        uses: conda-incubator/setup-miniconda@be893c923ea9cf1cf7cd510fbdde27c7e18cbdcb # v4.1.0
         with:
           miniforge-variant: Miniforge3
           miniforge-version: latest
@@ -356,11 +364,11 @@ jobs:
           mamba env update -n pyodide-env -f environment.yml
         if: steps.conda-cache.outputs.cache-hit != 'true'
 
-      - uses: pyodide/pyodide-actions/install-browser@012fa537869d343726d01863a34b773fc4d96a14 # v2
+      - name: Set up Node.js
+        if: matrix.test-config.runtime == 'node'
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          runner: ${{ matrix.test-config.runner }}
-          browser: ${{ matrix.test-config.runtime }}
-          browser-version: ${{ matrix.test-config.runtime-version }}
+          node-version: ${{ matrix.test-config.runtime-version }}
 
       - name: Download build artifact
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
@@ -373,7 +381,20 @@ jobs:
           which python
           echo y | python -m pip install -r requirements.txt
 
+      - name: Install browser and driver
+        if: matrix.test-config.runtime != 'node'
+        run: |
+          tools/install_browser.sh \
+            ${{ matrix.test-config.runtime }} \
+            ${{ matrix.test-config.runtime-version }}
+
       - name: Run tests
+        env:
+          SE_AVOID_STATS: "true"
+          SE_BROWSER_VERSION: ${{ matrix.test-config.runtime-version }}
+          SE_OFFLINE: "true"
+          SE_SKIP_BROWSER_IN_PATH: "true"
+          SE_SKIP_DRIVER_IN_PATH: "true"
         run: |
           pytest -v \
             --dist-dir=./dist/ \
@@ -400,6 +421,76 @@ jobs:
           path: test-results-${{ matrix.test-config.runtime }}.xml
         if: always()
 
+  test-db-integration:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    needs: [build]
+    if: contains(github.event.pull_request.labels.*.name, 'db') || contains(github.event.pull_request.labels.*.name, 'full build')
+    services:
+      mysql:
+        image: mysql:8.0.45@sha256:4af1f8815716546f5b12410f7621f37f93db8dd11a184706ef59111930b8c2ff
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: pyodide_root_pw
+          MYSQL_ROOT_HOST: "%"
+        options: >-
+          --health-cmd="mysqladmin ping -ppyodide_root_pw --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=20
+      postgres:
+        image: postgres:16@sha256:71e27bf60b70bded003791b5573f8b808365613f341df20ffcf0c1ed7bc13ddf
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_PASSWORD: pyodide_root_pw
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Setup Mambaforge
+        uses: conda-incubator/setup-miniconda@be893c923ea9cf1cf7cd510fbdde27c7e18cbdcb # v4.1.0
+        with:
+          miniforge-variant: Miniforge3
+          miniforge-version: latest
+          activate-environment: pyodide-env
+          conda-remove-defaults: true
+          channels: conda-forge
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+
+      - name: Download build artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: repodata
+          path: ./dist/
+
+      - name: Install test dependencies
+        run: |
+          which python
+          python -m pip install -r requirements.txt
+
+      - name: Run DB integration tests
+        env:
+          MYSQL_SERVICE_ID: ${{ job.services.mysql.id }}
+          POSTGRES_SERVICE_ID: ${{ job.services.postgres.id }}
+        run: bash tools/test_db_integration.sh
+
+
   # This job runs the SciPy tests based on the
   # checks above, separate from the main test job.
   test-scipy:
@@ -424,7 +515,7 @@ jobs:
             ${{ runner.os }}-conda-${{ env.CONDA_CACHE_NUMBER }}-${{ hashFiles('environment.yml') }}
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4.0.1
+        uses: conda-incubator/setup-miniconda@be893c923ea9cf1cf7cd510fbdde27c7e18cbdcb # v4.1.0
         with:
           miniforge-variant: Miniforge3
           miniforge-version: latest
@@ -448,6 +539,11 @@ jobs:
         run:
           mamba env update -n pyodide-env -f environment.yml
         if: steps.conda-cache.outputs.cache-hit != 'true'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
 
       - name: Download build artifact
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
@@ -494,7 +590,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4.0.1
+        uses: conda-incubator/setup-miniconda@be893c923ea9cf1cf7cd510fbdde27c7e18cbdcb # v4.1.0
         with:
           miniforge-variant: Miniforge3
           miniforge-version: latest
@@ -533,7 +629,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4.0.1
+        uses: conda-incubator/setup-miniconda@be893c923ea9cf1cf7cd510fbdde27c7e18cbdcb # v4.1.0
         with:
           miniforge-variant: Miniforge3
           miniforge-version: latest

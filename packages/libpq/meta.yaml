@@ -1,0 +1,87 @@
+package:
+  name: libpq
+  version: "18.4"
+  tag:
+    - library
+    - static_library
+
+source:
+  url: https://ftp.postgresql.org/pub/source/v18.4/postgresql-18.4.tar.bz2
+  sha256: 81a81ec695fb0c7901407defaa1d2f7973617154cf27ba74e3a7ab8e64436094
+  patches:
+    - patches/0001-Disable-SO_PEERCRED-for-Emscripten.patch
+
+requirements:
+  host:
+    - libopenssl
+
+build:
+  type: static_library
+  script: |
+    export INSTALL_DIR="${WASM_LIBRARY_DIR}"
+    export ROOT_DIR="$(pwd)"
+
+    CPPFLAGS="-I${WASM_LIBRARY_DIR}/include" \
+    CFLAGS="-fPIC" \
+    LDFLAGS="-L${WASM_LIBRARY_DIR}/lib" \
+    LIBS="-lssl -lcrypto" \
+    FLEX=true \
+    emconfigure ./configure \
+      --prefix=${INSTALL_DIR} \
+      --with-ssl=openssl \
+      --without-bonjour \
+      --without-gssapi \
+      --without-icu \
+      --without-ldap \
+      --without-libcurl \
+      --without-liburing \
+      --without-lz4 \
+      --without-readline \
+      --without-zlib \
+      --without-zstd
+
+    emmake make -j ${PYODIDE_JOBS:-3} -C src/backend generated-headers
+    emmake make -j ${PYODIDE_JOBS:-3} -C src/common libpgcommon_shlib.a
+    emmake make -j ${PYODIDE_JOBS:-3} -C src/port libpgport_shlib.a
+    emmake make -j ${PYODIDE_JOBS:-3} -C src/interfaces/libpq install-lib-static
+    emmake make -j ${PYODIDE_JOBS:-3} -C src/include all
+
+    mkdir -p ${INSTALL_DIR}/bin ${INSTALL_DIR}/lib ${INSTALL_DIR}/include/libpq
+
+    cp src/interfaces/libpq/libpq-fe.h src/interfaces/libpq/libpq-events.h ${INSTALL_DIR}/include/
+    cp src/include/pg_config.h src/include/pg_config_manual.h src/include/pg_config_os.h src/include/postgres_ext.h ${INSTALL_DIR}/include/
+    cp src/include/libpq/libpq-fs.h ${INSTALL_DIR}/include/libpq/
+
+    # psycopg links only with -lpq. Unlike a shared library, static libpq.a does
+    # not pull in its dependent archives, so merge them into a self-contained
+    # archive instead of coupling every downstream package to their link order.
+    cat > libpq-selfcontained.mri <<EOF
+    create ${INSTALL_DIR}/lib/libpq.a
+    addlib ${ROOT_DIR}/src/interfaces/libpq/libpq.a
+    addlib ${ROOT_DIR}/src/common/libpgcommon_shlib.a
+    addlib ${ROOT_DIR}/src/port/libpgport_shlib.a
+    addlib ${INSTALL_DIR}/lib/libssl.a
+    addlib ${INSTALL_DIR}/lib/libcrypto.a
+    save
+    end
+    EOF
+    emar -M < libpq-selfcontained.mri
+    rm -f libpq-selfcontained.mri
+    emranlib ${INSTALL_DIR}/lib/libpq.a
+
+    # The original pg_config is a binary file.
+    # downstream packages such as psycopg-c uses this binary to locate
+    # the header files and libraries, but we can't do that as we are cross-compiling
+    # the binary.
+    # Hence, create a single wrapper shell script that does the same thing.
+
+    cp "${PKGDIR}/extras/pg_config" "${INSTALL_DIR}/bin/pg_config"
+    chmod +x "${INSTALL_DIR}/bin/pg_config"
+
+about:
+  home: https://www.postgresql.org/
+  summary: PostgreSQL native client library
+  license: PostgreSQL
+extra:
+  recipe-maintainers:
+    - ryanking13

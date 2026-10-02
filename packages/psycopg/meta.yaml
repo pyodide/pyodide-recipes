@@ -1,0 +1,27 @@
+package:
+  name: psycopg
+  version: 3.3.5
+  top-level:
+    - psycopg
+
+source:
+  url: https://files.pythonhosted.org/packages/3d/2e/d0a645bcaadde68bd6d93c43f02f14b0191bdda367ce3f7722abe3da744a/psycopg-3.3.5-py3-none-any.whl
+  sha256: ce5aa5cdb4f9379f00f487590e5890bfa7df9a164648c969ffa628505e21af4e
+
+requirements:
+  run:
+    - psycopg-binary
+
+test:
+  imports:
+    - psycopg
+    - psycopg.pq
+
+about:
+  home: https://psycopg.org/
+  PyPI: https://pypi.org/project/psycopg
+  summary: PostgreSQL database adapter for Python
+  license: LGPL-3.0-only
+extra:
+  recipe-maintainers:
+    - ryanking13

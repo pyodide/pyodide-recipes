@@ -3,10 +3,10 @@ channels:
   - conda-forge
 dependencies:
   - python=3.15
-  - nodejs=20
   - ccache
   - f2c
-  - swig
+  # swiglpk has compatibility issue with 4.5 or upper
+  - swig<4.5
   - make
   - cmake<4
   - meson
