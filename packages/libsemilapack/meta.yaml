@@ -1,12 +1,12 @@
 package:
   name: libsemilapack
-  version: "0.01.3-pre"
+  version: "0.01.5-pre"
   tag:
     - library
     - shared_library
 source:
-  url: https://github.com/ilayn/semicolon-lapack/archive/refs/tags/v0.01.3-pre.tar.gz
-  sha256: 5292396b9c2bffc1bf22dccad7acbf9f4fcb1edc0c45ed0f055d80f55e2a23a3
+  url: https://github.com/ilayn/semicolon-lapack/archive/refs/tags/v0.01.5-pre.tar.gz
+  sha256: 0616cf4cf4048e6d482f8ed813917e37e6b10291799e66ad2958578342cf7c9a
 
 build:
   type: shared_library
