@@ -1,6 +1,7 @@
 name: pyodide-env
 channels:
   - conda-forge
+  - conda-forge/label/python_rc
 dependencies:
   - python=3.15
   - ccache
