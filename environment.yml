@@ -1,14 +1,17 @@
 name: pyodide-env
 channels:
   - conda-forge
+  - conda-forge/label/python_rc
 dependencies:
-  - python=3.14.0
+  - python=3.15
   - ccache
   - f2c
   # swiglpk has compatibility issue with 4.5 or upper
-  - swig<4.5 
+  - swig<4.5
   - make
   - cmake<4
+  - meson
+  - ninja
   - texinfo
   - autoconf
   - automake

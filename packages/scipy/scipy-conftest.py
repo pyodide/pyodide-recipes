@@ -1,5 +1,6 @@
 import random
 import re
+import sys
 import threading
 
 import pytest
@@ -81,9 +82,6 @@ tests_to_mark = [
         xfail,
         thread_msg,
     ),
-    # scipy/linalg tests
-    ("test_cython_abi.py::test_cython_blas_abi_stability", xfail, todo_signature_mismatch_msg),
-    ("test_cython_abi.py::test_cython_lapack_abi_stability", xfail, todo_signature_mismatch_msg),
     # scipy/ndimage/tests
     ("test_filters.py::TestThreading", xfail, thread_msg),
     # scipy/optimize/tests
@@ -266,38 +264,49 @@ tests_to_mark = [
 ]
 
 
-def pytest_configure(config):  # noqa: ARG001
-    # threading.get_native_id is not available in Pyodide's WASM environment
+# The WASM plumbing below (the get_native_id stub, the gc_collect_harder no-op,
+# and the exit status handling) has been upstreamed into SciPy's own conftest.p
+# TODO before merging: update to SciPy 2.0.0 and remove
+
+
+def pytest_configure(config):
+    # threading.get_native_id is not available without OS thread support in
+    # the WebAssembly runtime. A number of tests (and helpers) reach for it
+    # even when not doing anything genuinely threaded, so we provide a stub.
     if not hasattr(threading, "get_native_id"):
         threading.get_native_id = lambda: random.randint(0, 10000)
 
-    # pytest's gc_collect_harder triggers the garbage collector during cleanup.
-    # FIXME: we can currently make it a no-op to let pytest finish normally, with
-    # summary prints, and the correct exit code) without the fatal error. We need
-    # a better way to handle this.
+    # pytest's gc_collect_harder forces a GC pass during cleanup, which can
+    # cause a fatal error from C-extension destructors under WASM. We have it
+    # as a no-op so that pytest can finish and print its summary. Refer to
+    # pytest_unconfigure below for how we then hand the real exit status back
+    # to Node.js.
     try:
-        import _pytest.unraisableexception as _ue
-
-        _ue.gc_collect_harder = lambda *args, **kwargs: None
+        import _pytest.unraisableexception
+        _pytest.unraisableexception.gc_collect_harder = lambda *args, **kwargs: None
     except (ImportError, AttributeError):
         pass
 
 
-@pytest.hookimpl(trylast=True)
-def pytest_sessionfinish(session, exitstatus):  # noqa: ARG001
-    # C-extension destructors in SciPy call Fortran functions with void/int
-    # signature mismatches. These run both
-    # during the gc cleanup (gc_collect_harder in _pytest/unraisableexception)
-    # and during Python's own finalization sequence, causing fatal errors that
-    # cannot be caught in Python as they crash the interpreter. Registering
-    # os._exit as an atexit handler as LIFO can at least bypass both of these.
-    # atexit is necessary for us here for allowing the terminal summary to
-    # print, since that happens in the terminal reporter's own
-    # pytest_sessionfinish which runs before this trylast hook.
-    import atexit
-    import os
+# Node.js reports a non-zero exit code if the interpreter hits a fatal error
+# while finalizing (some SciPy C-extension destructors do, under WASM), even
+# when every test passes. To hand Node.js the real pytest status, we stash it
+# in pytest_sessionfinish (which runs after the summary is printed) and then,
+# in pytest_unconfigure, exit via os._exit before interpreter finalization runs.
+_EMSCRIPTEN_EXIT_STATUS = 0
 
-    atexit.register(os._exit, int(exitstatus))
+
+@pytest.hookimpl(trylast=True)
+def pytest_sessionfinish(session, exitstatus):
+    global _EMSCRIPTEN_EXIT_STATUS
+    _EMSCRIPTEN_EXIT_STATUS = int(exitstatus)
+
+
+def pytest_unconfigure(config):
+    import os
+    sys.stdout.flush()
+    sys.stderr.flush()
+    os._exit(_EMSCRIPTEN_EXIT_STATUS)
 
 
 def pytest_collection_modifyitems(config, items):
