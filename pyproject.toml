@@ -83,4 +83,4 @@ asyncio_mode = "strict"
 rust_toolchain = "1.97.1"
 rustflags = ""
 # TODO: Temporarily added, wait for https://github.com/pyodide/pyodide-recipes/pull/639 first
-default_cross_build_env_url="https://github.com/pyodide/pyodide-build-environment-nightly/releases/download/20260731-abi_2026_5/xbuildenv.tar.bz2"
+default_cross_build_env_url="https://github.com/pyodide/pyodide/releases/download/315.0.0a2/xbuildenv-315.0.0a2.tar.gz"
