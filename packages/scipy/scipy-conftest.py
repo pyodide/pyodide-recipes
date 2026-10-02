@@ -1,5 +1,6 @@
 import random
 import re
+import sys
 import threading
 
 import pytest
@@ -266,53 +267,49 @@ tests_to_mark = [
 ]
 
 
-def pytest_configure(config):  # noqa: ARG001
-    # threading.get_native_id is not available in Pyodide's WASM environment
+# The WASM plumbing below (the get_native_id stub, the gc_collect_harder no-op,
+# and the exit status handling) has been upstreamed into SciPy's own conftest.p
+# TODO before merging: update to SciPy 2.0.0 and remove
+
+
+def pytest_configure(config):
+    # threading.get_native_id is not available without OS thread support in
+    # the WebAssembly runtime. A number of tests (and helpers) reach for it
+    # even when not doing anything genuinely threaded, so we provide a stub.
     if not hasattr(threading, "get_native_id"):
         threading.get_native_id = lambda: random.randint(0, 10000)
 
-    # pytest's gc_collect_harder triggers the garbage collector during cleanup.
-    # FIXME: we can currently make it a no-op to let pytest finish normally, with
-    # summary prints, and the correct exit code) without the fatal error. We need
-    # a better way to handle this.
+    # pytest's gc_collect_harder forces a GC pass during cleanup, which can
+    # cause a fatal error from C-extension destructors under WASM. We have it
+    # as a no-op so that pytest can finish and print its summary. Refer to
+    # pytest_unconfigure below for how we then hand the real exit status back
+    # to Node.js.
     try:
-        import _pytest.unraisableexception as _ue
-
-        _ue.gc_collect_harder = lambda *args, **kwargs: None
+        import _pytest.unraisableexception
+        _pytest.unraisableexception.gc_collect_harder = lambda *args, **kwargs: None
     except (ImportError, AttributeError):
         pass
 
 
-EXIT_STATUS = 0
+# Node.js reports a non-zero exit code if the interpreter hits a fatal error
+# while finalizing (some SciPy C-extension destructors do, under WASM), even
+# when every test passes. To hand Node.js the real pytest status, we stash it
+# in pytest_sessionfinish (which runs after the summary is printed) and then,
+# in pytest_unconfigure, exit via os._exit before interpreter finalization runs.
+_EMSCRIPTEN_EXIT_STATUS = 0
 
 
 @pytest.hookimpl(trylast=True)
-def pytest_sessionfinish(session, exitstatus):  # noqa: ARG001
-    # We stash the real pytest exit status so pytest_unconfigure can hand it
-    # to os._exit below. We need this hook for the test summary to be printed
-    # before we exit.
-    global EXIT_STATUS
-    EXIT_STATUS = int(exitstatus)
+def pytest_sessionfinish(session, exitstatus):
+    global _EMSCRIPTEN_EXIT_STATUS
+    _EMSCRIPTEN_EXIT_STATUS = int(exitstatus)
 
 
-def pytest_unconfigure(config):  # noqa: ARG001
-    # C-extension destructors in SciPy call Fortran functions with void/int
-    # signature mismatches. These run during Python's own finalization
-    # sequence and cause a fatal error that crashes the interpreter and,
-    # more importantly, makes Node.js report a non-zero exit code even when
-    # every test passed. os._exit here bypasses interpreter finalization entirely.
-    #
-    # pytest_unconfigure runs after the terminal reporter has printed its summary
-    # but while we are still in normal execution (before finalization), so the
-    # Emscripten ExitStatus it raises unwinds cleanly and Node.js maps it to the
-    # real exit code, instead of an exit-120 "error during finalization" path
-    # an atexit-scheduled os._exit seems to be hitting.
+def pytest_unconfigure(config):
     import os
-    import sys
-
     sys.stdout.flush()
     sys.stderr.flush()
-    os._exit(EXIT_STATUS)
+    os._exit(_EMSCRIPTEN_EXIT_STATUS)
 
 
 def pytest_collection_modifyitems(config, items):
