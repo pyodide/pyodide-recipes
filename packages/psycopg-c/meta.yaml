@@ -1,0 +1,28 @@
+package:
+  name: psycopg-c
+  version: 3.3.5
+  top-level:
+    - psycopg_c
+
+source:
+  url: https://files.pythonhosted.org/packages/21/7b/5da2274bdbfed6b02aea463e2b803b8d4406bbc9d6c6f6bfd7122492254f/psycopg_c-3.3.5.tar.gz
+  sha256: 5e11edaa0040a64d0af351a8fd3e276a824cd92fe34abc350cd67aa07ad36c55
+  patches:
+    - patches/0001-Use-Emscripten-endian-functions.patch
+
+requirements:
+  host:
+    - libpq
+
+build:
+  script: |
+    export PATH="${WASM_LIBRARY_DIR}/bin:${PATH}"
+
+about:
+  home: https://psycopg.org/
+  PyPI: https://pypi.org/project/psycopg-c
+  summary: PostgreSQL database adapter for Python C optimisation distribution
+  license: LGPL-3.0-only
+extra:
+  recipe-maintainers:
+    - ryanking13

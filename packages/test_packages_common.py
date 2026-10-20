@@ -25,6 +25,8 @@ if "CI" in os.environ:
 XFAIL_PACKAGES: dict[str, str] = {
     "soupsieve": "Importing soupsieve without installing beautifulsoup4 fails.",
     "coolprop": "slow",
+    "psycopg-c": "the psycopg package should be imported before psycopg_c",
+    "psycopg-binary": "the psycopg package should be imported before psycopg_binary",
 }
 
 
