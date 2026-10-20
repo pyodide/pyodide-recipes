@@ -49,6 +49,34 @@ You can then build the packages with the following command:
 pyodide build-recipes "<pkg1>,<pkg2>,..."
 ```
 
+## Finding out which packages exercise a line of `pywasmcross.py`
+
+`pywasmcross.py` (in pyodide-build) is the compiler wrapper that every native
+build goes through. To see which lines of it are exercised by which package
+builds, build with `--coverage` (the `coverage` package must be installed in
+the same environment as pyodide-build), then aggregate the records:
+
+```bash
+pip install coverage
+pyodide build-recipes "<pkg1>,<pkg2>,..." --coverage  # writes ./pywasmcross-coverage/<pkg>.jsonl
+python tools/pywasmcross_coverage_map.py pywasmcross-coverage \
+    --json pywasmcross-coverage.json \
+    --annotate pywasmcross-coverage.txt --show-packages \
+    --coverage-data .coverage.pywasmcross
+# optional: coverage html --data-file=.coverage.pywasmcross --show-contexts
+```
+
+The summary lists lines that no package exercises, lines that only a few
+packages exercise, and a small set of packages that together exercise every
+line, which is handy for picking what to rebuild after changing the wrapper.
+Records are appended, so run several builds into the same directory to merge
+them, or delete it to start over. `--coverage-dir PATH` picks another location;
+for builds that don't go through `build-recipes` the `PYWASMCROSS_COVERAGE_DIR`
+environment variable does the same, but must be an absolute path.
+Every full build in CI (pushes to `main`, scheduled builds, manual runs and
+PRs with the `full build` label) does this for the whole package set and
+uploads the results as the `pywasmcross-coverage` artifact.
+
 ## Updating the Pyodide xbuildenv
 
 To update the Pyodide xbuildenv, you need to update the `default_cross_build_env_url` variable in the `pyproject.toml` file.

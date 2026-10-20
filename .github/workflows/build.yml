@@ -226,6 +226,15 @@ jobs:
         run: |
           sed -i 's/unvendor-tests: true/unvendor-tests: false/' packages/scipy/meta.yaml
 
+      - name: Enable pywasmcross coverage
+        # Full builds record which lines of pyodide-build's pywasmcross.py
+        # (the compiler wrapper) each package build exercises. See
+        # tools/pywasmcross_coverage_map.py and docs/MAINTAINERS.md.
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || contains(github.event.pull_request.labels.*.name, 'full build')
+        run: |
+          python -m pip install coverage
+          echo "PYWASMCROSS_COVERAGE_DIR=$(pwd)/pywasmcross-coverage" >> $GITHUB_ENV
+
       - name: Build recipes (full)
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || contains(github.event.pull_request.labels.*.name, 'full build')
         run: |
@@ -234,7 +243,7 @@ jobs:
 
           export PIP_CONSTRAINT=$(pwd)/tools/constraints.txt
           mkdir -p result
-          pyodide build-recipes "*" --install --install-dir=./repodata --log-dir=build-logs | tee result/build_output.log
+          pyodide build-recipes "*" --install --install-dir=./repodata --log-dir=build-logs --coverage --coverage-dir="$PYWASMCROSS_COVERAGE_DIR" | tee result/build_output.log
           ccache -s
 
       - name: Build recipes (changed only)
@@ -264,6 +273,27 @@ jobs:
           fi
 
           echo ${PR_NUMBER} > result/pr_number
+      - name: Aggregate pywasmcross coverage
+        if: always() && env.PYWASMCROSS_COVERAGE_DIR != ''
+        run: |
+          if [ ! -d "$PYWASMCROSS_COVERAGE_DIR" ]; then
+            echo "No pywasmcross coverage records were produced"
+            exit 0
+          fi
+          python tools/pywasmcross_coverage_map.py "$PYWASMCROSS_COVERAGE_DIR" \
+            --json "$PYWASMCROSS_COVERAGE_DIR/pywasmcross-coverage.json" \
+            --annotate "$PYWASMCROSS_COVERAGE_DIR/pywasmcross-coverage.txt" --show-packages \
+            --coverage-data "$PYWASMCROSS_COVERAGE_DIR/.coverage.pywasmcross" \
+            | tee "$PYWASMCROSS_COVERAGE_DIR/summary.txt"
+
+      - name: Store pywasmcross coverage
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: always() && env.PYWASMCROSS_COVERAGE_DIR != ''
+        with:
+          name: pywasmcross-coverage
+          path: ./pywasmcross-coverage/
+          retention-days: 30
+
       - name: Compress build artifacts
         run: |
           tar -czvf packages.tar.gz -C repodata .
