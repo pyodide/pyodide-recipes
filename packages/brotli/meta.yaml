@@ -1,11 +1,11 @@
 package:
   name: brotli
-  version: 1.2.0
+  version: 1.2.1
   top-level:
     - brotli
 source:
-  url: https://files.pythonhosted.org/packages/source/b/brotli/brotli-1.2.0.tar.gz
-  sha256: e310f77e41941c13340a95976fe66a8a95b01e783d430eeaf7a2f87e0a57dd0a
+  url: https://files.pythonhosted.org/packages/source/b/brotli/brotli-1.2.1.tar.gz
+  sha256: 02b2f7b5a83485efe448a44ddf7983def05c3bb1dcf917d4f7154070260e13de
 about:
   home: https://github.com/google/brotli
   PyPI: https://pypi.org/project/brotli
