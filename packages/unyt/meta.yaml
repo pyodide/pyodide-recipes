@@ -1,11 +1,11 @@
 package:
   name: unyt
-  version: 3.1.0
+  version: 3.2.0
   top-level:
     - unyt
 source:
-  url: https://files.pythonhosted.org/packages/py3/u/unyt/unyt-3.1.0-py3-none-any.whl
-  sha256: 6ff9efe694a1c13f5b07ccb4c6b30a0e282d5e4989947f0ef5aadf4ad7be3f69
+  url: https://files.pythonhosted.org/packages/py3/u/unyt/unyt-3.2.0-py3-none-any.whl
+  sha256: bf691dd4f57d550f259661d2c8d5dad9bc41170ab611dbf22817b50dc2a42a97
 requirements:
   run:
     - numpy
