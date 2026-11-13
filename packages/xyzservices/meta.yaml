@@ -1,11 +1,11 @@
 package:
   name: xyzservices
-  version: 2026.3.0
+  version: 2026.9.1
   top-level:
     - xyzservices
 source:
-  sha256: d226866a5d8e9fef337034d8da37a8298f0a1d9d1489b4018e69579eb321fea4
-  url: https://files.pythonhosted.org/packages/source/x/xyzservices/xyzservices-2026.3.0.tar.gz
+  sha256: 8d1a39bf6b192940cc5db5264eeefc1b20dd184f8b83b1303b078743744f5943
+  url: https://files.pythonhosted.org/packages/source/x/xyzservices/xyzservices-2026.9.1.tar.gz
 about:
   home: https://github.com/geopandas/xyzservices
   PyPI: https://pypi.org/project/xyzservices
