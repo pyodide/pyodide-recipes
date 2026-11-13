@@ -1,11 +1,11 @@
 package:
   name: asttokens
-  version: 3.0.1
+  version: 3.0.2
   top-level:
     - asttokens
 source:
-  url: https://files.pythonhosted.org/packages/py3/a/asttokens/asttokens-3.0.1-py3-none-any.whl
-  sha256: 15a3ebc0f43c2d0a50eeafea25e19046c68398e487b9f1f5b517f7c0f40f976a
+  url: https://files.pythonhosted.org/packages/py3/a/asttokens/asttokens-3.0.2-py3-none-any.whl
+  sha256: 9da13157f5b28becde0bd374fc677dcd3c290614264eff096f167c469cd9f933
 requirements:
   run:
     - six
