@@ -1,11 +1,11 @@
 package:
   name: executing
-  version: 2.2.1
+  version: 2.3.0
   top-level:
     - executing
 source:
-  url: https://files.pythonhosted.org/packages/py2.py3/e/executing/executing-2.2.1-py2.py3-none-any.whl
-  sha256: 760643d3452b4d777d295bb167ccc74c64a81df23fb5e08eff250c425a4b2017
+  url: https://files.pythonhosted.org/packages/py3/e/executing/executing-2.3.0-py3-none-any.whl
+  sha256: 736e859c9f8701f11fcf516856f26f562e04776387824b43a35a1dfe21c84122
 about:
   home: https://github.com/alexmojaki/executing
   PyPI: https://pypi.org/project/executing
