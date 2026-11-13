@@ -1,11 +1,11 @@
 package:
   name: idna
-  version: "3.11"
+  version: "3.20"
   top-level:
     - idna
 source:
-  url: https://files.pythonhosted.org/packages/py3/i/idna/idna-3.11-py3-none-any.whl
-  sha256: 771a87f49d9defaf64091e6e6fe9c18d4833f140bd19464795bc32d966ca37ea
+  url: https://files.pythonhosted.org/packages/py3/i/idna/idna-3.20-py3-none-any.whl
+  sha256: ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c
 about:
   home: https://github.com/kjd/idna
   PyPI: https://pypi.org/project/idna
