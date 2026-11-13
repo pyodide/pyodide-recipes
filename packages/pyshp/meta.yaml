@@ -1,11 +1,11 @@
 package:
   name: pyshp
-  version: 3.0.3
+  version: 3.1.8
   top-level:
     - shapefile
 source:
-  url: https://files.pythonhosted.org/packages/py3/p/pyshp/pyshp-3.0.3-py3-none-any.whl
-  sha256: 28c8fac8c0c25bb0fecbbfd10ead7f319c2ff2f3b0b44a94f22bd2c93510ad42
+  url: https://files.pythonhosted.org/packages/py3/p/pyshp/pyshp-3.1.8-py3-none-any.whl
+  sha256: e0308cbcf70a425c0813365c87f676274da27cd86f2dc73a8ed28f173f62807e
 test:
   imports:
     - shapefile
