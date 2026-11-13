@@ -1,11 +1,11 @@
 package:
   name: starlette
-  version: 1.0.0
+  version: 1.10.0
   top-level:
     - starlette
 source:
-  url: https://files.pythonhosted.org/packages/py3/s/starlette/starlette-1.0.0-py3-none-any.whl
-  sha256: d3ec55e0bb321692d275455ddfd3df75fff145d009685eb40dc91fc66b03d38b
+  url: https://files.pythonhosted.org/packages/py3/s/starlette/starlette-1.10.0-py3-none-any.whl
+  sha256: 478c0ab3b4ced6e82719849c118fa406f0278a3499c1a898cd15cd31bdc38ce4
 about:
   home: https://github.com/encode/starlette
   PyPI: https://pypi.org/project/starlette
