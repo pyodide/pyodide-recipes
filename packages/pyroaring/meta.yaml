@@ -1,12 +1,12 @@
 package:
   name: pyroaring
-  version: 1.0.4
+  version: 1.2.0
   top-level:
     - pyroaring
 
 source:
-  url: https://files.pythonhosted.org/packages/source/p/pyroaring/pyroaring-1.0.4.tar.gz
-  sha256: 99d4217bdfeedc91b82efcec940175a9f9a9137c6476faf7ce5d9c9dd889c8e6
+  url: https://files.pythonhosted.org/packages/source/p/pyroaring/pyroaring-1.2.0.tar.gz
+  sha256: e33bf8fc8d8aad7373f62147cb5dbfaf0fdcf19af8069d034cd8ef4fb41a78af
 
 about:
   home: https://github.com/Ezibenroc/PyRoaringBitMap
