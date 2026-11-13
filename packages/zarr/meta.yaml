@@ -1,11 +1,11 @@
 package:
   name: zarr
-  version: 3.2.1
+  version: 3.4.2
   top-level:
     - zarr
 source:
-  sha256: 71565b738a0e7e8ed226f0516eba8c6bb53440ad7669a8c48ebb3534a161d035
-  url: https://files.pythonhosted.org/packages/source/z/zarr/zarr-3.2.1.tar.gz
+  sha256: 645d64f292f457120fc0ca18dbe38f665b4c21aaea38a2a88b5eead8f06f3d28
+  url: https://files.pythonhosted.org/packages/source/z/zarr/zarr-3.4.2.tar.gz
   patches:
     - patches/0001-Add-WASM-compatible-sync-for-Pyodide.patch
     - patches/0002-Set-threading.max_workers-1-on-WASM-in-config.patch
@@ -17,9 +17,11 @@ requirements:
     - numcodecs
     - google-crc32c
     - donfig
+    - msgspec
     - typing-extensions
 about:
   home: https://github.com/zarr-developers/zarr-python
   PyPI: https://pypi.org/project/zarr
-  summary: An implementation of chunked, compressed, N-dimensional arrays for Python
+  summary: An implementation of chunked, compressed, N-dimensional arrays for
+    Python
   license: MIT
