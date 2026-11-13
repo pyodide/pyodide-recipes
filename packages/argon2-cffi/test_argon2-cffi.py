@@ -11,13 +11,10 @@ def test_argon2(selenium):
 
     assert ph.verify(hash, "test") is True
 
-    with pytest.raises(argon2.exceptions.UnsupportedParamsError) as exinfo:
+    with pytest.raises(argon2.exceptions.UnsupportedParametersError) as exinfo:
         argon2.PasswordHasher(parallelism=2).hash("test")
 
-    assert (
-        str(exinfo.value)
-        == "within wasm/wasi environments `parallelism` must be set to 1"
-    )
+    assert str(exinfo.value) == "In WebAssembly environments `parallelism` must be 1."
 
     # test default params
     ph = argon2.PasswordHasher()
