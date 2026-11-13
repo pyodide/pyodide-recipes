@@ -1,12 +1,12 @@
 package:
   name: psycopg
-  version: 3.3.5
+  version: 3.3.9
   top-level:
     - psycopg
 
 source:
-  url: https://files.pythonhosted.org/packages/3d/2e/d0a645bcaadde68bd6d93c43f02f14b0191bdda367ce3f7722abe3da744a/psycopg-3.3.5-py3-none-any.whl
-  sha256: ce5aa5cdb4f9379f00f487590e5890bfa7df9a164648c969ffa628505e21af4e
+  url: https://files.pythonhosted.org/packages/py3/p/psycopg/psycopg-3.3.9-py3-none-any.whl
+  sha256: d2d7d04a1ce6dab4f5b27316bea3b52585cafa2f2d631e5b09dd69823f5c26f6
 
 requirements:
   run:
