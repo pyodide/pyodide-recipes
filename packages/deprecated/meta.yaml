@@ -1,11 +1,11 @@
 package:
   name: deprecated
-  version: 1.3.1
+  version: 3.0.1
   top-level:
     - deprecated
 source:
-  url: https://files.pythonhosted.org/packages/py2.py3/d/deprecated/deprecated-1.3.1-py2.py3-none-any.whl
-  sha256: 597bfef186b6f60181535a29fbe44865ce137a5079f295b479886c82729d5f3f
+  url: https://files.pythonhosted.org/packages/py3/d/deprecated/deprecated-3.0.1-py3-none-any.whl
+  sha256: eda314c115e8bc0fe52b90a6869e19240ac3cedb7449adfdba5981cf9ef693e1
 requirements:
   run:
     - wrapt
