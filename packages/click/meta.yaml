@@ -1,9 +1,9 @@
 package:
   name: click
-  version: 8.3.1
+  version: 8.5.1
 source:
-  url: https://files.pythonhosted.org/packages/98/78/01c019cdb5d6498122777c1a43056ebb3ebfeef2076d9d026bfe15583b2b/click-8.3.1-py3-none-any.whl
-  sha256: 981153a64e25f12d547d3426c367a4857371575ee7ad18df2a6183ab0545b2a6
+  url: https://files.pythonhosted.org/packages/py3/c/click/click-8.5.1-py3-none-any.whl
+  sha256: 8bb5376d2006950386f8c6427613334a2acadc5f559cb80e638d00b4df957e37
 test:
   imports:
     - click
