@@ -1,11 +1,11 @@
 package:
   name: pygame-ce
-  version: 2.5.7
+  version: 2.5.8
   top-level:
     - pygame
 source:
-  url: https://files.pythonhosted.org/packages/source/p/pygame_ce/pygame_ce-2.5.7.tar.gz
-  sha256: 86beb797cd73c141299a29b56f7df2b0543fbdc81d428022458329ff694aaa51
+  url: https://files.pythonhosted.org/packages/source/p/pygame_ce/pygame_ce-2.5.8.tar.gz
+  sha256: 3c8e69088ead310037972c391306ea58e74d7296b35d1890067749235fd554ba
 build:
   script: |
     # formats should be the same as the cibuildwheel config in pygame-ce
