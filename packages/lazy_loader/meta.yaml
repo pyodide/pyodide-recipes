@@ -1,11 +1,11 @@
 package:
   name: lazy_loader
-  version: "0.5"
+  version: "0.6"
   top-level:
     - lazy_loader
 source:
-  url: https://files.pythonhosted.org/packages/py3/l/lazy_loader/lazy_loader-0.5-py3-none-any.whl
-  sha256: ab0ea149e9c554d4ffeeb21105ac60bed7f3b4fd69b1d2360a4add51b170b005
+  url: https://files.pythonhosted.org/packages/py3/l/lazy_loader/lazy_loader-0.6-py3-none-any.whl
+  sha256: 77253be3391b06124a0e16105bd663b6c54470af1a9ca8e1cf026f38d58ed056
 about:
   home: https://scientific-python.org/specs/spec-0001/
   PyPI: https://pypi.org/project/lazy_loader
