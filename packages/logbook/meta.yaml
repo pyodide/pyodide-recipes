@@ -1,11 +1,11 @@
 package:
   name: logbook
-  version: 1.9.2
+  version: 1.10.1
   top-level:
     - logbook
 source:
-  url: https://files.pythonhosted.org/packages/source/l/logbook/logbook-1.9.2.tar.gz
-  sha256: 0538cabfd8e8a02b8185fb7a2be20b3965d225fbd7f4a5726b007d8e26b39ee0
+  url: https://files.pythonhosted.org/packages/source/l/logbook/logbook-1.10.1.tar.gz
+  sha256: 7fdf8d09d60c9eaa4d8d27b37363b4ce277d019f4cae5c259ea03040f7b634b7
 
 requirements:
   host:
