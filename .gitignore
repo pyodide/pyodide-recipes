@@ -136,3 +136,4 @@ pyodide
 packages/.libs/
 
 .DS_Store
+pywasmcross-coverage/
