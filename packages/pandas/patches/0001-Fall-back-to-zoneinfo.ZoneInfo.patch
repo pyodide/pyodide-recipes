@@ -1,0 +1,30 @@
+From ff1f9f1081a109736d83df512c36f1df3f9cad0b Mon Sep 17 00:00:00 2001
+From: Gyeongjae Choi <def6488@gmail.com>
+Date: Mon, 16 Nov 2026 16:04:34 +0900
+Subject: [PATCH] Fall back to zoneinfo.ZoneInfo when zoneinfo._zoneinfo is
+ missing
+
+---
+ pandas/_libs/tslibs/timezones.pyx | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/pandas/_libs/tslibs/timezones.pyx b/pandas/_libs/tslibs/timezones.pyx
+index 1c462d3..8fb4140 100644
+--- a/pandas/_libs/tslibs/timezones.pyx
++++ b/pandas/_libs/tslibs/timezones.pyx
+@@ -5,7 +5,11 @@ from datetime import (
+ )
+ import pickle
+ import zoneinfo
+-from zoneinfo._zoneinfo import ZoneInfo as _ZoneInfo
++try:
++    from zoneinfo._zoneinfo import ZoneInfo as _ZoneInfo
++except ImportError:
++    # Pyodide strips the pure-Python zoneinfo fallback from its stdlib
++    _ZoneInfo = zoneinfo.ZoneInfo
+ 
+ from pandas.compat._optional import import_optional_dependency
+ 
+-- 
+2.54.0 (Apple Git-157)
+
