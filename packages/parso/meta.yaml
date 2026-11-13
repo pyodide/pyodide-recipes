@@ -1,11 +1,11 @@
 package:
   name: parso
-  version: 0.8.6
+  version: 0.8.7
   top-level:
     - parso
 source:
-  sha256: 2c549f800b70a5c4952197248825584cb00f033b29c692671d3bf08bf380baff
-  url: https://files.pythonhosted.org/packages/py2.py3/p/parso/parso-0.8.6-py2.py3-none-any.whl
+  sha256: a8926eb2a1b915486941fdbd31e86a4baf88fe8c210f25f2f35ecec5b574ca1c
+  url: https://files.pythonhosted.org/packages/py2.py3/p/parso/parso-0.8.7-py2.py3-none-any.whl
 about:
   home: https://github.com/davidhalter/parso
   PyPI: https://pypi.org/project/parso
