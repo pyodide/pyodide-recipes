@@ -1,11 +1,11 @@
 package:
   name: Pillow
-  version: 12.2.0
+  version: 13.0.0
   top-level:
     - PIL
 source:
-  sha256: a830b1a40919539d07806aa58e1b114df53ddd43213d9c8b75847eee6c0182b5
-  url: https://files.pythonhosted.org/packages/source/p/pillow/pillow-12.2.0.tar.gz
+  sha256: cdcd1ba258178f7356d74170c9a81ba4eab6a5d55748bc402a5a2a6fe6be3510
+  url: https://files.pythonhosted.org/packages/source/p/pillow/pillow-13.0.0.tar.gz
 build:
   cflags: |
     -s USE_ZLIB=1
