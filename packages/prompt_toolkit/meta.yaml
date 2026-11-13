@@ -1,11 +1,11 @@
 package:
   name: prompt_toolkit
-  version: 3.0.52
+  version: 3.0.53
   top-level:
     - prompt_toolkit
 source:
-  url: https://files.pythonhosted.org/packages/py3/p/prompt_toolkit/prompt_toolkit-3.0.52-py3-none-any.whl
-  sha256: 9aac639a3bbd33284347de5ad8d68ecc044b91a762dc39b7c21095fcd6a19955
+  url: https://files.pythonhosted.org/packages/py3/p/prompt_toolkit/prompt_toolkit-3.0.53-py3-none-any.whl
+  sha256: 01c0891d7f9237d5e339f7d3e42cdae80b7534abb1c7c0e3352efba6231492f2
 requirements:
   run:
     - wcwidth
