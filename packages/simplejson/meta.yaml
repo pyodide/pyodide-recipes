@@ -1,12 +1,12 @@
 package:
   name: simplejson
-  version: 3.20.2
+  version: 4.3.0
   top-level:
     - simplejson
 
 source:
-  url: https://files.pythonhosted.org/packages/source/s/simplejson/simplejson-3.20.2.tar.gz
-  sha256: 5fe7a6ce14d1c300d80d08695b7f7e633de6cd72c80644021874d985b3393649
+  url: https://files.pythonhosted.org/packages/source/s/simplejson/simplejson-4.3.0.tar.gz
+  sha256: ffe34ab51a0d37e6d1c661a5672df00d2d5e18804e38eac07abffb83fa5ec3d7
 
 about:
   home: https://github.com/simplejson/simplejson
