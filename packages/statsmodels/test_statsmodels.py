@@ -9,7 +9,7 @@ from pytest_pyodide import run_in_pyodide
 def test_zero_collinear(selenium):
     import statsmodels as sm
 
-    assert sm.test(["-svra", "-k", "test_zero_collinear"], exit=False)
+    assert sm.test(["-svra", "-o", "strict_parametrization_ids=false", "-k", "test_zero_collinear"], exit=False)
 
 
 # Regression test for scipy.optimize behaviour against illegal values
@@ -19,4 +19,4 @@ def test_zero_collinear(selenium):
 def test_tuckey_hsd(selenium):
     import statsmodels as sm
 
-    assert sm.test(["-svra", "-k", "TuckeyHSD"], exit=False)
+    assert sm.test(["-svra", "-o", "strict_parametrization_ids=false", "-k", "TuckeyHSD"], exit=False)
