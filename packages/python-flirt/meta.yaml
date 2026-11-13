@@ -1,22 +1,21 @@
 package:
   name: python-flirt
-  version: 0.9.10
+  version: 0.10.2
   tag:
     - rust
   top-level:
     - flirt
 source:
-  url: https://files.pythonhosted.org/packages/source/p/python_flirt/python_flirt-0.9.10.tar.gz
-  sha256: a04c7be382631abbb763185b628fe7a5db9d6a8e36cd6fbc974e37f9669a3ffe
+  url: https://files.pythonhosted.org/packages/source/p/python_flirt/python_flirt-0.10.2.tar.gz
+  sha256: f180d7fcdc110cbc5197d27c58fe7cd57adc2eead0a0b562d47ab0b0a85a3b20
 requirements:
   executable:
     - rustup
 about:
   home: https://github.com/williballenthin/lancelot/tree/master/pyflirt
   PyPI: https://pypi.org/project/python-flirt
-  summary:
-    A Python library for parsing, compiling, and matching Fast Library Identification
-    and Recognition Technology (FLIRT) signatures.
+  summary: A Python library for parsing, compiling, and matching Fast Library
+    Identification and Recognition Technology (FLIRT) signatures.
   license: Apache-2.0
 extra:
   recipe-maintainers:
