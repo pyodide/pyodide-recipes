@@ -1,11 +1,11 @@
 package:
   name: kiwisolver
-  version: 1.5.0
+  version: 1.5.1
   top-level:
     - kiwisolver
 source:
-  sha256: d4193f3d9dc3f6f79aaed0e5637f45d98850ebf01f7ca20e69457f3e8946b66a
-  url: https://files.pythonhosted.org/packages/source/k/kiwisolver/kiwisolver-1.5.0.tar.gz
+  sha256: f1303ef2eec81262a4b708c3e858afe58d7c75ad91c1c05266eda7673369859a
+  url: https://files.pythonhosted.org/packages/source/k/kiwisolver/kiwisolver-1.5.1.tar.gz
 about:
   home: https://github.com/nucleic/kiwi
   license: BSD-3-Clause
