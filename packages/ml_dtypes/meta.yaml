@@ -1,11 +1,11 @@
 package:
   name: ml_dtypes
-  version: 0.5.4
+  version: 0.6.0
   top-level:
     - ml_dtypes
 source:
-  url: https://files.pythonhosted.org/packages/source/m/ml_dtypes/ml_dtypes-0.5.4.tar.gz
-  sha256: 8ab06a50fb9bf9666dd0fe5dfb4676fa2b0ac0f31ecff72a6c3af8e22c063453
+  url: https://files.pythonhosted.org/packages/source/m/ml_dtypes/ml_dtypes-0.6.0.tar.gz
+  sha256: 5e60251d32ced5598972e4d5e06a2f044341f9291402551a3f6f0ec44f9299b0
 requirements:
   run:
     - numpy
