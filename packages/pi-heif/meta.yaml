@@ -1,11 +1,11 @@
 package:
   name: pi-heif
-  version: 1.3.0
+  version: 1.4.0
   top-level:
     - pi_heif
 source:
-  url: https://files.pythonhosted.org/packages/source/p/pi_heif/pi_heif-1.3.0.tar.gz
-  sha256: 58151840d0d60507330654a466b06cbf7ca8fb3759eadb5234d70b4dc2bc990c
+  url: https://files.pythonhosted.org/packages/source/p/pi_heif/pi_heif-1.4.0.tar.gz
+  sha256: e1199d9d41d9ecc877cf3ae7322ff099f6404574f2e62da47590cd4ecb9ec554
 requirements:
   run:
     - cffi
