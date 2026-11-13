@@ -1,11 +1,11 @@
 package:
   name: altair
-  version: 6.0.0
+  version: 6.3.0
   top-level:
     - altair
 source:
-  url: https://files.pythonhosted.org/packages/py3/a/altair/altair-6.0.0-py3-none-any.whl
-  sha256: 09ae95b53d5fe5b16987dccc785a7af8588f2dca50de1e7a156efa8a461515f8
+  url: https://files.pythonhosted.org/packages/py3/a/altair/altair-6.3.0-py3-none-any.whl
+  sha256: 7defb6ca730676dfc99a299768e2769f51585fcb3dc960ea71aacc368929d65e
 about:
   home: https://altair-viz.github.io/
   PyPI: https://pypi.org/project/altair
@@ -21,4 +21,3 @@ requirements:
     - jsonschema
     - packaging
     - narwhals
-    
