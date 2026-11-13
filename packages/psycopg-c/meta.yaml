@@ -1,12 +1,12 @@
 package:
   name: psycopg-c
-  version: 3.3.5
+  version: 3.3.9
   top-level:
     - psycopg_c
 
 source:
-  url: https://files.pythonhosted.org/packages/21/7b/5da2274bdbfed6b02aea463e2b803b8d4406bbc9d6c6f6bfd7122492254f/psycopg_c-3.3.5.tar.gz
-  sha256: 5e11edaa0040a64d0af351a8fd3e276a824cd92fe34abc350cd67aa07ad36c55
+  url: https://files.pythonhosted.org/packages/source/p/psycopg_c/psycopg_c-3.3.9.tar.gz
+  sha256: 591fcbcb40e089235a7f096b9e887e71ccae78fd337aba198d918e33707c5e01
   patches:
     - patches/0001-Use-Emscripten-endian-functions.patch
 
