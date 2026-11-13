@@ -1,11 +1,11 @@
 package:
   name: google-crc32c
-  version: 1.8.0
+  version: 1.9.0
   top-level:
     - google_crc32c
 source:
-  url: https://files.pythonhosted.org/packages/source/g/google_crc32c/google_crc32c-1.8.0.tar.gz
-  sha256: a428e25fb7691024de47fecfbff7ff957214da51eddded0da0ae0e0f03a2cf79
+  url: https://files.pythonhosted.org/packages/source/g/google_crc32c/google_crc32c-1.9.0.tar.gz
+  sha256: 7b8c84c3d159ab6817fe3f74e6e6cef099c3f95dcec3abc0d8afb1404642efbe
 requirements:
   host:
     - libcrc32c
