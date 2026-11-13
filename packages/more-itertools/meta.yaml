@@ -1,11 +1,11 @@
 package:
   name: more-itertools
-  version: 11.0.1
+  version: 11.2.1
   top-level:
     - more_itertools
 source:
-  sha256: eaf287826069452a8f61026c597eae2428b2d1ba2859083abbf240b46842ce6d
-  url: https://files.pythonhosted.org/packages/py3/m/more_itertools/more_itertools-11.0.1-py3-none-any.whl
+  sha256: 35a7377edd1dd6608dcb2cdf534ded55ea32d49448875ad042cd3f879fb1ded0
+  url: https://files.pythonhosted.org/packages/py3/m/more_itertools/more_itertools-11.2.1-py3-none-any.whl
 about:
   home: https://github.com/more-itertools/more-itertools
   PyPI: https://pypi.org/project/more-itertools
