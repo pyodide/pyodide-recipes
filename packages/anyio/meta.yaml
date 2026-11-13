@@ -1,11 +1,11 @@
 package:
   name: anyio
-  version: 4.13.0
+  version: 4.16.0
   top-level:
     - anyio
 source:
-  url: https://files.pythonhosted.org/packages/py3/a/anyio/anyio-4.13.0-py3-none-any.whl
-  sha256: 08b310f9e24a9594186fd75b4f73f4a4152069e3853f1ed8bfbf58369f4ad708
+  url: https://files.pythonhosted.org/packages/py3/a/anyio/anyio-4.16.0-py3-none-any.whl
+  sha256: c66ae634e0b8228396b801741beb3294326d4b6102f7bba4041c0dfb58c29026
 requirements:
   run:
     - sniffio
