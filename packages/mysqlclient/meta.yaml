@@ -1,12 +1,12 @@
 package:
   name: mysqlclient
-  version: 2.2.8
+  version: 2.3.1
   top-level:
     - MySQLdb
 
 source:
-  url: https://files.pythonhosted.org/packages/eb/b0/9df076488cb2e536d40ce6dbd4273c1f20a386e31ffe6e7cb613902b3c2a/mysqlclient-2.2.8.tar.gz
-  sha256: 8ed20c5615a915da451bb308c7d0306648a4fd9a2809ba95c992690006306199
+  url: https://files.pythonhosted.org/packages/source/m/mysqlclient/mysqlclient-2.3.1.tar.gz
+  sha256: c07e1b83b530fd6c5888259f36afad1980d21fcb33ba97384650dd23c8f73ea8
 
 requirements:
   host:
