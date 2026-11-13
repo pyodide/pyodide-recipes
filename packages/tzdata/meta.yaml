@@ -1,11 +1,11 @@
 package:
   name: tzdata
-  version: "2025.3"
+  version: "2026.6"
   top-level:
     - tzdata
 source:
-  url: https://files.pythonhosted.org/packages/c7/b0/003792df09decd6849a5e39c28b513c06e84436a54440380862b5aeff25d/tzdata-2025.3-py2.py3-none-any.whl
-  sha256: 06a47e5700f3081aab02b2e513160914ff0694bce9947d6b76ebd6bf57cfc5d1
+  url: https://files.pythonhosted.org/packages/py2.py3/t/tzdata/tzdata-2026.6-py2.py3-none-any.whl
+  sha256: 0a10eec6e13ef16b627fabed9a5f2ba61a62b1c67f327305f4e7e412a70b4aec
 about:
   home: https://github.com/python/tzdata
   PyPI: https://pypi.org/project/tzdata
