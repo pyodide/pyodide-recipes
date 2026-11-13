@@ -1,11 +1,11 @@
 package:
   name: platformdirs
-  version: 4.9.4
+  version: 4.14.5
   top-level:
     - platformdirs
 source:
-  url: https://files.pythonhosted.org/packages/py3/p/platformdirs/platformdirs-4.9.4-py3-none-any.whl
-  sha256: 68a9a4619a666ea6439f2ff250c12a853cd1cbd5158d258bd824a7df6be2f868
+  url: https://files.pythonhosted.org/packages/py3/p/platformdirs/platformdirs-4.14.5-py3-none-any.whl
+  sha256: 8e778c6fa421516f4d3369449f8df3b0e1b72c0e0005fe88e3ec772d0a14e750
 about:
   home: https://github.com/tox-dev/platformdirs
   PyPI: https://pypi.org/project/platformdirs
