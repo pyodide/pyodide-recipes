@@ -134,5 +134,6 @@ emsdk/
 ccache/
 pyodide
 packages/.libs/
+pywasmcross-coverage/
 
 .DS_Store
