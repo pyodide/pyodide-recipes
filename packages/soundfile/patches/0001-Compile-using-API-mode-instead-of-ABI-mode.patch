@@ -1,25 +1,35 @@
-From 91607da9eda52b2bc65969dec5c556faae52dc3a Mon Sep 17 00:00:00 2001
+From 652ecc74653e2c7d6cfaf1fb141c323411fc46c7 Mon Sep 17 00:00:00 2001
 From: swnf <50806201+swnf@users.noreply.github.com>
-Date: Sat, 2 Nov 2024 20:26:31 +0100
+Date: Fri, 13 Nov 2026 14:11:08 +0900
 Subject: [PATCH] Compile using API mode instead of ABI mode
 
+---
+ soundfile.py       | 61 +---------------------------------------------
+ soundfile_build.py | 11 ++++++++-
+ 2 files changed, 11 insertions(+), 61 deletions(-)
 
 diff --git a/soundfile.py b/soundfile.py
-index cc13192..932f068 100644
+index 6db0b4b..e41c3ef 100644
 --- a/soundfile.py
 +++ b/soundfile.py
-@@ -13,8 +13,7 @@ __version__ = "0.12.1"
- import os as _os
+@@ -14,14 +14,13 @@ import os as _os
  import sys as _sys
- from os import SEEK_SET, SEEK_CUR, SEEK_END
+ import threading as _threading
+ from collections.abc import Generator
 -from ctypes.util import find_library as _find_library
+ from os import SEEK_CUR, SEEK_END, SEEK_SET
+ from typing import Any, BinaryIO, Final, Literal, TypeAlias
+ 
+ import numpy
+ from typing_extensions import Self
+ 
 -from _soundfile import ffi as _ffi
 +from _soundfile import ffi as _ffi, lib as _snd
  
- try:
-     _unicode = unicode  # doesn't exist in Python 3.x
-@@ -145,52 +144,6 @@ _ffi_types = {
-     'int16': 'short'
+ FileDescriptorOrPath: TypeAlias = str | int | BinaryIO | _os.PathLike[Any]
+ AudioData: TypeAlias = numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float32 | numpy.float64 | numpy.int32 | numpy.int16]]
+@@ -159,64 +158,6 @@ _bitrate_modes: Final[dict[str, int]] = {
+     'VARIABLE': 2,
  }
  
 -try:  # packaged lib (in _soundfile_data which should be on python path)
@@ -27,11 +37,23 @@ index cc13192..932f068 100644
 -        from platform import machine as _machine
 -        _packaged_libname = 'libsndfile_' + _machine() + '.dylib'
 -    elif _sys.platform == 'win32':
--        from platform import architecture as _architecture
--        _packaged_libname = 'libsndfile_' + _architecture()[0] + '.dll'
+-        import sysconfig as _sysconfig
+-
+-        _win_machine = _sysconfig.get_platform()
+-        if _win_machine == 'win-arm64':
+-            _packaged_libname = 'libsndfile_arm64.dll'
+-        elif _win_machine == 'win-amd64':
+-            _packaged_libname = 'libsndfile_x64.dll'
+-        elif _win_machine == 'win32':
+-            _packaged_libname = 'libsndfile_x86.dll'
+-        else:
+-            raise OSError(f'no packaged library for Windows {_win_machine}')
 -    elif _sys.platform == 'linux':
 -        from platform import machine as _machine
--        _packaged_libname = 'libsndfile_' + _machine() + '.so'
+-        if _machine() in ["aarch64", "aarch64_be", "armv8b", "armv8l"]:
+-            _packaged_libname = 'libsndfile_arm64.so'
+-        else:
+-            _packaged_libname = 'libsndfile_' + _machine() + '.so'
 -    else:
 -        raise OSError('no packaged library for this platform')
 -
@@ -72,7 +94,7 @@ index cc13192..932f068 100644
  if __libsndfile_version__.startswith('libsndfile-'):
      __libsndfile_version__ = __libsndfile_version__[len('libsndfile-'):]
 diff --git a/soundfile_build.py b/soundfile_build.py
-index 774fd9b..76c4783 100644
+index 37d2de0..bb99e3f 100644
 --- a/soundfile_build.py
 +++ b/soundfile_build.py
 @@ -3,7 +3,16 @@ import sys
@@ -94,5 +116,5 @@ index 774fd9b..76c4783 100644
  enum
  {
 -- 
-2.43.0
+2.54.0 (Apple Git-157)
 

@@ -1,22 +1,23 @@
 package:
   name: soundfile
-  version: 0.12.1
+  version: 0.14.0
   top-level:
     - soundfile
 requirements:
   run:
     - cffi
     - numpy
+    - typing-extensions
   host:
     - cffi
-    # These dependencies are all listed explicitly because we also explicitly use each one in ffibuilder.set_source()
+      # These dependencies are all listed explicitly because we also explicitly use each one in ffibuilder.set_source()
     - libflac
     - libopus
     - libmp3lame
     - libsndfile
 source:
-  url: https://files.pythonhosted.org/packages/6f/96/5ff33900998bad58d5381fd1acfcdac11cbea4f08fc72ac1dc25ffb13f6a/soundfile-0.12.1.tar.gz
-  sha256: e8e1017b2cf1dda767aef19d2fd9ee5ebe07e050d430f77a0a7c66ba08b8cdae
+  url: https://files.pythonhosted.org/packages/source/s/soundfile/soundfile-0.14.0.tar.gz
+  sha256: ba1c1a2d618bca5c406647c83b89f07cc8810fa506a50622a6993ba130c1de11
   patches:
     - patches/0001-Remove-custom-wheel-tag-logic.patch
     - patches/0001-Compile-using-API-mode-instead-of-ABI-mode.patch
