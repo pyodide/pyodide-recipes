@@ -1,11 +1,11 @@
 package:
   name: dnspython
-  version: 2.8.0
+  version: 2.9.2
   top-level:
     - dns
 source:
-  url: https://files.pythonhosted.org/packages/py3/d/dnspython/dnspython-2.8.0-py3-none-any.whl
-  sha256: 01d9bbc4a2d76bf0db7c1f729812ded6d912bd318d3b1cf81d30c0f845dbf3af
+  url: https://files.pythonhosted.org/packages/py3/d/dnspython/dnspython-2.9.2-py3-none-any.whl
+  sha256: af15f7d385a6ae2fb35a796fde2138004c8c42c7389090e2addc83e3b3340fd8
 about:
   PyPI: https://pypi.org/project/dnspython
   summary: DNS toolkit
