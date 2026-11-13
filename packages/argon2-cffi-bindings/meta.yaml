@@ -1,11 +1,11 @@
 package:
   name: argon2-cffi-bindings
-  version: 25.1.0
+  version: 26.1.0
   top-level:
     - _argon2_cffi_bindings
 source:
-  url: https://files.pythonhosted.org/packages/source/a/argon2_cffi_bindings/argon2_cffi_bindings-25.1.0.tar.gz
-  sha256: b957f3e6ea4d55d820e40ff76f450952807013d361a65d7f28acc0acbf29229d
+  url: https://files.pythonhosted.org/packages/source/a/argon2_cffi_bindings/argon2_cffi_bindings-26.1.0.tar.gz
+  sha256: 63505c71542a44b68b1e38060450fb006404170da375feb31af153e7f9c6205d
 requirements:
   run:
     - cffi
