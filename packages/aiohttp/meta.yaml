@@ -1,11 +1,11 @@
 package:
   name: aiohttp
-  version: 3.13.5
+  version: 3.14.5
   top-level:
     - aiohttp
 source:
-  url: https://files.pythonhosted.org/packages/source/a/aiohttp/aiohttp-3.13.5.tar.gz
-  sha256: 9d98cc980ecc96be6eb4c1994ce35d28d8b1f5e5208a23b421187d1209dbb7d1
+  url: https://files.pythonhosted.org/packages/source/a/aiohttp/aiohttp-3.14.5.tar.gz
+  sha256: 5558a7f5a05af9ecf744af91e5baefc436f93c9333e656c27ec253f9a6bbe178
 
 requirements:
   run:
