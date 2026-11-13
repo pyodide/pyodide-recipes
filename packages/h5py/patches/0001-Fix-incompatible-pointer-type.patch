@@ -8,13 +8,13 @@ Removed hunks upstreamed in 3.10.0
 
 ---
  h5py/_errors.pxd | 2 +-
- h5py/_errors.pyx | 6 +++---
+ h5py/_errors.templ.pyx | 6 +++---
  2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/h5py/_errors.pyx b/h5py/_errors.pyx
+diff --git a/h5py/_errors.templ.pyx b/h5py/_errors.templ.pyx
 index 612052fb..dabbc632 100644
---- a/h5py/_errors.pyx
-+++ b/h5py/_errors.pyx
+--- a/h5py/_errors.templ.pyx
++++ b/h5py/_errors.templ.pyx
 @@ -120,7 +120,7 @@ cdef int set_exception() except -1:
  
      err.n = -1
