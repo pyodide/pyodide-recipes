@@ -1,39 +1,40 @@
-From 6229df95271adc4c60c479d744263a204f7875b2 Mon Sep 17 00:00:00 2001
+From 695e70340337b7f6ed84a510aedf7be69b1657ae Mon Sep 17 00:00:00 2001
 From: Hood Chatham <roberthoodchatham@gmail.com>
-Date: Mon, 27 Jun 2022 18:54:02 -0700
+Date: Fri, 13 Nov 2026 14:29:36 +0900
 Subject: [PATCH] Remove cpuinfo
 
 ---
- setup.py                       | 1 -
- src/pytest_benchmark/plugin.py | 3 +--
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ pyproject.toml                 | 1 -
+ src/pytest_benchmark/plugin.py | 4 +---
+ 2 files changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/setup.py b/setup.py
-index b6e16ed..9cf8444 100755
---- a/setup.py
-+++ b/setup.py
-@@ -73,7 +73,6 @@ setup(
-     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
-     install_requires=[
-         'pytest>=3.8',
--        'py-cpuinfo',
-     ],
-     extras_require={
-         'aspect': ['aspectlib'],
+diff --git a/pyproject.toml b/pyproject.toml
+index 8bb6b5a..347cc32 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -37,7 +37,6 @@ classifiers = [
+     "Topic :: Utilities",
+ ]
+ dependencies = [
+-    "py-cpuinfo2>=10.1",
+     "pytest>=8.1",
+ ]
+ dynamic = [
 diff --git a/src/pytest_benchmark/plugin.py b/src/pytest_benchmark/plugin.py
-index f485835..61cfaca 100644
+index 54eaba7..ae62da3 100644
 --- a/src/pytest_benchmark/plugin.py
 +++ b/src/pytest_benchmark/plugin.py
-@@ -328,8 +328,7 @@ def pytest_terminal_summary(terminalreporter):
+@@ -411,9 +411,7 @@ def pytest_terminal_summary(terminalreporter):
  
  
  def get_cpu_info():
--    import cpuinfo
+-    import cpuinfo  # noqa: PLC0415
+-
 -    return cpuinfo.get_cpu_info() or {}
 +    return {}
  
  
  def pytest_benchmark_scale_unit(config, unit, benchmarks, best, worst, sort):
 -- 
-2.25.1
+2.54.0 (Apple Git-157)
 
