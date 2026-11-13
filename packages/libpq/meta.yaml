@@ -1,13 +1,13 @@
 package:
   name: libpq
-  version: "18.4"
+  version: "18.7"
   tag:
     - library
     - static_library
 
 source:
-  url: https://ftp.postgresql.org/pub/source/v18.4/postgresql-18.4.tar.bz2
-  sha256: 81a81ec695fb0c7901407defaa1d2f7973617154cf27ba74e3a7ab8e64436094
+  url: https://ftp.postgresql.org/pub/source/v18.7/postgresql-18.7.tar.bz2
+  sha256: 441dfae4280cae3e0425e5f876f80559fb0731c140f1aae22b3e5a54d0411bfd
   patches:
     - patches/0001-Disable-SO_PEERCRED-for-Emscripten.patch
 
