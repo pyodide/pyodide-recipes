@@ -1,13 +1,13 @@
 package:
   name: libcst
-  version: 1.8.6
+  version: 1.9.0
   tag:
     - rust
   top-level:
     - libcst
 source:
-  url: https://files.pythonhosted.org/packages/source/l/libcst/libcst-1.8.6.tar.gz
-  sha256: f729c37c9317126da9475bdd06a7208eb52fcbd180a6341648b45a56b4ba708b
+  url: https://files.pythonhosted.org/packages/source/l/libcst/libcst-1.9.0.tar.gz
+  sha256: 087b58a9afe076bb08e2d726478e1f16cb928d67ffa9092817e033c335de522a
 requirements:
   run:
     - pyyaml
