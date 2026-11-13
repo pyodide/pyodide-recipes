@@ -1,11 +1,11 @@
 package:
   name: rich
-  version: 14.3.3
+  version: 15.0.0
   top-level:
     - rich
 source:
-  url: https://files.pythonhosted.org/packages/py3/r/rich/rich-14.3.3-py3-none-any.whl
-  sha256: 793431c1f8619afa7d3b52b2cdec859562b950ea0d4b6b505397612db8d5362d
+  url: https://files.pythonhosted.org/packages/py3/r/rich/rich-15.0.0-py3-none-any.whl
+  sha256: 33bd4ef74232fb73fe9279a257718407f169c09b78a87ad3d296f548e27de0bb
 about:
   home: https://github.com/Textualize/rich
   PyPI: https://pypi.org/project/rich
