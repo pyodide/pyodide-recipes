@@ -1,11 +1,11 @@
 package:
   name: jsonpatch
-  version: "1.33"
+  version: "1.47"
   top-level:
     - jsonpatch
 source:
-  url: https://files.pythonhosted.org/packages/py2.py3/j/jsonpatch/jsonpatch-1.33-py2.py3-none-any.whl
-  sha256: 0ae28c0cd062bbd8b8ecc26d7d164fbbea9652a1a3693f3b956c1eae5145dade
+  url: https://files.pythonhosted.org/packages/py3/j/jsonpatch/jsonpatch-1.47-py3-none-any.whl
+  sha256: c9ba6de59c481bf2be05041514ecb0d97f994aa645c4e00831805dbe2281811a
 requirements:
   run:
     - jsonpointer
