@@ -1,9 +1,9 @@
 package:
   name: lightgbm
-  version: 4.6.0
+  version: 4.7.0
 source:
-  url: https://files.pythonhosted.org/packages/source/l/lightgbm/lightgbm-4.6.0.tar.gz
-  sha256: cb1c59720eb569389c0ba74d14f52351b573af489f230032a1c9f314f8bab7fe
+  url: https://files.pythonhosted.org/packages/source/l/lightgbm/lightgbm-4.7.0.tar.gz
+  sha256: f8e20f682c9aabd000bcf4a7ed8aa6f473c1adfecccae34ec24e823d156f4af0
 build:
   backend-flags: |
     skbuild.cmake.define.USE_OPENMP=OFF
@@ -17,6 +17,7 @@ requirements:
     - numpy
     - scipy
     - scikit-learn
+    - narwhals
 test:
   imports:
     - lightgbm
