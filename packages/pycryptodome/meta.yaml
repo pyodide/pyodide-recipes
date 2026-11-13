@@ -1,11 +1,11 @@
 package:
   name: pycryptodome
-  version: 3.23.0
+  version: 4.4.0
   top-level:
     - Crypto
 source:
-  url: https://files.pythonhosted.org/packages/source/p/pycryptodome/pycryptodome-3.23.0.tar.gz
-  sha256: 447700a657182d60338bab09fdb27518f8856aecd80ae4c6bdddb67ff5da44ef
+  url: https://files.pythonhosted.org/packages/source/p/pycryptodome/pycryptodome-4.4.0.tar.gz
+  sha256: eab7620c60c85f3fa251d026ec06e094f036d96187bebb9752e46fbcebabbb55
 build:
   exports: requested
 about:
