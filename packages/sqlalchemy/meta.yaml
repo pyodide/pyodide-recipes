@@ -1,11 +1,11 @@
 package:
   name: sqlalchemy
-  version: 2.0.48
+  version: 2.1.8
   top-level:
     - sqlalchemy
 source:
-  url: https://files.pythonhosted.org/packages/source/s/sqlalchemy/sqlalchemy-2.0.48.tar.gz
-  sha256: 5ca74f37f3369b45e1f6b7b06afb182af1fd5dde009e4ffd831830d98cbe5fe7
+  url: https://files.pythonhosted.org/packages/source/s/sqlalchemy/sqlalchemy-2.1.8.tar.gz
+  sha256: 8bc4081dd7c17c073f2384ad0f5ee968e63b43507b2e024a3523c000a06d70da
 requirements:
   run:
     - typing-extensions
