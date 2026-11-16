@@ -27,6 +27,7 @@ XFAIL_PACKAGES: dict[str, str] = {
     "coolprop": "slow",
     "psycopg-c": "the psycopg package should be imported before psycopg_c",
     "psycopg-binary": "the psycopg package should be imported before psycopg_binary",
+    "httpx2-jsfetch": "Importing httpx2_jsfetch without installing httpx2 fails.",
 }
 
 

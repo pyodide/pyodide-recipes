@@ -1,0 +1,20 @@
+package:
+  name: httpx2-jsfetch
+  version: "1.0"
+  top-level:
+    - httpx2_jsfetch
+source:
+  url: https://files.pythonhosted.org/packages/py3/h/httpx2_jsfetch/httpx2_jsfetch-1.0-py3-none-any.whl
+  sha256: cb916b707601e69a07721aabc8f3f6659be3a6893bc1ff5c6f9e02241df2da32
+test:
+  imports:
+    - httpx2_jsfetch
+about:
+  home: https://pypi.org/project/httpx2-jsfetch
+  PyPI: https://pypi.org/project/httpx2-jsfetch
+  summary: httpx2 transports for Emscripten/Pyodide, backed by the JavaScript
+    fetch API.
+  license: BSD-3-Clause
+extra:
+  recipe-maintainers:
+    - ryanking13
