@@ -1,0 +1,22 @@
+package:
+  name: opentelemetry-api
+  version: 1.45.2
+  top-level:
+    - opentelemetry
+source:
+  url: https://files.pythonhosted.org/packages/py3/o/opentelemetry_api/opentelemetry_api-1.45.2-py3-none-any.whl
+  sha256: 2cbd737377e710ee740d261c94e93fa0f08e6d037c18f17513cc0a2d94479a34
+requirements:
+  run:
+    - typing-extensions
+test:
+  imports:
+    - opentelemetry.trace
+about:
+  home: https://github.com/open-telemetry/opentelemetry-python/tree/main/opentelemetry-api
+  PyPI: https://pypi.org/project/opentelemetry-api
+  summary: OpenTelemetry Python API
+  license: Apache-2.0
+extra:
+  recipe-maintainers:
+    - ryanking13
