@@ -1,19 +1,19 @@
 package:
   name: openai
-  version: 2.30.0
+  version: 3.51.0
   top-level:
     - openai
 source:
-  url: https://files.pythonhosted.org/packages/py3/o/openai/openai-2.30.0-py3-none-any.whl
-  sha256: 9a5ae616888eb2748ec5e0c5b955a51592e0b201a11f4262db920f2a78c5231d
+  url: https://files.pythonhosted.org/packages/py3/o/openai/openai-3.51.0-py3-none-any.whl
+  sha256: 802b7e8c6ff8cf4d59a2a163126c10ce472adf0409ac41fdaadd47c9b4ed091a
 requirements:
   run:
-    - httpx
+    - httpx2
     - pydantic
     - typing-extensions
-    - distro
     - anyio
     - jiter
+    - sniffio
 about:
   home: ""
   PyPI: https://pypi.org/project/openai

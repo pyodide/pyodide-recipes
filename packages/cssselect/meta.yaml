@@ -1,11 +1,11 @@
 package:
   name: cssselect
-  version: 1.4.0
+  version: 1.6.0
   top-level:
     - cssselect
 source:
-  sha256: c0ec5c0191c8ee39fcc8afc1540331d8b55b0183478c50e9c8a79d44dbceb1d8
-  url: https://files.pythonhosted.org/packages/py3/c/cssselect/cssselect-1.4.0-py3-none-any.whl
+  sha256: 6df6eab9b264c0f2092a6e386b33610e1684a25e27925ecebe25e3d97cbf3525
+  url: https://files.pythonhosted.org/packages/py3/c/cssselect/cssselect-1.6.0-py3-none-any.whl
 about:
   home: https://github.com/scrapy/cssselect
   PyPI: https://pypi.org/project/cssselect

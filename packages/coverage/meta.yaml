@@ -1,11 +1,11 @@
 package:
   name: coverage
-  version: 7.13.5
+  version: 7.17.3
   top-level:
     - coverage
 source:
-  url: https://files.pythonhosted.org/packages/source/c/coverage/coverage-7.13.5.tar.gz
-  sha256: c81f6515c4c40141f83f502b07bbfa5c240ba25bbe73da7b33f1e5b6120ff179
+  url: https://files.pythonhosted.org/packages/source/c/coverage/coverage-7.17.3.tar.gz
+  sha256: 6695d1bb2a9a2fbd7806d69d78cf30f35eb0f65045da0ec5b5045242fadd6a78
 about:
   home: https://github.com/nedbat/coveragepy
   PyPI: https://pypi.org/project/coverage

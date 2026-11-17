@@ -1,11 +1,11 @@
 package:
   name: pyproj
-  version: 3.7.2
+  version: 3.8.0
   top-level:
     - pyproj
 source:
-  url: https://files.pythonhosted.org/packages/04/90/67bd7260b4ea9b8b20b4f58afef6c223ecb3abf368eb4ec5bc2cdef81b49/pyproj-3.7.2.tar.gz
-  sha256: 39a0cf1ecc7e282d1d30f36594ebd55c9fae1fda8a2622cee5d100430628f88c
+  url: https://files.pythonhosted.org/packages/source/p/pyproj/pyproj-3.8.0.tar.gz
+  sha256: efa59725bba68bf97fa808b61302df32934acdceb6a5c92a8dd0e71dc266a876
 
 requirements:
   host:
@@ -30,7 +30,6 @@ test:
 about:
   home: https://github.com/pyproj4/pyproj
   PyPI: https://pypi.org/project/pyproj/
-  summary:
-    Python interface to PROJ (cartographic projections and coordinate transformations
-    library)
+  summary: Python interface to PROJ (cartographic projections and coordinate
+    transformations library)
   license: MIT

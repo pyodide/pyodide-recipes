@@ -1,14 +1,14 @@
 package:
   name: distlib
-  version: 0.4.0
+  version: 0.4.4
   top-level:
     - distlib
 source:
-  sha256: 9659f7d87e46584a30b5780e43ac7a2143098441670ff0a49d5f9034c54a6c16
-  url: https://files.pythonhosted.org/packages/py2.py3/d/distlib/distlib-0.4.0-py2.py3-none-any.whl
+  sha256: cf09d55b1e85a89576b036aeb71550bfd68320f3f21761ca329eadadad918638
+  url: https://files.pythonhosted.org/packages/py2.py3/d/distlib/distlib-0.4.4-py2.py3-none-any.whl
 build:
   post: |
-    find $WHEELDIR -name '*.exe' -delete
+    find . -name '*.exe' -delete
 about:
   home: https://github.com/pypa/distlib
   PyPI: https://pypi.org/project/distlib

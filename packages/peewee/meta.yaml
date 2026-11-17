@@ -1,6 +1,6 @@
 package:
   name: peewee
-  version: 4.0.4
+  version: 4.5.3
   top-level:
     - peewee
 requirements:
@@ -8,8 +8,8 @@ requirements:
     - cffi
     - cffi
 source:
-  url: https://files.pythonhosted.org/packages/source/p/peewee/peewee-4.0.4.tar.gz
-  sha256: 70e07c14a10bec8d663514bda5854e44ef15d5b03974b41f7218066b6fd3a065
+  url: https://files.pythonhosted.org/packages/source/p/peewee/peewee-4.5.3.tar.gz
+  sha256: 434576afaf806428a01f84af74c42fde59372c4f6a6eba26d9b5372113344a8a
 about:
   home: https://github.com/coleifer/peewee/
   PyPI: https://pypi.org/project/peewee/

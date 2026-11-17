@@ -1,11 +1,11 @@
 package:
   name: jedi
-  version: 0.19.2
+  version: 0.20.1
   top-level:
     - jedi
 source:
-  sha256: a8ef22bde8490f57fe5c7681a3c83cb58874daf72b4784de3cce5b6ef6edb5b9
-  url: https://files.pythonhosted.org/packages/c0/5a/9cac0c82afec3d09ccd97c8b6502d48f165f9124db81b4bcb90b4af974ee/jedi-0.19.2-py2.py3-none-any.whl
+  sha256: 0fb16d86c4a4c73c37ba518c77419975e30fcc620658a8d14fbb5720cdd34142
+  url: https://files.pythonhosted.org/packages/py2.py3/j/jedi/jedi-0.20.1-py2.py3-none-any.whl
 requirements:
   run:
     - parso

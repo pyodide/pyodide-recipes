@@ -1,11 +1,11 @@
 package:
   name: fastapi
-  version: 0.136.1
+  version: 0.163.1
   top-level:
     - fastapi
 source:
-  url: https://files.pythonhosted.org/packages/py3/f/fastapi/fastapi-0.136.1-py3-none-any.whl
-  sha256: a6e9d7eeada96c93a4d69cb03836b44fa34e2854accb7244a1ece36cd4781c3f
+  url: https://files.pythonhosted.org/packages/py3/f/fastapi/fastapi-0.163.1-py3-none-any.whl
+  sha256: 68f2d8050f5c3583121c0d203046cc7def5c16a7d6c43a0e7707a8ea610fe2d3
 requirements:
   run:
     - httpx
@@ -14,6 +14,9 @@ requirements:
     - starlette
     - anyio
     - annotated-doc
+    - typing-extensions
+    - typing-inspection
+    - opentelemetry-api
 about:
   home: https://github.com/fastapi/fastapi/
   PyPI: https://pypi.org/project/fastapi

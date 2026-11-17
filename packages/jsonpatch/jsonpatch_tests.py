@@ -3,6 +3,7 @@
 
 from __future__ import unicode_literals
 
+import copy
 import json
 import decimal
 import doctest
@@ -135,10 +136,16 @@ class ApplyPatchTestCase(unittest.TestCase):
         self.assertEqual(res, {'foo': ['all', 'cows', 'eat', 'grass']})
 
     def test_move_array_item_into_other_item(self):
-        obj = [{"foo": []}, {"bar": []}]
-        patch = [{"op": "move", "from": "/0", "path": "/0/bar/0"}]
-        res = jsonpatch.apply_patch(obj, patch)
-        self.assertEqual(res, [{'bar': [{"foo": []}]}])
+        # https://github.com/stefankoegl/python-json-patch/issues/214
+        # "from" is a proper prefix of "path", which RFC 6902, 4.4 forbids,
+        # even though "path" is inside the other item once "from" is removed
+        for obj, path in [([{"foo": []}, {"bar": []}], "/0/bar/0"),
+                          ([[], []], "/0/0")]:
+            saved = copy.deepcopy(obj)
+            patch = [{"op": "move", "from": "/0", "path": path}]
+            self.assertRaises(jsonpatch.JsonPatchConflict,
+                              jsonpatch.apply_patch, obj, patch)
+            self.assertEqual(obj, saved)
 
     def test_copy_object_keyerror(self):
         obj = {'foo': {'bar': 'baz'},
@@ -860,6 +867,10 @@ class UtilityMethodTests(unittest.TestCase):
             jsonpatch.ReplaceOperation({'path': '/'}).apply({})
 
         with self.assertRaises(jsonpatch.InvalidJsonPatch):
+            jsonpatch.ReplaceOperation({'path': '/top/-', 'value': 'foo'}).apply({'top': ['value']})
+
+        # for an object, '-' is an ordinary member name (#212)
+        with self.assertRaises(jsonpatch.JsonPatchConflict):
             jsonpatch.ReplaceOperation({'path': '/top/-', 'value': 'foo'}).apply({'top': {'inner': 'value'}})
 
         with self.assertRaises(jsonpatch.JsonPatchConflict):

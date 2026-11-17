@@ -1,13 +1,13 @@
 package:
   name: zengl
-  version: 2.7.2
+  version: 2.7.3
   top-level:
     - zengl
     - _zengl
 
 source:
-  url: https://files.pythonhosted.org/packages/source/z/zengl/zengl-2.7.2.tar.gz
-  sha256: f5fdecb76cd0c45cc82b53f02cd90ecc4d8c742924ccee48603080d0dcb58a81
+  url: https://files.pythonhosted.org/packages/source/z/zengl/zengl-2.7.3.tar.gz
+  sha256: 1c748c90989e9989dc256b0c3a70e53d271a4aba7546f42221c0f21227e17d9c
 
 about:
   home: https://github.com/szabolcsdombi/zengl/

@@ -1,11 +1,11 @@
 package:
   name: cachetools
-  version: 7.0.5
+  version: 8.0.0
   top-level:
     - cachetools
 source:
-  url: https://files.pythonhosted.org/packages/py3/c/cachetools/cachetools-7.0.5-py3-none-any.whl
-  sha256: 46bc8ebefbe485407621d0a4264b23c080cedd913921bad7ac3ed2f26c183114
+  url: https://files.pythonhosted.org/packages/py3/c/cachetools/cachetools-8.0.0-py3-none-any.whl
+  sha256: 5af562e5078f0086771a1e3832a9c3dbf5d336b6e2794a2c12a64680a4c9087d
 about:
   home: https://github.com/tkem/cachetools/
   PyPI: https://pypi.org/project/cachetools

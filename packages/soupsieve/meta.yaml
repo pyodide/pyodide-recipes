@@ -1,11 +1,11 @@
 package:
   name: soupsieve
-  version: 2.8.3
+  version: "4.1"
   top-level:
     - soupsieve
 source:
-  sha256: ed64f2ba4eebeab06cc4962affce381647455978ffc1e36bb79a545b91f45a95
-  url: https://files.pythonhosted.org/packages/py3/s/soupsieve/soupsieve-2.8.3-py3-none-any.whl
+  sha256: e4d667b3974ce6e038e7390486b8093369854a1d345ffdd4c121dfc4a782e809
+  url: https://files.pythonhosted.org/packages/py3/s/soupsieve/soupsieve-4.1-py3-none-any.whl
 about:
   home: https://github.com/facelessuser/soupsieve
   license: MIT

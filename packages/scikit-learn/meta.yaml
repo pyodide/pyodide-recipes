@@ -1,13 +1,13 @@
 package:
   name: scikit-learn
-  version: 1.8.0
+  version: 1.9.1
   tag:
     - min-scipy-stack
   top-level:
     - sklearn
 source:
-  url: https://files.pythonhosted.org/packages/source/s/scikit_learn/scikit_learn-1.8.0.tar.gz
-  sha256: 9bccbb3b40e3de10351f8f5068e105d0f4083b1a65fa07b6634fbc401a6287fd
+  url: https://files.pythonhosted.org/packages/source/s/scikit_learn/scikit_learn-1.9.1.tar.gz
+  sha256: 629cada3e33e2b9bf376cdc7614a47a4140b8aedc1d836579e359736fbd82977
 
 build:
   cflags: -Wno-implicit-function-declaration
@@ -20,6 +20,7 @@ requirements:
     - scipy
     - joblib
     - threadpoolctl
+    - narwhals
 
 test:
   imports:

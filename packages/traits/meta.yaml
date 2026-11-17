@@ -1,11 +1,11 @@
 package:
   name: traits
-  version: 7.1.0
+  version: 7.3.0
   top-level:
     - traits
 source:
-  sha256: af4775747e11e05ffe13d3ba463d92f67f1f3d1a9e4f46ba33a44ea22b0c9644
-  url: https://files.pythonhosted.org/packages/source/t/traits/traits-7.1.0.tar.gz
+  sha256: e062da86ff403443c370c5f74b2d58b9398d3e75ac9d7c64ba2c06901a888133
+  url: https://files.pythonhosted.org/packages/source/t/traits/traits-7.3.0.tar.gz
 about:
   home: http://docs.enthought.com/traits
   PyPI: https://pypi.org/project/traits

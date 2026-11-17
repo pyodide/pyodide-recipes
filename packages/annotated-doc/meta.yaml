@@ -1,11 +1,11 @@
 package:
   name: annotated-doc
-  version: 0.0.4
+  version: 0.0.6
   top-level:
     - annotated_doc
 source:
-  url: https://files.pythonhosted.org/packages/py3/a/annotated_doc/annotated_doc-0.0.4-py3-none-any.whl
-  sha256: 571ac1dc6991c450b25a9c2d84a3705e2ae7a53467b5d111c24fa8baabbed320
+  url: https://files.pythonhosted.org/packages/py3/a/annotated_doc/annotated_doc-0.0.6-py3-none-any.whl
+  sha256: 361ca0950cc7082f53fa69e9328409f40a62c61e57e0a47e1825a08078a58a53
 about:
   home: https://github.com/fastapi/annotated-doc
   PyPI: https://pypi.org/project/annotated-doc

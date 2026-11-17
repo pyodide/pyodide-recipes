@@ -1,0 +1,23 @@
+package:
+  name: httpx2
+  version: 2.16.0
+  top-level:
+    - httpx2
+source:
+  url: https://files.pythonhosted.org/packages/py3/h/httpx2/httpx2-2.16.0-py3-none-any.whl
+  sha256: fd2c5d7909e8d86fe92d53020c310ca0e4e431b838c207c5754b9bbf0308d49a
+requirements:
+  run:
+    - idna
+    - httpx2-jsfetch
+test:
+  imports:
+    - httpx2
+about:
+  home: https://github.com/pydantic/httpx2
+  PyPI: https://pypi.org/project/httpx2
+  summary: The next generation HTTP client.
+  license: BSD-3-Clause
+extra:
+  recipe-maintainers:
+    - ryanking13

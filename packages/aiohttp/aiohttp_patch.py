@@ -2,8 +2,10 @@
 
 """Used in test_aiohttp.py"""
 
+import inspect
 from collections.abc import Iterable
 from contextlib import suppress
+from types import SimpleNamespace
 from typing import Any
 
 from aiohttp import ClientSession, ClientTimeout, InvalidURL, hdrs, payload
@@ -173,6 +175,11 @@ async def _request(
                 traces=traces,
             )
 
+            resp_kwargs = {}
+            if "stream_writer" in inspect.signature(req.response_class).parameters:
+                # aiohttp >= 3.14: with writer=None (request already sent) only
+                # stream_writer.output_size is read
+                resp_kwargs["stream_writer"] = SimpleNamespace(output_size=0)
             req.response = resp = req.response_class(
                 req.method,
                 req.original_url,
@@ -183,6 +190,7 @@ async def _request(
                 traces=req._traces,
                 loop=req.loop,
                 session=req._session,
+                **resp_kwargs,
             )
             from js import Headers, fetch
             from pyodide.ffi import to_js

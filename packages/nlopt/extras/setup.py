@@ -8,7 +8,7 @@ from setuptools import Extension, setup
 from setuptools.command.build_py import build_py
 
 # Keep in sync with the `version` declared in pyproject.toml
-VERSION = "2.9.1"
+VERSION = "2.11.0"
 
 
 def create_pkg_directory():

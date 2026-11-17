@@ -1,11 +1,11 @@
 package:
   name: tomli
-  version: 2.4.1
+  version: 2.5.0
   top-level:
     - tomli
 source:
-  url: https://files.pythonhosted.org/packages/py3/t/tomli/tomli-2.4.1-py3-none-any.whl
-  sha256: 0d85819802132122da43cb86656f8d1f8c6587d54ae7dcaf30e90533028b49fe
+  url: https://files.pythonhosted.org/packages/py3/t/tomli/tomli-2.5.0-py3-none-any.whl
+  sha256: 32a7b79ac57a2e83670ce329ccf675798bc5a2094783a63676866b70503f2e2b
 about:
   PyPI: https://pypi.org/project/tomli
   summary: A lil' TOML parser

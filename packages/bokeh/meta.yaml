@@ -1,6 +1,6 @@
 package:
   name: bokeh
-  version: 3.9.0
+  version: 3.10.2
   top-level:
     - bokeh
 requirements:
@@ -16,8 +16,8 @@ requirements:
     - pyyaml
     - xyzservices
 source:
-  sha256: 775219714a8496973ddbae16b1861606ba19fe670a421e4d43267b41148e07a3
-  url: https://files.pythonhosted.org/packages/source/b/bokeh/bokeh-3.9.0.tar.gz
+  sha256: d9fba1004fae149c6e6d54ba37410e52b8d4622ed5c6dad2220afa1b61362de0
+  url: https://files.pythonhosted.org/packages/source/b/bokeh/bokeh-3.10.2.tar.gz
 about:
   home: https://github.com/bokeh/bokeh
   PyPI: https://pypi.org/project/bokeh

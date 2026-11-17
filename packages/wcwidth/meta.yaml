@@ -1,11 +1,11 @@
 package:
   name: wcwidth
-  version: 0.6.0
+  version: 0.9.4
   top-level:
     - wcwidth
 source:
-  url: https://files.pythonhosted.org/packages/py3/w/wcwidth/wcwidth-0.6.0-py3-none-any.whl
-  sha256: 1a3a1e510b553315f8e146c54764f4fb6264ffad731b3d78088cdb1478ffbdad
+  url: https://files.pythonhosted.org/packages/py3/w/wcwidth/wcwidth-0.9.4-py3-none-any.whl
+  sha256: 901eace6d2dd25ebb917d0ce5db18e5c537e1504c905cf32f0d006c12098b05d
 about:
   home: https://github.com/jquast/wcwidth
   PyPI: https://pypi.org/project/wcwidth

@@ -1,6 +1,6 @@
 package:
   name: matplotlib
-  version: 3.10.8
+  version: 3.11.2
   tag:
     - min-scipy-stack
   top-level:
@@ -8,19 +8,20 @@ package:
     - mpl_toolkits
     - matplotlib
 source:
-  url: https://files.pythonhosted.org/packages/source/m/matplotlib/matplotlib-3.10.8.tar.gz
-  sha256: 2299372c19d56bcd35cf05a2738308758d32b9eaed2371898d8f5bd33f084aa3
+  url: https://files.pythonhosted.org/packages/source/m/matplotlib/matplotlib-3.11.2.tar.gz
+  sha256: cec596316640f2b394b8f0daa0ea61a8eae82d017b620b9f202befb972a59ea4
   patches:
-    - patches/0001-Disable-timer.patch
     - patches/0002-Hardcode-font-cache-path.patch
     - patches/0003-Pyodide-webagg-backend.patch
-    - patches/0004-Fix-32bit-casting.patch
     - patches/0005-Use-system-freetype.patch
 
 build:
+  # default_library=static: the vendored text-layout subprojects (harfbuzz,
+  # libraqm, sheenbidi) must be static, meson has no shared libraries for Emscripten
   backend-flags: |
     setup-args=-DrcParams-backend=webagg
     setup-args=-Dsystem-freetype=true
+    setup-args=-Ddefault_library=static
   cflags: |
     -fwasm-exceptions
     -fno-lto

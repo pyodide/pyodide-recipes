@@ -1,11 +1,11 @@
 package:
   name: optlang
-  version: 1.9.0
+  version: 1.9.1
   top-level:
     - optlang
 source:
-  sha256: 74aaf820dcbead6fdd09e3f1a73a5271ad7d167966e96ff526fbf4320bb13d79
-  url: https://files.pythonhosted.org/packages/py2.py3/o/optlang/optlang-1.9.0-py2.py3-none-any.whl
+  sha256: f3375984ea74ae0c40bce111e86df419c12919c410ccfebf06a60b82dae4ac64
+  url: https://files.pythonhosted.org/packages/py2.py3/o/optlang/optlang-1.9.1-py2.py3-none-any.whl
 requirements:
   run:
     - sympy

@@ -1,12 +1,12 @@
 package:
   name: liblzma
-  version: 5.2.2
+  version: 5.8.4
   tag:
     - library
     - static_library
 source:
-  url: https://github.com/xz-mirror/xz/releases/download/v5.2.2/xz-5.2.2.tar.gz
-  sha256: 73df4d5d34f0468bd57d09f2d8af363e95ed6cc3a4a86129d2f2c366259902a2
+  url: https://github.com/tukaani-project/xz/releases/download/v5.8.4/xz-5.8.4.tar.gz
+  sha256: 0014c7886930454fe8bd4228665b51af55eeae560ea135c9c4cd33f55b2591d9
 
 build:
   type: static_library

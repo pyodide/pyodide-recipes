@@ -1,11 +1,11 @@
 package:
   name: jsonpointer
-  version: 3.1.1
+  version: "3.12"
   top-level:
     - jsonpointer
 source:
-  url: https://files.pythonhosted.org/packages/py3/j/jsonpointer/jsonpointer-3.1.1-py3-none-any.whl
-  sha256: 8ff8b95779d071ba472cf5bc913028df06031797532f08a7d5b602d8b2a488ca
+  url: https://files.pythonhosted.org/packages/py3/j/jsonpointer/jsonpointer-3.12-py3-none-any.whl
+  sha256: 89f391335ee2719ae72149e1bf30a4d4c7c5d92f15a3f53faa8d20cc7c6c7f19
 about:
   home: https://github.com/stefankoegl/python-json-pointer
   PyPI: https://pypi.org/project/jsonpointer

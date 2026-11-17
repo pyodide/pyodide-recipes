@@ -1,6 +1,6 @@
 package:
   name: pytest
-  version: 9.0.2
+  version: 9.2.0
   tag:
     - core
     - min-scipy-stack
@@ -8,8 +8,8 @@ package:
     - _pytest
     - pytest
 source:
-  url: https://files.pythonhosted.org/packages/py3/p/pytest/pytest-9.0.2-py3-none-any.whl
-  sha256: 711ffd45bf766d5264d487b917733b453d917afd2b0ad65223959f59089f875b
+  url: https://files.pythonhosted.org/packages/py3/p/pytest/pytest-9.2.0-py3-none-any.whl
+  sha256: 07acdcf88ec174f907dc01af70bf52d49b014bbab03faeeade31c96b18c2e588
 requirements:
   run:
     - atomicwrites

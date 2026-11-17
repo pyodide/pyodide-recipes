@@ -1,15 +1,14 @@
 package:
   name: ipython
-  version: 9.12.0
+  version: 9.18.1
   top-level:
     - IPython
 source:
-  url: https://files.pythonhosted.org/packages/py3/i/ipython/ipython-9.12.0-py3-none-any.whl
-  sha256: 0f2701e8ee86e117e37f50563205d36feaa259d2e08d4a6bc6b6d74b18ce128d
+  url: https://files.pythonhosted.org/packages/py3/i/ipython/ipython-9.18.1-py3-none-any.whl
+  sha256: 997ce9140d374531a61069c70c0f9ef299d6dd3559ea0f94b8af589726e3c1d5
 requirements:
   run:
     - asttokens
-    - decorator
     - executing
     - matplotlib-inline
     - prompt_toolkit

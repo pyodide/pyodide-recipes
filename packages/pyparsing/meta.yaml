@@ -1,11 +1,11 @@
 package:
   name: pyparsing
-  version: 3.3.2
+  version: 3.3.3
   top-level:
     - pyparsing
 source:
-  sha256: 850ba148bd908d7e2411587e247a1e4f0327839c40e2e5e6d05a007ecc69911d
-  url: https://files.pythonhosted.org/packages/py3/p/pyparsing/pyparsing-3.3.2-py3-none-any.whl
+  sha256: ece8c00a69cf01b45d0b1dedabb469c90d8caf996d4fda40f147627a122849a4
+  url: https://files.pythonhosted.org/packages/py3/p/pyparsing/pyparsing-3.3.3-py3-none-any.whl
 about:
   home: https://github.com/pyparsing/pyparsing/
   license: MIT

@@ -1,11 +1,11 @@
 package:
   name: smart-open
-  version: 7.5.1
+  version: 9.0.3
   top-level:
     - smart_open
 source:
-  url: https://files.pythonhosted.org/packages/py3/s/smart_open/smart_open-7.5.1-py3-none-any.whl
-  sha256: 3e07cbbd9c8a908bcb8e25d48becf1a5cbb4886fa975e9f34c672ed171df2318
+  url: https://files.pythonhosted.org/packages/py3/s/smart_open/smart_open-9.0.3-py3-none-any.whl
+  sha256: 8de5f18719bb79b5621571291463d9ab3935bf007b310eb7e604b1b59f2a96b4
 requirements:
   run:
     - wrapt

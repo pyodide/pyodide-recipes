@@ -1,19 +1,19 @@
 package:
   name: pytest-benchmark
-  version: 4.0.0
-  # Need to update patches
-  pinned: true
+  version: 5.3.1
   top-level:
     - pytest_benchmark
 source:
-  url: https://files.pythonhosted.org/packages/28/08/e6b0067efa9a1f2a1eb3043ecd8a0c48bfeb60d3255006dcc829d72d5da2/pytest-benchmark-4.0.0.tar.gz
-  sha256: fb0785b83efe599a6a956361c0691ae1dbb5318018561af10f3e915caa0048d1
+  url: https://files.pythonhosted.org/packages/source/p/pytest_benchmark/pytest_benchmark-5.3.1.tar.gz
+  sha256: c1ee70a58f9bfb1ac955cc634247a340b0df7bcb949071cfca396f16c6fc3516
   patches:
     - patches/0001-Remove-cpuinfo.patch
+requirements:
+  run:
+    - pytest
 about:
   home: https://github.com/ionelmc/pytest-benchmark
   PyPI: https://pypi.org/project/pytest-benchmark
-  summary:
-    A ``pytest`` fixture for benchmarking code. It will group the tests into
-    rounds that are calibrated to the chosen timer.
+  summary: A ``pytest`` fixture for benchmarking code. It will group the tests
+    into rounds that are calibrated to the chosen timer.
   license: BSD-2-Clause

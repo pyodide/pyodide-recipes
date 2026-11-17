@@ -1,16 +1,19 @@
-From 86520d899015a77fdc4d4946ee46cd1b283fdf74 Mon Sep 17 00:00:00 2001
+From 74833eda51c295bbffc55d565aed32aecf84bf5f Mon Sep 17 00:00:00 2001
 From: swnf <50806201+swnf@users.noreply.github.com>
-Date: Sat, 2 Nov 2024 19:44:18 +0100
+Date: Fri, 13 Nov 2026 15:20:10 +0900
 Subject: [PATCH] Remove custom wheel tag logic
 
+---
+ setup.py | 38 --------------------------------------
+ 1 file changed, 38 deletions(-)
 
 diff --git a/setup.py b/setup.py
-index ef99bcc..af45176 100644
+index 89cde3d..c0cd187 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -56,38 +56,6 @@ class PyTest(TestCommand):
+@@ -35,44 +35,6 @@ else:
  
- cmdclass = {'test': PyTest}
+ cmdclass = {}
  
 -try:
 -    from wheel.bdist_wheel import bdist_wheel
@@ -29,14 +32,20 @@ index ef99bcc..af45176 100644
 -                else:
 -                    oses = 'macosx_11_0_arm64'
 -            elif platform == 'win32':
--                if architecture0 == '32bit':
+-                if architecture0.lower() == 'arm64' or machine() == 'ARM64':
+-                    oses = 'win_arm64'
+-                elif architecture0 == 'x86' or architecture0 == '32bit':
 -                    oses = 'win32'
--                else:
+-                elif architecture0 == 'x64' or architecture0 == '64bit':
 -                    oses = 'win_amd64'
 -            elif platform == 'linux':
--                # the oldest mainline github runner available is ubuntu 20.04,
--                # which runs glibc 2.31:
--                oses = 'manylinux_2_31_x86_64'
+-                # using the centos:7 runner with glibc2.17:
+-                if architecture0 == 'arm64':
+-                    pep600_architecture = 'aarch64'
+-                else:
+-                    pep600_architecture = architecture0
+-
+-                oses = 'manylinux_2_28_{}'.format(pep600_architecture)
 -            else:
 -                pythons = 'py2.py3'
 -                oses = 'any'
@@ -48,5 +57,5 @@ index ef99bcc..af45176 100644
      for line in f:
          if line.startswith('__version__'):
 -- 
-2.43.0
+2.54.0 (Apple Git-157)
 

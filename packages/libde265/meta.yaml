@@ -1,29 +1,30 @@
 package:
   name: libde265
-  version: 1.0.8
+  version: 1.1.3
   tag:
     - library
     - static_library
 source:
-  url: https://github.com/strukturag/libde265/releases/download/v1.0.8/libde265-1.0.8.tar.gz
-  sha256: 24c791dd334fa521762320ff54f0febfd3c09fc978880a8c5fbc40a88f21d905
+  url: https://github.com/strukturag/libde265/releases/download/v1.1.3/libde265-1.1.3.tar.gz
+  sha256: 554228bd17788c99a7e63b37ab5634722190e6e2bf60c1dcb01cef328e133905
 
 build:
   type: static_library
   script: |
-    # Build options are adapted from https://github.com/strukturag/libheif/blob/v1.12.0/build-emscripten.sh
-    emconfigure ./configure \
-        CFLAGS="-fPIC" \
-        CXXFLAGS="-fPIC" \
-        --prefix=${WASM_LIBRARY_DIR} \
-        --disable-sse \
-        --disable-dec265 \
-        --disable-sherlock265 \
-        --disable-shared \
-        --bindir=$(pwd)/bin  # we don't want binaries so let's hide them installing locally
+    # libde265 >= 1.0.16 only ships a CMake build
+    emcmake cmake -S . -B build \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=${WASM_LIBRARY_DIR} \
+        -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+        -DBUILD_SHARED_LIBS=OFF \
+        -DENABLE_SIMD=OFF \
+        -DENABLE_SDL=OFF \
+        -DENABLE_DECODER=OFF \
+        -DENABLE_ENCODER=OFF \
+        -DENABLE_SHERLOCK265=OFF
 
-    emmake make -j ${PYODIDE_JOBS:-3}
-    emmake make install
+    cmake --build build -j ${PYODIDE_JOBS:-3}
+    cmake --install build
 about:
   home: https://github.com/strukturag/libde265
   license: LGPL-3.0

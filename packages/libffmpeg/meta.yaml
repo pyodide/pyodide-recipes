@@ -11,17 +11,21 @@ source:
 build:
   type: static_library
   script: |
+    # --target-os defaults to the build machine; pin it to what Linux CI
+    # infers so that macOS hosts do not get Darwin linker flags.
     emconfigure ./configure \
       --extra-cflags="-fPIC" \
+      --disable-asm \
       --disable-x86asm \
       --disable-inline-asm \
       --disable-doc \
       --disable-stripping \
       --disable-programs \
       --disable-pthreads \
-      --nm="$PYODIDE_ROOT/emsdk/emsdk/upstream/bin/llvm-nm -g" \
+      --nm="emnm -g" \
       --ar=emar --cc=emcc --cxx=em++ --objcc=emcc --dep-cc=emcc --ranlib=emranlib \
       --enable-cross-compile \
+      --target-os=linux \
       --prefix=${WASM_LIBRARY_DIR}
 
     emmake make -j${PYODIDE_JOBS:-3}

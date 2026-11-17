@@ -1,11 +1,11 @@
 package:
   name: Cartopy
-  version: 0.25.0
+  version: 0.26.0
   top-level:
     - cartopy
 source:
-  url: https://files.pythonhosted.org/packages/3c/3f/ec3dee34237b696a486d566a6d3ae6550ae821836e0412bafdcbbec2cfd2/cartopy-0.25.0.tar.gz
-  sha256: 55f1a390e5f3f075b221c7d91fb10258ad978db786c7930eba06eb45d28753fe
+  url: https://files.pythonhosted.org/packages/source/c/cartopy/cartopy-0.26.0.tar.gz
+  sha256: b87a35835f30333760cc46194bd90b6a4958d12f488f50131d4c4c0962ad9c3c
 test:
   imports:
     - cartopy

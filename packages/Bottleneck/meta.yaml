@@ -1,11 +1,11 @@
 package:
   name: Bottleneck
-  version: 1.6.0
+  version: 1.6.1
   top-level:
     - bottleneck
 source:
-  url: https://files.pythonhosted.org/packages/source/b/bottleneck/bottleneck-1.6.0.tar.gz
-  sha256: 028d46ee4b025ad9ab4d79924113816f825f62b17b87c9e1d0d8ce144a4a0e31
+  url: https://files.pythonhosted.org/packages/source/b/bottleneck/bottleneck-1.6.1.tar.gz
+  sha256: d87fd88e01132b7211131c3d12c242e6f30e36fc95786c97d97c74ae26d4c421
 requirements:
   host:
     - numpy

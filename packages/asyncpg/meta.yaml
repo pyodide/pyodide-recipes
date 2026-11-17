@@ -1,12 +1,19 @@
 package:
   name: asyncpg
-  version: 0.31.0
+  version: 0.32.0
   top-level:
     - asyncpg
 
 source:
-  url: https://files.pythonhosted.org/packages/fe/cc/d18065ce2380d80b1bcce927c24a2642efd38918e33fd724bc4bca904877/asyncpg-0.31.0.tar.gz
-  sha256: c989386c83940bfbd787180f2b1519415e2d3d6277a70d9d0f0145ac73500735
+  url: https://files.pythonhosted.org/packages/source/a/asyncpg/asyncpg-0.32.0.tar.gz
+  sha256: 45e64e56714d888330b884aad1dfb363d0bf43fb343e3d1a8968525f3bade478
+  patches:
+    - patches/0001-Fall-back-to-pure-Python-PBKDF2.patch
+
+build:
+  script: |
+    # the sdist ships pre-generated C; regenerate it so the .pyx patch applies
+    export ASYNCPG_BUILD_CYTHON_ALWAYS=1
 
 test:
   imports:

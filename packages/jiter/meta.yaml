@@ -1,18 +1,17 @@
 package:
   name: jiter
-  version: 0.13.0
+  version: 0.19.0
   top-level:
-  - jiter
+    - jiter
 source:
-  url: 
-    https://files.pythonhosted.org/packages/source/j/jiter/jiter-0.13.0.tar.gz
-  sha256: f2839f9c2c7e2dffc1bc5929a510e14ce0a946be9365fd1219e7ef342dae14f4
+  url: https://files.pythonhosted.org/packages/source/j/jiter/jiter-0.19.0.tar.gz
+  sha256: ba3064f8be276d7cfb83c2fb85c858be533da2c2f80f9b048c3781b45a57a195
 about:
   home: https://github.com/pydantic/jiter/tree/main/crates/jiter-python
   PyPI: https://pypi.org/project/jiter
-  summary: Fast, safe JSON parser written in Rust with support for parsing 
+  summary: Fast, safe JSON parser written in Rust with support for parsing
     partial JSON
   license: MIT
 extra:
   recipe-maintainers:
-  - samuelcolvin
+    - samuelcolvin

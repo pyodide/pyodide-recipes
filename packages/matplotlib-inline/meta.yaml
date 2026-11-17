@@ -1,12 +1,12 @@
 package:
   name: matplotlib-inline
-  version: 0.2.1
+  version: 0.2.2
 requirements:
   run:
     - traitlets
 source:
-  url: https://files.pythonhosted.org/packages/af/33/ee4519fa02ed11a94aef9559552f3b17bb863f2ecfe1a35dc7f548cde231/matplotlib_inline-0.2.1-py3-none-any.whl
-  sha256: d56ce5156ba6085e00a9d54fead6ed29a9c47e215cd1bba2e976ef39f5710a76
+  url: https://files.pythonhosted.org/packages/py3/m/matplotlib_inline/matplotlib_inline-0.2.2-py3-none-any.whl
+  sha256: 3c821cf1c209f59fb2d2d64abbf5b23b67bcb2210d663f9918dd851c6da1fcf6
 about:
   home: https://github.com/ipython/matplotlib-inline
   PyPI: https://pypi.org/project/matplotlib-inline

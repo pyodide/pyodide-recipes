@@ -1,11 +1,11 @@
 package:
   name: casadi
-  version: 3.7.2
+  version: 3.8.2
   top-level:
     - casadi
 source:
-  url: https://files.pythonhosted.org/packages/source/c/casadi/casadi-3.7.2.tar.gz
-  sha256: b4d7bd8acdc4180306903ae1c9eddaf41be2a3ae2fa7154c57174ae64acdc60d
+  url: https://files.pythonhosted.org/packages/source/c/casadi/casadi-3.8.2.tar.gz
+  sha256: d49d3a0cb27fe4787cee7e1e14b22de5fb5afd70189d829f194baf8cc2a344c7
 requirements:
   run:
     - numpy

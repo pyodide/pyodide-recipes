@@ -1,15 +1,15 @@
 package:
   name: psycopg-binary
-  version: 3.3.5
+  version: 3.3.9
   top-level:
     - psycopg_binary
 
 source:
   # psycopg-binary applies the patch on top of psycopg-c before cython converts
   # pyx files to c files, so we need to get the psycopg-c source, not the sdist in PyPI
-  url: https://github.com/psycopg/psycopg/archive/refs/tags/3.3.5.tar.gz
-  sha256: 7fcbf68e8f703a7dbf1a4ed9dec310e3c0ac202a469a8fed54a28cc0267352ed
-  extract_dir: psycopg-3.3.5/psycopg_c
+  url: https://github.com/psycopg/psycopg/archive/refs/tags/3.3.9.tar.gz
+  sha256: d22836c3db05a20f19755d21188746c9289bc439abb14d8b103241b47c57f017
+  extract_dir: psycopg-3.3.9/psycopg_c
   patches:
     - patches/0001-Use-Emscripten-endian-functions.patch
   extras:

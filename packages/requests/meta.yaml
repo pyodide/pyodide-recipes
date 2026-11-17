@@ -1,11 +1,11 @@
 package:
   name: requests
-  version: 2.33.1
+  version: 2.34.2
   top-level:
     - requests
 source:
-  url: https://files.pythonhosted.org/packages/py3/r/requests/requests-2.33.1-py3-none-any.whl
-  sha256: 4e6d1ef462f3626a1f0a0a9c42dd93c63bad33f9f1c1937509b8c5c8718ab56a
+  url: https://files.pythonhosted.org/packages/py3/r/requests/requests-2.34.2-py3-none-any.whl
+  sha256: 2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0
 requirements:
   run:
     - charset-normalizer

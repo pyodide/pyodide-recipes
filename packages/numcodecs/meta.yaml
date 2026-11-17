@@ -1,11 +1,11 @@
 package:
   name: numcodecs
-  version: 0.15.1
+  version: 0.17.1
   top-level:
     - numcodecs
 source:
-  sha256: eeed77e4d6636641a2cc605fbc6078c7a8f2cc40f3dfa2b3f61e52e6091b04ff
-  url: https://files.pythonhosted.org/packages/source/n/numcodecs/numcodecs-0.15.1.tar.gz
+  sha256: 5069dc01b0087c6135cbb3b043707aaf927c992fcd325248d15d907c51dd3747
+  url: https://files.pythonhosted.org/packages/source/n/numcodecs/numcodecs-0.17.1.tar.gz
   patches:
     - patches/0001-blosc-single-threaded.patch
     - patches/0002-zlib-missing-headers.patch
@@ -17,12 +17,11 @@ requirements:
   host:
     - numpy
   run:
-    - deprecated
     - numpy
+    - typing-extensions
 about:
   home: https://github.com/zarr-developers/numcodecs
   PyPI: https://pypi.org/project/numcodecs
-  summary:
-    A Python package providing buffer compression and transformation codecs
-    for use in data storage and communication applications.
+  summary: A Python package providing buffer compression and transformation
+    codecs for use in data storage and communication applications.
   license: MIT

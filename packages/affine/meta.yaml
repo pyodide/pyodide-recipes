@@ -1,11 +1,14 @@
 package:
   name: affine
-  version: 2.4.0
+  version: 3.0.1
   top-level:
     - affine
 source:
-  url: https://files.pythonhosted.org/packages/0b/f7/85273299ab57117850cc0a936c64151171fac4da49bc6fba0dad984a7c5f/affine-2.4.0-py3-none-any.whl
-  sha256: 8a3df80e2b2378aef598a83c1392efd47967afec4242021a0b06b4c7cbc61a92
+  url: https://files.pythonhosted.org/packages/py3/a/affine/affine-3.0.1-py3-none-any.whl
+  sha256: cda3b303325e7bf2bf34817e68753a0d1c4cacbdd451fe67c4878dc2ecbaa540
+requirements:
+  run:
+    - attrs
 about:
   home: https://github.com/rasterio/affine
   PyPI: https://pypi.org/project/affine
