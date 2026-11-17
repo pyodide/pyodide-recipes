@@ -9,133 +9,129 @@ on:
 permissions:
   pull-requests: write
   contents: read
+  actions: read
 
 jobs:
-  download:
+  comment:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' && github.event.workflow_run.event == 'pull_request' }}
     steps:
-      - name: 'Download test summary artifacts'
+      # workflow_run always checks out the default branch, never the PR's code
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: 'Download test result artifacts'
+        id: download
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
-            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               run_id: context.payload.workflow_run.id,
-            });
-            
-            // Find all test summary artifacts
-            let testSummaryArtifacts = allArtifacts.data.artifacts.filter((artifact) => {
-              return artifact.name.startsWith("test-summary-");
-            });
-            
-            if (testSummaryArtifacts.length === 0) {
-              console.log("No test summary artifacts found");
-              return;
-            }
-            
             const fs = require('fs');
             const path = require('path');
-            const temp = '${{ runner.temp }}/test-artifacts';
-            
-            if (!fs.existsSync(temp)){
-              fs.mkdirSync(temp);
+            const temp = path.join(process.env.RUNNER_TEMP, 'test-artifacts');
+            fs.mkdirSync(temp, { recursive: true });
+
+            const artifacts = await github.paginate(github.rest.actions.listWorkflowRunArtifacts, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.payload.workflow_run.id,
+              per_page: 100,
+            });
+
+            // Uploaded by the `test` job in build.yml as `test-results-<runtime>`
+            const testArtifacts = artifacts.filter((a) => a.name.startsWith('test-results-'));
+            if (testArtifacts.length === 0) {
+              console.log('No test result artifacts found');
+              core.setOutput('found', 'false');
+              return;
             }
-            
-            // Download all test summary artifacts
-            for (let artifact of testSummaryArtifacts) {
-              let download = await github.rest.actions.downloadArtifact({
-                 owner: context.repo.owner,
-                 repo: context.repo.repo,
-                 artifact_id: artifact.id,
-                 archive_format: 'zip',
+
+            for (const artifact of testArtifacts) {
+              const download = await github.rest.actions.downloadArtifact({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                artifact_id: artifact.id,
+                archive_format: 'zip',
               });
-              
-              const artifactPath = path.join(temp, `${artifact.name}.zip`);
-              fs.writeFileSync(artifactPath, Buffer.from(download.data));
+              fs.writeFileSync(path.join(temp, `${artifact.name}.zip`), Buffer.from(download.data));
               console.log(`Downloaded artifact: ${artifact.name}`);
             }
+            core.setOutput('found', 'true');
 
-      - name: 'Unzip test summary artifacts'
+      - name: 'Generate test summary'
+        if: steps.download.outputs.found == 'true'
         run: |
-          cd "${{ runner.temp }}/test-artifacts"
+          cd "$RUNNER_TEMP/test-artifacts"
           for zip in *.zip; do
-            if [ -f "$zip" ]; then
-              unzip "$zip" -d "${zip%.zip}"
-              echo "Unzipped: $zip"
-            fi
+            unzip -o "$zip" -d "${zip%.zip}"
           done
+          cd "$GITHUB_WORKSPACE"
+          python3 tools/parse_test_results.py "$RUNNER_TEMP/test-artifacts" > "$RUNNER_TEMP/test-artifacts/summary.md"
+          cat "$RUNNER_TEMP/test-artifacts/summary.md"
 
       - name: 'Comment test summary on PR'
+        if: steps.download.outputs.found == 'true'
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
             const path = require('path');
-            const temp = '${{ runner.temp }}/test-artifacts';
-            
-            // Get PR number from the workflow run
-            const prNumber = context.payload.workflow_run.pull_requests[0]?.number;
+            const run = context.payload.workflow_run;
+
+            const summary = fs.readFileSync(path.join(process.env.RUNNER_TEMP, 'test-artifacts', 'summary.md'), 'utf8').trim();
+            if (!summary) {
+              console.log('No failing tests; the build failed for another reason. Skipping comment.');
+              return;
+            }
+
+            // `workflow_run.pull_requests` is empty for PRs from forks, so fall back to
+            // looking up the open PR by its head branch.
+            let prNumber = run.pull_requests[0]?.number;
             if (!prNumber) {
-              console.log("No PR number found in workflow run");
-              return;
-            }
-            
-            // Collect all test summary files
-            let allSummaries = [];
-            const artifactDirs = fs.readdirSync(temp).filter(item => {
-              return fs.statSync(path.join(temp, item)).isDirectory();
-            });
-            
-            for (let dir of artifactDirs) {
-              const summaryFile = path.join(temp, dir, `${dir}.md`);
-              if (fs.existsSync(summaryFile)) {
-                const content = fs.readFileSync(summaryFile, 'utf8');
-                allSummaries.push(content);
-                console.log(`Found test summary: ${dir}`);
-              }
-            }
-            
-            if (allSummaries.length === 0) {
-              console.log("No test summary files found");
-              return;
-            }
-            
-            // Combine all summaries
-            const combinedSummary = allSummaries.join('\n\n---\n\n');
-            const finalComment = `# 🧪 Test Results Summary\n\n${combinedSummary}`;
-            
-            // Search for existing test summary comments
-            const comments = await github.rest.issues.listComments({
-              issue_number: prNumber,
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            });
-            
-            // Look for a comment that was created by the GitHub Actions bot and contains test summary
-            const testSummaryComment = comments.data.find(comment => 
-              comment.user.login === 'github-actions[bot]' && 
-              comment.body.includes('🧪 Test Results Summary')
-            );
-            
-            if (testSummaryComment) {
-              // Update existing comment
-              await github.rest.issues.updateComment({
-                comment_id: testSummaryComment.id,
+              const prs = await github.rest.pulls.list({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: finalComment
+                state: 'open',
+                head: `${run.head_repository.owner.login}:${run.head_branch}`,
               });
-              console.log(`Updated existing test summary comment ID: ${testSummaryComment.id}`);
-            } else {
-              // Create new comment
-              await github.rest.issues.createComment({
-                issue_number: prNumber,
+              prNumber = prs.data.find((pr) => pr.head.sha === run.head_sha)?.number;
+            }
+            if (!prNumber) {
+              console.log('No PR found for this workflow run');
+              return;
+            }
+
+            const marker = '🧪 Test Results Summary';
+            let body = `# ${marker}\n\n${summary}\n\n[Workflow run](${run.html_url})`;
+            if (body.length > 65000) {
+              body = body.slice(0, 65000) + '\n\n... (truncated)';
+            }
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 100,
+            });
+            const existing = comments.find(
+              (c) => c.user.login === 'github-actions[bot]' && c.body.includes(marker)
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: finalComment
+                comment_id: existing.id,
+                body,
+              });
+              console.log(`Updated existing test summary comment ID: ${existing.id}`);
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body,
               });
               console.log('Created new test summary comment');
             }
