@@ -1,15 +1,20 @@
 import sys
+import zipfile
 from pathlib import Path
+
+import pytest
 
 # Add the parent directory to sys.path to import the module
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+import parse_build_result
 from parse_build_result import (
     format_time,
     generate_markdown_table,
     parse_build_results,
     parse_time,
     process_build_results,
+    read_log_from_artifact,
 )
 
 
@@ -118,3 +123,39 @@ def test_process_build_results_empty():
     assert "Total packages built: 0" in output
     assert "Total build time: Failed to parse total build time" in output
     assert "Longest build" not in output  # No statistics for empty results
+
+
+def test_parse_build_results_rejects_untrusted_text():
+    """Only strictly formatted package names and times end up in the output."""
+    content = """
+    [1/4] (thread 1) built numpy in 3m 45s
+    [2/4] (thread 2) built @pyodide/maintainers in 1s
+    [3/4] (thread 3) built <img src=x> in 1s
+    [4/4] (thread 4) built pandas in [click](https://evil)
+    """
+
+    results = parse_build_results(content)
+
+    assert results == [("numpy", 225, "3m 45s")]
+
+
+def test_read_log_from_artifact(tmp_path):
+    zip_path = tmp_path / "build-result.zip"
+    with zipfile.ZipFile(zip_path, "w") as zf:
+        zf.writestr("build_output.log", "[1/1] (thread 1) built numpy in 1h 2m 3s\n")
+        zf.writestr("../escaped.txt", "pwned")
+
+    content = read_log_from_artifact(zip_path)
+
+    assert parse_build_results(content) == [("numpy", 3723, "1h 2m 3s")]
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["build-result.zip"]
+
+
+def test_read_log_from_artifact_too_large(tmp_path, monkeypatch):
+    monkeypatch.setattr(parse_build_result, "MAX_LOG_SIZE", 10)
+    zip_path = tmp_path / "build-result.zip"
+    with zipfile.ZipFile(zip_path, "w") as zf:
+        zf.writestr("build_output.log", "x" * 100)
+
+    with pytest.raises(ValueError, match="too large"):
+        read_log_from_artifact(zip_path)

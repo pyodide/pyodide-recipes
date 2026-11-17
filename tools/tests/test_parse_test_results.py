@@ -1,10 +1,12 @@
 import sys
+import zipfile
 from pathlib import Path
 
 # Add the parent directory to sys.path to import the module
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from parse_test_results import generate_summary, parse_junit_xml
+import parse_test_results
+from parse_test_results import code_span, generate_summary, parse_junit_xml
 
 FAILING_XML = """\
 <?xml version="1.0" encoding="utf-8"?>
@@ -36,17 +38,27 @@ PASSING_XML = """\
 </testsuites>
 """
 
+MALICIOUS_XML = """\
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+  <testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1">
+    <testcase classname="x" name="t` @pyodide/maintainers [link](https://evil)">
+      <failure message="` &lt;img src=x&gt; @someone">traceback</failure>
+    </testcase>
+  </testsuite>
+</testsuites>
+"""
 
-def write_artifact(artifact_dir: Path, runtime: str, content: str) -> Path:
-    path = artifact_dir / f"test-results-{runtime}" / f"test-results-{runtime}.xml"
-    path.parent.mkdir(parents=True)
-    path.write_text(content)
+
+def write_artifact(artifact_dir: Path, name: str, content: str) -> Path:
+    path = artifact_dir / f"{name}.zip"
+    with zipfile.ZipFile(path, "w") as zf:
+        zf.writestr(f"{name}.xml", content)
     return path
 
 
-def test_parse_junit_xml(tmp_path):
-    path = write_artifact(tmp_path, "chrome", FAILING_XML)
-    result = parse_junit_xml(path, "chrome")
+def test_parse_junit_xml():
+    result = parse_junit_xml(FAILING_XML.encode(), "chrome")
 
     assert (result.tests, result.failures, result.errors, result.skipped) == (
         4,
@@ -62,26 +74,83 @@ def test_parse_junit_xml(tmp_path):
 
 
 def test_generate_summary_with_failures(tmp_path):
-    write_artifact(tmp_path, "chrome", FAILING_XML)
-    write_artifact(tmp_path, "node", PASSING_XML)
+    write_artifact(tmp_path, "test-results-chrome", FAILING_XML)
+    write_artifact(tmp_path, "test-results-node", PASSING_XML)
 
     summary = generate_summary(tmp_path)
 
     assert "## ❌ chrome" in summary
     assert "4 tests: 1 passed, 1 failed, 1 errors, 1 skipped" in summary
     assert (
-        "| failure | `packages.foo.test_foo::test_a[chrome]` | AssertionError: x \\| y |"
+        "| failure | `packages.foo.test_foo::test_a[chrome]` | `AssertionError: x \\| y` |"
         in summary
     )
-    assert "| error | `packages.foo.test_foo::test_b` | boom |" in summary
+    assert "| error | `packages.foo.test_foo::test_b` | `boom` |" in summary
     assert "## ✅ node" in summary
     assert "2 tests: 1 passed, 0 failed, 0 errors, 1 skipped" in summary
 
 
 def test_generate_summary_all_passing(tmp_path):
-    write_artifact(tmp_path, "node", PASSING_XML)
+    write_artifact(tmp_path, "test-results-node", PASSING_XML)
     assert generate_summary(tmp_path) == ""
 
 
 def test_generate_summary_no_artifacts(tmp_path):
     assert generate_summary(tmp_path) == ""
+
+
+def test_code_span_cannot_be_escaped():
+    assert code_span("a`b\nc|d") == "`a'b c\\|d`"
+    assert code_span("") == ""
+    assert len(code_span("x" * 1000)) == parse_test_results.MAX_TEXT_LENGTH + 2
+
+
+def test_untrusted_text_is_kept_inside_code_spans(tmp_path):
+    write_artifact(tmp_path, "test-results-chrome", MALICIOUS_XML)
+
+    summary = generate_summary(tmp_path)
+    row = next(line for line in summary.splitlines() if line.startswith("| failure"))
+
+    # Every untrusted value is a single code span with no backticks inside
+    assert row == (
+        "| failure | `x::t' @pyodide/maintainers [link](https://evil)` "
+        "| `' <img src=x> @someone` |"
+    )
+
+
+def test_invalid_artifact_names_are_ignored(tmp_path):
+    write_artifact(tmp_path, "test-results-bad name", FAILING_XML)
+    write_artifact(tmp_path, "test-results-" + "x" * 51, FAILING_XML)
+    assert generate_summary(tmp_path) == ""
+
+
+def test_invalid_zip_or_xml_is_skipped(tmp_path):
+    (tmp_path / "test-results-broken.zip").write_bytes(b"not a zip")
+    write_artifact(tmp_path, "test-results-badxml", "<testsuites>")
+    write_artifact(tmp_path, "test-results-chrome", FAILING_XML)
+
+    summary = generate_summary(tmp_path)
+    assert "## ❌ chrome" in summary
+    assert "broken" not in summary
+    assert "badxml" not in summary
+
+
+def test_oversized_xml_is_skipped(tmp_path, monkeypatch):
+    monkeypatch.setattr(parse_test_results, "MAX_XML_SIZE", 100)
+    write_artifact(tmp_path, "test-results-chrome", FAILING_XML)
+    assert generate_summary(tmp_path) == ""
+
+
+def test_zip_is_not_extracted(tmp_path):
+    artifact_dir = tmp_path / "artifacts"
+    artifact_dir.mkdir()
+    with zipfile.ZipFile(artifact_dir / "test-results-chrome.zip", "w") as zf:
+        zf.writestr("../escaped.txt", "pwned")
+        zf.writestr("test-results-chrome.xml", FAILING_XML)
+
+    generate_summary(artifact_dir)
+
+    assert sorted(p.name for p in tmp_path.rglob("*")) == [
+        "artifacts",
+        "test-results-chrome.zip",
+    ]
