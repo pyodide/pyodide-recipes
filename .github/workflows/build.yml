@@ -256,8 +256,6 @@ jobs:
 
       - name: Parse build results
         id: parse_results
-        env:
-          PR_NUMBER: ${{ github.event.number }}
         run: |
           if [ -f result/build_output.log ]; then
             python tools/parse_build_result.py result/build_output.log > result/build_summary.md
@@ -266,8 +264,6 @@ jobs:
             echo "No build log found"
             echo "SUMMARY_CREATED=false" >> $GITHUB_ENV
           fi
-
-          echo ${PR_NUMBER} > result/pr_number
       - name: Compress build artifacts
         run: |
           tar -czvf packages.tar.gz -C repodata .
