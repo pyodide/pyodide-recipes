@@ -1,7 +1,18 @@
-"""Parse build result of the pyodide build-recipes command"""
+"""Parse build result of the pyodide build-recipes command
+
+Usage:
+    python tools/parse_build_result.py <build_output.log>
+    python tools/parse_build_result.py --artifact <build-result.zip>
+
+The build log comes from pull request builds and is posted as a PR comment by
+.github/workflows/comment-build-summary.yml, so it is untrusted: only package
+names and build times matching a strict pattern are copied into the output,
+and with --artifact the zip is read in memory without extracting it.
+"""
 
 import re
 import sys
+import zipfile
 from datetime import timedelta
 from pathlib import Path
 
@@ -52,8 +63,12 @@ def format_time(seconds: int) -> str:
 
 def parse_build_results(content: str) -> list[tuple[str, int, str]]:
     """Parse build results from the content string."""
-    # Regular expression to match build result lines
-    pattern = r"\[\d+/\d+\] \(thread \d+\) built (\S+) in (.+?)\s*$"
+    # Regular expression to match build result lines. Keep the groups strict:
+    # whatever they match is copied verbatim into the PR comment.
+    pattern = (
+        r"\[\d+/\d+\] \(thread \d+\) built ([A-Za-z0-9._-]+) in "
+        r"((?:\d+h ?)?(?:\d+m ?)?(?:\d+s)?)$"
+    )
 
     results = []
     for line in content.splitlines():
@@ -115,9 +130,28 @@ def process_build_results(content: str) -> str:
     return "\n".join(output)
 
 
+MAX_LOG_SIZE = 200 * 1024 * 1024
+ARTIFACT_LOG_NAME = "build_output.log"
+
+
+def read_log_from_artifact(zip_path: Path) -> str:
+    """Read build_output.log from an artifact zip in memory, with a size cap."""
+    with zipfile.ZipFile(zip_path) as zf:
+        info = zf.getinfo(ARTIFACT_LOG_NAME)
+        if info.file_size > MAX_LOG_SIZE:
+            raise ValueError(f"{ARTIFACT_LOG_NAME} is too large")
+        with zf.open(info) as f:
+            data = f.read(MAX_LOG_SIZE + 1)
+    if len(data) > MAX_LOG_SIZE:
+        raise ValueError(f"{ARTIFACT_LOG_NAME} is too large")
+    return data.decode("utf-8", errors="replace")
+
+
 def main():
-    # Read input from file or stdin
-    if len(sys.argv) > 1:
+    # Read input from an artifact zip, a file, or stdin
+    if len(sys.argv) == 3 and sys.argv[1] == "--artifact":
+        content = read_log_from_artifact(Path(sys.argv[2]))
+    elif len(sys.argv) > 1:
         content = Path(sys.argv[1]).read_text()
     else:
         content = sys.stdin.read()

@@ -6,82 +6,132 @@ on:
     types:
       - completed
 
-permissions:
-  pull-requests: write
-  contents: read
+# This workflow runs with a write token on artifacts produced by untrusted PR
+# code. Never check out or run PR code, or execute anything from the artifacts; only
+# parse the artifacts as data (see tools/parse_build_result.py).
+permissions: {}
 
-# copied from: https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#workflow_run
 jobs:
-  download:
+  comment:
     runs-on: ubuntu-latest
+    permissions:
+      actions: read  # download artifacts of the triggering run
+      contents: read  # checkout
+      pull-requests: write  # comment on the PR
     if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request' }}
     steps:
-      - name: 'Download artifact'
+      # workflow_run always checks out the default branch, never the PR's code
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: 'Download build result artifact'
+        id: download
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
-            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               run_id: context.payload.workflow_run.id,
-            });
-            let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == "build-result"
-            })[0];
-            let download = await github.rest.actions.downloadArtifact({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               artifact_id: matchArtifact.id,
-               archive_format: 'zip',
-            });
             const fs = require('fs');
             const path = require('path');
-            const temp = '${{ runner.temp }}/artifacts';
-            if (!fs.existsSync(temp)){
-              fs.mkdirSync(temp);
-            }
-            fs.writeFileSync(path.join(temp, 'build-result.zip'), Buffer.from(download.data));
+            const temp = path.join(process.env.RUNNER_TEMP, 'artifacts');
+            fs.mkdirSync(temp, { recursive: true });
 
-      - name: 'Unzip artifact'
-        run: unzip "${{ runner.temp }}/artifacts/build-result.zip" -d "${{ runner.temp }}/artifacts"
+            const artifacts = await github.paginate(github.rest.actions.listWorkflowRunArtifacts, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.payload.workflow_run.id,
+              per_page: 100,
+            });
+
+            // Re-run jobs upload artifacts with the same name; use the newest one.
+            const artifact = artifacts
+              .filter((a) => a.name === 'build-result' && !a.expired)
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+            if (!artifact) {
+              console.log('No build-result artifact found');
+              core.setOutput('found', 'false');
+              return;
+            }
+
+            const download = await github.rest.actions.downloadArtifact({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              artifact_id: artifact.id,
+              archive_format: 'zip',
+            });
+            fs.writeFileSync(path.join(temp, 'build-result.zip'), Buffer.from(download.data));
+            core.setOutput('found', 'true');
+
+      - name: 'Generate build summary'
+        if: steps.download.outputs.found == 'true'
+        # Regenerate the summary from the raw log with the default branch's parser
+        # instead of trusting the build_summary.md produced by the PR build.
+        # The zip is read in memory by the script; do not extract it.
+        run: |
+          python3 -I tools/parse_build_result.py --artifact "$RUNNER_TEMP/artifacts/build-result.zip" > "$RUNNER_TEMP/artifacts/build_summary.md"
+          cat "$RUNNER_TEMP/artifacts/build_summary.md"
 
       - name: 'Comment on PR'
+        if: steps.download.outputs.found == 'true'
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
             const path = require('path');
-            const temp = '${{ runner.temp }}/artifacts';
-            const issue_number = Number(fs.readFileSync(path.join(temp, 'pr_number')));
-            const summaryContent = fs.readFileSync(path.join(temp, 'build_summary.md'), 'utf8');
+            const run = context.payload.workflow_run;
 
-            // Search for existing build summary comments
-            const comments = await github.rest.issues.listComments({
-              issue_number: issue_number,
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            });
+            const summary = fs.readFileSync(path.join(process.env.RUNNER_TEMP, 'artifacts', 'build_summary.md'), 'utf8').trim();
 
-            // Look for a comment that was created by the GitHub Actions bot
-            const buildSummaryComment = comments.data.find(comment => comment.user.login === 'github-actions[bot]');
-            
-            if (buildSummaryComment) {
-              // Update existing comment
-              await github.rest.issues.updateComment({
-                comment_id: buildSummaryComment.id,
+            // Do not trust a PR number from the artifact. `workflow_run.pull_requests`
+            // is empty for PRs from forks, so fall back to looking up the open PR by
+            // its head branch and commit.
+            let prNumber = run.pull_requests[0]?.number;
+            if (!prNumber) {
+              const prs = await github.rest.pulls.list({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: summaryContent
+                state: 'open',
+                head: `${run.head_repository.owner.login}:${run.head_branch}`,
               });
-              console.log(`Updated existing build summary comment ID: ${buildSummaryComment.id}`);
-            } else {
-              // Create new comment
-              await github.rest.issues.createComment({
-                issue_number: issue_number,
+              prNumber = prs.data.find((pr) => pr.head.sha === run.head_sha)?.number;
+            }
+            if (!prNumber) {
+              console.log('No PR found for this workflow run');
+              return;
+            }
+
+            // Generated by tools/parse_build_result.py
+            const marker = '# Package Build Results';
+            let body = `${summary}\n\n[Workflow run](${run.html_url})`;
+            if (body.length > 65000) {
+              body = body.slice(0, 65000) + '\n\n... (truncated)';
+            }
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 100,
+            });
+            // Only update our own comment, not e.g. the test summary comment
+            const existing = comments.find(
+              (c) => c.user.login === 'github-actions[bot]' && c.body.startsWith(marker)
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: summaryContent
+                comment_id: existing.id,
+                body,
+              });
+              console.log(`Updated existing build summary comment ID: ${existing.id}`);
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body,
               });
               console.log('Created new build summary comment');
             }
