@@ -4,8 +4,37 @@ package:
   top-level:
     - unix_timezones
 source:
-  url: https://files.pythonhosted.org/packages/f8/ab/637ae2629dc3e9ed7c192fb80f7fdefe311677138a5a5032872a115eb918/pyodide_unix_timezones-1.0.0-py3-none-any.whl
-  sha256: 9146c0eda703728571d8e3859043b0bb819c9ef45b9f32680234fade2e57b424
+  url: https://files.pythonhosted.org/packages/1a/ba/1c1f69dc6efd8f6f05aa08696d93d92e6d093916f8deea696ad7d81f066c/pyodide_unix_timezones-1.0.0.tar.gz
+  sha256: a87048e1dd93356dcde95b1102ecb5930c2e0839e8ad96187f2ab7891699bff6
+  extras:
+    # the sdist does not include the licence file from the repository
+    - [extras/LICENSE, LICENSE]
+build:
+  script: |
+    TZ_VERSION=2026f
+    TZCODE_SHA256=5a18da01393679ef2559214dc687563f7f3d05691f6f58b7fbc0166f3e796cd6
+    TZDATA_SHA256=01b4a91cec5167ed48c11e8ab78f2048cead78ce94b0cafcad0ae8c5a3044d3d
+
+    # The release on PyPI has the module but no time zone data
+    # We are building the time zone data here.
+    mkdir tzdb
+    pushd tzdb
+    wget https://data.iana.org/time-zones/releases/tzcode${TZ_VERSION}.tar.gz
+    wget https://data.iana.org/time-zones/releases/tzdata${TZ_VERSION}.tar.gz
+    echo "${TZCODE_SHA256}  tzcode${TZ_VERSION}.tar.gz" | sha256sum -c -
+    echo "${TZDATA_SHA256}  tzdata${TZ_VERSION}.tar.gz" | sha256sum -c -
+    tar -xzf tzcode${TZ_VERSION}.tar.gz
+    tar -xzf tzdata${TZ_VERSION}.tar.gz
+
+    # zic is a host tool here, it compiles the zone files. It writes "slim"
+    # files by default. Arrow's vendored date library that Arrow vendors cannot
+    # read them yet, so we need "fat" files.
+    make ZFLAGS="-b fat" REDO=posix_only TOPDIR="${PWD}/install" install
+    popd
+
+    # the package data in pyproject.toml is tzdata/usr/share/zoneinfo/**
+    mkdir -p unix_timezones/tzdata/usr/share
+    cp -R tzdb/install/usr/share/zoneinfo unix_timezones/tzdata/usr/share/
 about:
   home: https://github.com/joemarshall/pyodide-unix-timezones
   PyPI: https://pypi.org/project/pyodide-unix-timezones
