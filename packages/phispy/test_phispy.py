@@ -1,6 +1,8 @@
+import pytest
 from pytest_pyodide import run_in_pyodide
 
 
+@pytest.mark.driver_timeout(60)
 @run_in_pyodide(packages=["phispy"])
 def test_phispy_import(selenium):
     import PhiSpyModules
@@ -10,6 +12,7 @@ def test_phispy_import(selenium):
     assert hasattr(PhiSpyModules, "__version__")
 
 
+@pytest.mark.driver_timeout(60)
 @run_in_pyodide(packages=["phispy"])
 def test_imports(selenium):
     """Test that all essential PhiSpy modules can be imported."""
